@@ -152,3 +152,61 @@ toggele_Boutton* creer_toggle_boutton(toggele_Boutton* maboutton)
     }
     return ((toggele_Boutton*)maboutton);
 }
+
+
+
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------    COMBO BOX    -----------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+
+typedef struct
+{
+    GtkWidget* combo_box;
+    int entry;
+    int idElem;//indice dernier element dans le combo box disponible
+}comboBox;
+
+
+comboBox* creer_combo_Box(int entry)
+{
+    comboBox* comboB;
+    comboB = (comboBox*)malloc(sizeof(comboB));
+    comboB->entry = entry;
+    comboB->idElem = 0;
+    if (!entry)
+        comboB->combo_box = gtk_combo_box_text_new();
+    else
+        comboB->combo_box = gtk_combo_box_text_new_with_entry();
+
+    return ((comboBox*)comboB);
+}
+
+comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, char* id) {
+
+    if (position == -1)
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), id, valeur);
+    else
+        gtk_combo_box_text_insert(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), position, id, valeur);
+    maComboBox->idElem++;
+    return ((comboBox*)maComboBox);
+}
+
+
+comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
+    if (position == -1)
+    {
+        gtk_combo_box_text_remove_all(maComboBox->combo_box);
+        maComboBox->idElem = 0;
+    }
+    else
+    {
+        gtk_combo_box_text_remove(maComboBox->combo_box, position);
+        maComboBox->idElem--;
+    }
+
+
+    return ((Fenetre*)maComboBox);
+}
+
