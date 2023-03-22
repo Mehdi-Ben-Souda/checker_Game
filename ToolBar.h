@@ -4,8 +4,8 @@
 typedef struct to
 {
     GtkToolItem *item;//pointeur sur l'élément
-    const gchar *label;//le titre de l'élément
-    const gchar *icon;//le nom de l'icône
+    char label[maxcarac];//le titre de l'élément
+    char icon[maxcarac];//le nom de l'icône
     GCallback callback;//l'action faite par l'élément
     struct to *svt;//pointeur sur le suivant
 }CelluleToolItem;//structure d'un élément du toolbar
@@ -27,7 +27,7 @@ typedef struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du toolbar après initialisation
  */
-CelluleToolItem *Init_CelluleTooolItem( const gchar *label, const gchar *icon,GCallback callback)
+CelluleToolItem *Init_CelluleTooolItem( char label[maxcarac], char icon[maxcarac],GCallback callback)
 {
     CelluleToolItem *NE;//déclaration d'un nouvel élément
     NE=(CelluleToolItem*)malloc(sizeof (CelluleToolItem));//l'allocation de la mémoire
@@ -36,10 +36,10 @@ CelluleToolItem *Init_CelluleTooolItem( const gchar *label, const gchar *icon,GC
         printf("\nerrur d'allocation !!!!");
         exit(0);
     }
+    strcpy(NE->label,label);
     NE->svt=NULL;//pas de suivant
     //Initialisation des champs de la structure
-    NE->label=label;
-    NE->icon=icon;
+    strcpy(NE->icon,icon);
     NE->callback=callback;
     return ((CelluleToolItem*)NE);
 }
