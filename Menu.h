@@ -9,7 +9,6 @@ typedef struct ce
     guint accel_key;//le code ASCII de la lettre du raccourci
     GCallback callback;//l'action faite par l'élément
     char icon[maxcarac];//le nom de l'icône
-    char name[maxcarac];//la référence de l'élément
     struct ce *svt;//pointeur sur le suivant
     struct ce *sous_menu;//sous menu s'il existe
 }CelluleItem;//structure d'un élément du menu
@@ -18,14 +17,12 @@ typedef struct ne
     GtkWidget *sous_menu; //pointeur sur un sous-menu
     char label[maxcarac];//le titre de l'élément
     char icon[maxcarac];//le nom de l'icône
-    char name[maxcarac];//la référence de l'élément
     CelluleItem *liste_item;//liste des éléments du sous-menu
     struct ne *svt;//pointeur sur le suivant
 }CelluleMenu;//structure d'un sous-menu du menu principal
 typedef  struct
 {
     GtkWidget *main_menu;//pointeur sur le menu principal
-    char name[maxcarac];//la référence de l'élément
     CelluleMenu *liste_menu;//liste des sous-menus
 
 }Menu;//structure d'un menu
@@ -45,7 +42,7 @@ void on_menuitem_clicked(G_GNUC_UNUSED GMenuItem *menuitem,G_GNUC_UNUSED gpointe
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du menu après initialisation
  */
-CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],char name[maxcarac],char accel_key, GCallback callback)
+CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],char accel_key, GCallback callback)
 {
     CelluleItem *NE;//déclaration d'un nouvel élément
     NE=(CelluleItem*) malloc(sizeof (CelluleItem));//l'allocation de la mémoire
@@ -58,7 +55,6 @@ CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],char name
     strcpy(NE->label,label);
     NE->accel_key=(int)accel_key;
     strcpy(NE->icon,icon);
-    strcpy(NE->name,name);
     NE->callback=callback;
     NE->svt=NULL;//pas de suivant
     NE->menu_item=NULL;
@@ -84,7 +80,6 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
         gtk_image_menu_item_set_always_show_image(GTK_IMAGE_MENU_ITEM(item->menu_item),TRUE);
         gtk_menu_item_set_label(GTK_MENU_ITEM(item->menu_item),item->label);
     }
-    gtk_widget_set_name(item->menu_item,item->name);//mettre la référence de l'élément
     if(item->callback)//s'il existe une action pour l'élément, on l'ajoute
         g_signal_connect(item->menu_item,"activate",item->callback,NULL);
     //l'ajout du raccourci
@@ -98,7 +93,7 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
              -> l'icône de sous-menu'
  * sorties : un pointeur sur un sous-menu après initialisation
  */
-CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac],char name[maxcarac])
+CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac])
 {
     CelluleMenu *NE;//déclaration d'un nouvel élément
     NE=(CelluleMenu*) malloc(sizeof (CelluleMenu));//allocation de la mémoire
@@ -110,7 +105,6 @@ CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac],char 
     //initialisation du nouvel élément
     strcpy(NE->label,label);
     strcpy(NE->icon,icon);
-    strcpy(NE->name,name);
     NE->liste_item=Liste_item;
     NE->svt=NULL;//pas de suivant
     NE->sous_menu=NULL;
@@ -136,7 +130,6 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
         gtk_menu_shell_append(GTK_MENU_SHELL(submenu), ptc->menu_item);
         ptc=ptc->svt;//passer à l'élément suivant
     }
-    gtk_widget_set_name(cel->sous_menu,cel->name);//mettre la référence du sous menu
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(cel->sous_menu), submenu);
     return ((CelluleMenu*)cel);
 }
@@ -156,7 +149,7 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
 CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac],char name[maxcarac],char accel_key,GtkAccelGroup *accel_group, GCallback callback)
 {
     CelluleItem *ptc;//pointeur courant pour parcourir la liste
-    CelluleItem *NE= Init_CelluleItem(label,icon,name,accel_key,callback);//initialiser le nouvel élément
+    CelluleItem *NE= Init_CelluleItem(label,icon,accel_key,callback);//initialiser le nouvel élément
     NE= Creer_CelluleItem(NE,accel_group);//creer le nouvel élément
     if(!Liste_item)//si la liste n'existe pas
         return ((CelluleItem*)NE);//retourner le nouvel élément
@@ -177,7 +170,7 @@ CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],ch
 CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,char label[maxcarac],char name[maxcarac],char icon[maxcarac])
 {
     CelluleMenu *ptc;//pointeur courant pour parcourir la liste
-    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label,icon,name);//initialiser le nouvel sous-menu
+    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label,icon);//initialiser le nouvel sous-menu
     NE= Creer_CelluleMenu(NE);//creer le nouvel sous-menu
     if(!Liste_menu)//si la listes n'existe pas
         return ((CelluleMenu*)NE);
@@ -192,7 +185,7 @@ CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,
  * entrées : -> pointeur sur la liste des sous-menus
  * sorties : un pointeur sur le menu principal
  */
-Menu *Creer_Menu(CelluleMenu *Liste_Menu,char name[maxcarac])
+Menu *Creer_Menu(CelluleMenu *Liste_Menu)
 {
     CelluleMenu *ptc;//pointeur courant pour parcourir la liste
     Menu *NE;//déclaration d'un nouvel menu
@@ -204,8 +197,6 @@ Menu *Creer_Menu(CelluleMenu *Liste_Menu,char name[maxcarac])
     }
     NE->liste_menu=Liste_Menu;//initialisation de nouvel menu
     NE->main_menu=gtk_menu_bar_new();//creation du menu
-    strcpy(NE->name,name);
-    gtk_widget_set_name(NE->main_menu,name);//mettre la référence du menu
     ptc=Liste_Menu;
     while (ptc)//tant qu'il y a des éléments dans la liste des sous-menus, on les ajoute à notre menu principal
     {
