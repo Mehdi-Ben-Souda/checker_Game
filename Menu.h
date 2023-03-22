@@ -9,6 +9,7 @@ typedef struct ce
     GCallback callback;//l'action faite par l'élément
     const gchar *icon;//le nom de l'icône
     struct ce *svt;//pointeur sur le suivant
+    struct ce *sous_menu;//sous menu s'il existe
 }CelluleItem;//structure d'un élément du menu
 typedef struct ne
 {
@@ -24,7 +25,7 @@ typedef  struct
     CelluleMenu *liste_menu;//liste des sous-menus
 }Menu;//structure d'un menu
 //----------------------------------------------------------------------------------------------------------------------
-//------------------------------------       Fonction suplémentaires      ----------------------------------------------
+//------------------------------------       Fonction supplémentaires      ---------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 // Fonction appelée lorsqu'on clique sur l'élément de menu
 void on_menuitem_clicked(G_GNUC_UNUSED GMenuItem *menuitem,G_GNUC_UNUSED gpointer data)
@@ -55,6 +56,7 @@ CelluleItem *Init_CelluleItem(const gchar *label,const gchar *icon,char accel_ke
     NE->icon=icon;
     NE->svt=NULL;//pas de suivant
     NE->menu_item=NULL;
+    NE->sous_menu=NULL;//pas de sous-menu
     return ((CelluleItem*)NE);
 }
 /*
@@ -213,6 +215,7 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
     GtkWidget *smenu;//déclaration d'un pointeur qui va centenir le sous menu
     if(!item)//vérification d'existance de l'élément racine
         return ((CelluleItem *)NULL);
+    item->sous_menu=liste_item;//remplir le champ du sous-menu
     smenu=gtk_menu_new();//création du sous-menu
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(item->menu_item),smenu);
     ptc=liste_item;
