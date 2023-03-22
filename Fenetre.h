@@ -9,6 +9,15 @@ typedef struct
 	int y;//Postition sur l'axe des ordonnées
 }Coordonees;
 
+	//Enumeration sur les types de fenetres
+	//Possible
+typedef enum
+{
+	WINDOW_TOPLEVEL,
+	WINDOW_POPUP
+
+}WindowType;
+
 
 /*-----------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------    FENETRE    -----------------------------------------------*/
@@ -17,79 +26,120 @@ typedef struct
 {
 	GtkWidget* ma_fenetre;//pointeur sur une fenetre
 
-	GtkWindowType type;//entier indiquant le type du fenetre
+	WindowType type;//entier indiquant le type du fenetre
 	int Largeur;//largeur du fenetre
 	int Hauteur;//hauteur du fenetre
 	char Titre[NB_Cara_titre];//le titre du fenetre
 	char chemin_icone[NB_Cara_chemin];//Icone de la fenetre
-	Coordonees x_y;
-	int position;//postion dans la fenetre
+	Coordonees x_y;//Les cordonees de la position 
 	char couleur[8];//Couleur de fond en HEX
+	char name[20];//le nom de la fenetre par la quelle on va la
+			//cibler par le code CSS
 
 }Fenetre;//structure d'une fenetre
+/*____________________________________________________________*/
 
-Fenetre* Allouer_Fenetre(GtkWindowType type, int largeur, int hauteur, char* titre,
-	char* chemin_icone, int x, int y, int position, char couleur[8])
+/*
+	Nom Fonction : Allouer_Fenetre
+
+	Entree :
+			_Enumeration: type de la fenetre 
+				(WINDOW_TOPLEVEL et WINDOW_POPUP)
+			_la largeur de la fenetre (entier)
+			_la haiteur de la fenetre (entier)
+			_le titre de la fenetre (chaine de caractere)
+			_chemin de l'icone (chaine de caractere)
+			_la position selon l'axe des absicces sur l'ecrant
+			_la position selon l'axe des ordonee sur l'ecrant
+			_la couleur de fond (chaine de caractere)
+
+	Sortie :_Pointeur sur une instance de type Fenetre
+
+	Description : La focntion prends en paramatres les caracteristiques 
+		de la fenetre qu'on desire creer ,instancie un element de type
+		Fenetre et l'initialise aux paramatres qu'on a passee
+*/
+Fenetre* Allouer_Fenetre(WindowType type, int largeur, 
+		int hauteur, char* titre,char* chemin_icone, int x,
+			int y, int position, char couleur[8],char name[20])
 {
 	Fenetre* mafenetre;
 
 	mafenetre = (Fenetre*)malloc(sizeof(Fenetre));
 
+		//Tester si l'allocation c'est bien derouler
 	if (!mafenetre)
 	{
 		printf("!!!\nErreur dans l'Allocation de la fenetre!!!\n");
 		return (Fenetre*)mafenetre;
 	}
+
 	mafenetre->type = type;
 	mafenetre->Largeur = largeur;
 	mafenetre->Hauteur = hauteur;
+		//Si le titre n'existe pas , on met "vide" dans 
+			//le paramatre
 	if (!titre) {
 		strcpy(mafenetre->Titre, "vide");
 	}
 	else
+		//Si non on le met on le met dans la structure
 		strcpy(mafenetre->Titre, titre);
+
+		//Si le l'icone n'existe pas , on met "vide" dans 
+			//le paramatre
 	if (!chemin_icone)
 	{
 		strcpy(mafenetre->chemin_icone, "vide");
 	}
 	else
+		//Si non on le met on le chemin dans la structure
 		strcpy(mafenetre->chemin_icone, chemin_icone);
 
 	mafenetre->x_y.x = x;
 	mafenetre->x_y.y = y;
-	mafenetre->position = position;
+
+		//Si la couleur n'existe pas , on met "vide" dans 
+			//le paramatre
 	if (!couleur)
 	{
 		strcpy(mafenetre->couleur, "vide");
 	}
 	else
+		//Si non on le met on la couleur dans la structure
 		strcpy(mafenetre->couleur, couleur);
+	
 
-
-
-
-
+	if (!name)
+	{
+		printf("\n\nErreur vous avez oubilier le nom"
+			"de la fenetre\n\n");
+		exit(12);
+	}
+	else
+		strcpy(mafenetre->name, name);
 
 	return ((Fenetre*)mafenetre);
 }
+/*____________________________________________________________*/
 
-//Fonction d'ajouter de css style pour les widgets / sous-widgets
-void gtk_add_css(GtkWidget* Widget, const char* CSSCode)
-{
-	GtkCssProvider* Provider = gtk_css_provider_new();
-	gtk_css_provider_load_from_data(Provider, CSSCode, -1, NULL);
 
-	GtkStyleContext* Context = gtk_widget_get_style_context(Widget);
-	gtk_style_context_add_provider(Context, GTK_STYLE_PROVIDER(Provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+/*
+	Nom Fonction : Creer_Fenetre
 
-	g_object_unref(Provider);
-}
+	Entree :Pointeur sur un element de type Fenetre
+
+	Sortie :Pointeur sur un element de type Fenetre
+
+	Description :Cree un GtkWidget qui sera la fenetre , 
+		qu'on desire creer et lui attribut les proprietes 
+		que nous avons dans la structure 
+*/
 
 Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 {
 	GdkPixbuf* icone1;
-	GdkColor lacouleur;
-	GdkRGBA lacouleur2;
+	int static nb_fenetr=0;
 
 	char buffer[1024];
 
@@ -97,88 +147,84 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 	GdkDisplay* display;
 	GdkScreen* screen;
 
+		//Test si la structure existe
 	if (!mafenetre)
 	{
 		printf("\nFenetre n'existe pas !!!");
 		exit(0);
 	}
 
-	//Creation de la fenetre
-	mafenetre->ma_fenetre = gtk_window_new(mafenetre->type);
+		//Creation de la fenetre
+	mafenetre->ma_fenetre = gtk_window_new(
+			(GtkWindowType)mafenetre->type);
 
-	//ajustement de la taille de la fenetre
+		//ajustement de la taille de la fenetre
 	if (mafenetre->Hauteur && mafenetre->Largeur)
-		//Seulement si la longeur et la hauteur existe tous les deux
+			//Seulement si la longeur et la hauteur existe tous les deux
 		gtk_window_set_default_size(GTK_WINDOW(mafenetre->ma_fenetre),
 			mafenetre->Largeur, mafenetre->Hauteur);
-	//Mettre un titre a la fenetre
-	if (strcmp("vide", mafenetre->Titre))//Seulement si le titre n'est pas NULL    
-		gtk_window_set_title(GTK_WINDOW(mafenetre->ma_fenetre), mafenetre->Titre);
+
+		//Mettre un titre a la fenetre
+	if (strcmp("vide", mafenetre->Titre))
+		//Seulement si le titre n'est pas NULL    
+		gtk_window_set_title(GTK_WINDOW(mafenetre->ma_fenetre),
+			mafenetre->Titre);
 
 
-	//Mettre une icone 
-	if (strcmp("vide", mafenetre->chemin_icone))//Seulement si le champs icone n'est pas NULL
+		//Mettre une icone 
+	if (strcmp("vide", mafenetre->chemin_icone))
+		//Seulement si le champs icone n'est pas NULL
 	{       //(cad on veut ajouter une icone)
-		/*_______________Icone de fenetre________________*/
 		/*
-			Creation de GdkPixbuf avec la fct gdk_pixbuf_new_from_file
+			Creation de GdkPixbuf avec la fct 
+				gdk_pixbuf_new_from_file
+		
+			Image est une chaine de caractere contenant 
+				le nom du fichier
 		*/
-		//Image est une chaine de caractere contenant le nom du fichier
-		icone1 = gdk_pixbuf_new_from_file(mafenetre->chemin_icone, NULL);
+		icone1 = gdk_pixbuf_new_from_file(
+				mafenetre->chemin_icone, NULL);
 		/*
 			pour utiliser gtk_window_set_icon on lui passe GdkPixbuf
 		*/
-		gtk_window_set_icon(GTK_WINDOW(mafenetre->ma_fenetre), icone1);
+		gtk_window_set_icon(GTK_WINDOW(mafenetre->ma_fenetre),
+			icone1);
 	}
 
 	//Positionner la fenetre
 
-	if (mafenetre->x_y.x && mafenetre->x_y.y)
-	{
-		//deplacer selon les cordonée
-		gtk_window_move(GTK_WINDOW(mafenetre->ma_fenetre),
-			mafenetre->x_y.x, mafenetre->x_y.y);
+	//if (mafenetre->x_y.x && mafenetre->x_y.y)
+	//{
+		//deplacer selon les cordonee
+	gtk_window_move(GTK_WINDOW(mafenetre->ma_fenetre),
+		mafenetre->x_y.x, mafenetre->x_y.y);
 
 
-	}
+	//}
 
-	//___________________TODO: positionement selon les places dans la fenetre
-/*else
-	if (mafenetre->position)
-	{
+	gtk_widget_set_name(mafenetre->ma_fenetre, mafenetre->name);
 
-	}
-	else {
-
-	}*/
 
 	if (strcmp("vide", mafenetre->couleur))//Si la couleur existe
 	{
 		/*_______________Changement couleur background____________*/
-		//gdk_color_parse(mafenetre->couleur, &lacouleur);//couleur est une chaine de cara de hex de la couleur
-		//gdk_rgba_parse(&lacouleur2, mafenetre->couleur);
-		//gtk_widget_modify_bg(mafenetre->ma_fenetre, gtk_state_normal, &lacouleur);
-		//gtk_widget_override_background_color(gtk_widget(mafenetre->ma_fenetre),gtk_state_flag_normal,&lacouleur2);
-
 		provider = gtk_css_provider_new();
 		display = gdk_display_get_default();
 		screen = gdk_display_get_default_screen(display);
 
-		gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		gtk_style_context_add_provider_for_screen(screen,
+			GTK_STYLE_PROVIDER(provider), 
+			GTK_STYLE_PROVIDER_PRIORITY_USER);
 
-		//    //ceci est une fonction qui va me permettre de creer une chaine de cara avec
-		//    //la variable couleur qu'on a deja
-		snprintf(buffer, sizeof(buffer), "window { background-color:%s;}", mafenetre->couleur);
 
+		snprintf(buffer, sizeof(buffer), 
+			"#%s { background-color:%s;}",mafenetre->name, 
+				mafenetre->couleur);
+			//Ajout du code CSS
 		gtk_css_provider_load_from_data(provider, buffer, -1, NULL);
-
-		//gtk_widget_set_name(GTK_WIDGET(mafenetre->ma_fenetre), "karrrrr_el_banie");
-		//gtk_add_css(GTK_WIDGET(mafenetre->ma_fenetre), "#ffuuu {background-color:#FF00FF}");
-
+		
 	}
-
-	gtk_container_set_border_width(GTK_CONTAINER(mafenetre->ma_fenetre), 50);
-
+/*____________________________________________________________*/
 
 	return ((Fenetre*)mafenetre);
 }
