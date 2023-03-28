@@ -1,3 +1,15 @@
+#include <libxml2/libxml/parser.h>
+#include "Fenetre.h"
+#include "struct_med.h"
+#include "Menu.h"
+
+GtkWidget* create_fixed(char* name)
+{
+	GtkWidget* fixed;
+	fixed = gtk_fixed_new();
+	gtk_widget_set_name(fixed, name);
+	return((GtkWidget*)fixed);
+}
 
 /*
  * Fonction qui permet de identifier la nature de balise
@@ -12,8 +24,70 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Fixed")))return((int)2);
 	//tester si la balise est un bouton
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Button")))return((int)3);
-	//tester si la balise est une fenetre
+	//tester si la balise est un Menu
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Menu")))return((int)4);
+	//tester si la balise est un CelluleMenu
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleMenu")))return((int)5);
+	//tester si la balise est un CelluleItem
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleItem")))return((int)6); 
 	return((int)-1);
+}
+
+CelluleItem* creer_CelluleMenu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel_group)
+{
+	CelluleItem* CelluleItemListe = NULL;
+	int nat;
+	printf("\n jj %s \n ", cur->name);
+	//pointer sur le premier fils de la balise cur
+	cur = cur->xmlChildrenNode;
+	printf("\n %s \n ", cur->name);
+	// boucler jusqu'il y a pas encore une autre balise (frere)
+	while (cur != NULL)
+	{
+		nat = nature_balise(cur);
+		if (nat == 6) {
+			CelluleItemListe = Inserer_CelluleItem(CelluleItemListe,
+				(char*)xmlGetProp(cur, "label"),
+				(char*)xmlGetProp(cur, "icon"),
+				(char*)xmlGetProp(cur, "name"),
+				(char*)xmlGetProp(cur, "accel_key"),
+				accel_group,NULL);
+			printf("\n CelluleItem inserer\n");
+		}
+		cur = cur->next;
+	}
+
+	return((CelluleItem*)CelluleItemListe);
+
+}
+
+CelluleMenu* creer_Menu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel_group)
+{
+	CelluleMenu* CelluleMenuListe = NULL;
+	CelluleItem* CelluleItemListe = NULL;
+	int nat;
+	printf("\n %s \n ", cur->name);
+	//pointer sur le premier fils de la balise cur
+	cur = cur->xmlChildrenNode;
+	printf("\n %s \n ", cur->name);
+	// boucler jusqu'il y a pas encore une autre balise (frere)
+	while (cur != NULL) 
+	{
+		nat = nature_balise(cur);
+		if(nat == 5){
+		printf("\n 1 %s \n ", cur->name);
+		printf("\n jjjjjjjjjjjjjj \n");
+		CelluleItemListe = creer_CelluleMenu_fils(doc, cur, accel_group);
+		CelluleMenuListe = Inserer_CeluleMenu(CelluleMenuListe, CelluleItemListe,
+											(char*)xmlGetProp(cur, "label"),
+											(char*)xmlGetProp(cur, "name"));
+		printf("\n cellule menu inserer\n");
+		}
+		cur = cur->next;
+	}
+
+	return((CelluleMenu*)CelluleMenuListe);
+
 }
 
 /*____________________________________________________________________________
@@ -27,9 +101,12 @@ int nature_balise(xmlNodePtr balise)
 void
 creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	int nat;
-	GtkWidget* fixed,*parent;
+	GtkWidget* fixed;
 	Boutton *Btn;
-
+	CelluleMenu * celluleMenu =NULL;
+	Menu* menu;
+	CelluleMenu* CelluleMenuListe = NULL;
+	GtkAccelGroup* accel_group;
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
 	// boucler jusqu'il y a pas encore une autre balise (frere)
@@ -69,6 +146,20 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET(Btn->button), Btn->pos.X, Btn->pos.Y);
 				printf("\nbutton was added to the container Fixed\n");
 			}
+			break;
+		case 4:
+
+			printf("\n menu trouver\n");
+			accel_group = gtk_accel_group_new();
+			CelluleMenuListe=creer_Menu_fils(doc, cur, accel_group);
+			menu = Creer_Menu(CelluleMenuListe);
+			printf("\nMenu creer\n");
+			gtk_window_add_accel_group(Gtk_parent, accel_group);
+			GtkWidget* fixed;
+			fixed = gtk_fixed_new();
+			gtk_fixed_put(GTK_FIXED( fixed), menu->main_menu, 50, 50);
+			gtk_container_add(Gtk_parent, fixed);
+
 			break;
 		default:break;
 		}
