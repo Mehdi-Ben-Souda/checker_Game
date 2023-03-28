@@ -16,7 +16,6 @@ typedef struct ne
 {
     GtkWidget *sous_menu; //pointeur sur un sous-menu
     char label[maxcarac];//le titre de l'élément
-    char icon[maxcarac];//le nom de l'icône
     CelluleItem *liste_item;//liste des éléments du sous-menu
     struct ne *svt;//pointeur sur le suivant
 }CelluleMenu;//structure d'un sous-menu du menu principal
@@ -93,9 +92,10 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
              -> l'icône de sous-menu'
  * sorties : un pointeur sur un sous-menu après initialisation
  */
-CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac])
+CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac])
 {
     CelluleMenu *NE;//déclaration d'un nouvel élément
+    
     NE=(CelluleMenu*) malloc(sizeof (CelluleMenu));//allocation de la mémoire
     if(!NE)//vérification de l'allocation
     {
@@ -104,7 +104,6 @@ CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac],char 
     }
     //initialisation du nouvel élément
     strcpy(NE->label,label);
-    strcpy(NE->icon,icon);
     NE->liste_item=Liste_item;
     NE->svt=NULL;//pas de suivant
     NE->sous_menu=NULL;
@@ -123,14 +122,17 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
         return ((CelluleMenu*)NULL);
     //création du sous menu
     cel->sous_menu=gtk_menu_item_new_with_label(cel->label);
-    ptc=cel->liste_item;
-    submenu=gtk_menu_new();
-    while (ptc)//tant qu'il y a des éléments dans la liste, on les ajoute
+    if(cel->liste_item)
     {
-        gtk_menu_shell_append(GTK_MENU_SHELL(submenu), ptc->menu_item);
-        ptc=ptc->svt;//passer à l'élément suivant
+        ptc = cel->liste_item;
+        submenu = gtk_menu_new();
+        while (ptc)//tant qu'il y a des éléments dans la liste, on les ajoute
+        {
+            gtk_menu_shell_append(GTK_MENU_SHELL(submenu), ptc->menu_item);
+            ptc = ptc->svt;//passer à l'élément suivant
+        }
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(cel->sous_menu), submenu);
     }
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(cel->sous_menu), submenu);
     return ((CelluleMenu*)cel);
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -146,10 +148,10 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur la liste des éléments
  */
-CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac],char name[maxcarac],char accel_key,GtkAccelGroup *accel_group, GCallback callback)
+CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],char icon[maxcarac],char name[maxcarac],char accel_key[1], GtkAccelGroup* accel_group, GCallback callback)
 {
     CelluleItem *ptc;//pointeur courant pour parcourir la liste
-    CelluleItem *NE= Init_CelluleItem(label,icon,accel_key,callback);//initialiser le nouvel élément
+    CelluleItem *NE= Init_CelluleItem(label,icon,accel_key[0], callback);//initialiser le nouvel élément
     NE= Creer_CelluleItem(NE,accel_group);//creer le nouvel élément
     if(!Liste_item)//si la liste n'existe pas
         return ((CelluleItem*)NE);//retourner le nouvel élément
@@ -167,10 +169,11 @@ CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],ch
              -> le nom de l'icône du sous-menu
  * sorties : un pointeur sur la liste des sous-menus
  */
-CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,char label[maxcarac],char name[maxcarac],char icon[maxcarac])
+CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,char label[maxcarac],char name[maxcarac])
 {
     CelluleMenu *ptc;//pointeur courant pour parcourir la liste
-    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label,icon);//initialiser le nouvel sous-menu
+    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label);//initialiser le nouvel sous-menu
+    
     NE= Creer_CelluleMenu(NE);//creer le nouvel sous-menu
     if(!Liste_menu)//si la listes n'existe pas
         return ((CelluleMenu*)NE);
