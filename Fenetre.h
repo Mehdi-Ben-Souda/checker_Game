@@ -198,6 +198,10 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 	gtk_window_move(GTK_WINDOW(mafenetre->ma_fenetre),
 		mafenetre->x_y.X, mafenetre->x_y.Y);
 	}
+	else
+	{
+		gtk_window_set_position(GTK_WINDOW(mafenetre->ma_fenetre), GTK_WIN_POS_CENTER);
+	}
 	
 
 	gtk_widget_set_name(mafenetre->ma_fenetre, mafenetre->name);
