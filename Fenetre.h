@@ -1,13 +1,12 @@
-#include "gtk/gtk.h"
+#pragma once
+#include "common.h"
 
-#define NB_Cara_titre 50
-#define NB_Cara_chemin 150
 
-typedef struct
+/*typedef struct
 {
-	int x;//Postition sur l'axe des abscices
-	int y;//Postition sur l'axe des ordonnées
-}Coordonees;
+	int X;//Postition sur l'axe des abscices
+	int Y;//Postition sur l'axe des ordonnées
+}coordonees;*/
 
 	//Enumeration sur les types de fenetres
 	//Possible
@@ -31,7 +30,7 @@ typedef struct
 	int Hauteur;//hauteur du fenetre
 	char Titre[NB_Cara_titre];//le titre du fenetre
 	char chemin_icone[NB_Cara_chemin];//Icone de la fenetre
-	Coordonees x_y;//Les cordonees de la position 
+	coordonne x_y;//Les cordonees de la position 
 	char couleur[8];//Couleur de fond en HEX
 	char name[20];//le nom de la fenetre par la quelle on va la
 			//cibler par le code CSS
@@ -96,8 +95,8 @@ Fenetre* Allouer_Fenetre(WindowType type, int largeur,
 		//Si non on le met on le chemin dans la structure
 		strcpy(mafenetre->chemin_icone, chemin_icone);
 
-	mafenetre->x_y.x = x;
-	mafenetre->x_y.y = y;
+	mafenetre->x_y.X = x;
+	mafenetre->x_y.Y = y;
 
 		//Si la couleur n'existe pas , on met "vide" dans 
 			//le paramatre
@@ -193,14 +192,13 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 
 	//Positionner la fenetre
 
-	//if (mafenetre->x_y.x && mafenetre->x_y.y)
-	//{
+	if (mafenetre->x_y.X || mafenetre->x_y.Y)
+	{
 		//deplacer selon les cordonee
 	gtk_window_move(GTK_WINDOW(mafenetre->ma_fenetre),
-		mafenetre->x_y.x, mafenetre->x_y.y);
-
-
-	//}
+		mafenetre->x_y.X, mafenetre->x_y.Y);
+	}
+	
 
 	gtk_widget_set_name(mafenetre->ma_fenetre, mafenetre->name);
 
@@ -227,6 +225,15 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 /*____________________________________________________________*/
 
 	return ((Fenetre*)mafenetre);
+}
+
+Fenetre* Ajouter_fenetre(Fenetre* mafenetre, GtkWidget* element)
+{
+	if (mafenetre->ma_fenetre)
+	{
+		gtk_container_add(GTK_CONTAINER(mafenetre->ma_fenetre), element);
+	}
+	return (Fenetre*)mafenetre;
 }
 
 
