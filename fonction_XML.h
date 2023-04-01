@@ -2,14 +2,9 @@
 #include "Fenetre.h"
 #include "struct_med.h"
 #include "Menu.h"
+#include "ToolBar.h"
+#include "conteuneurs.h"
 
-GtkWidget* create_fixed(char* name)
-{
-	GtkWidget* fixed;
-	fixed = gtk_fixed_new();
-	gtk_widget_set_name(fixed, name);
-	return((GtkWidget*)fixed);
-}
 
 /*
  * Fonction qui permet de identifier la nature de balise
@@ -30,6 +25,10 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleMenu")))return((int)5);
 	//tester si la balise est un CelluleItem
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleItem")))return((int)6); 
+	//tester si la balise est un Toolbar
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toolbar")))return((int)7);
+	//tester si la balise est un CelluleToolItem
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleToolItem")))return((int)8);
 	return((int)-1);
 }
 
@@ -37,7 +36,7 @@ CelluleItem* creer_CelluleMenu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup
 {
 	CelluleItem* CelluleItemListe = NULL;
 	int nat;
-	printf("\n jj %s \n ", cur->name);
+	printf("\n %s \n ", cur->name);
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
 	printf("\n %s \n ", cur->name);
@@ -75,8 +74,7 @@ CelluleMenu* creer_Menu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel
 	{
 		nat = nature_balise(cur);
 		if(nat == 5){
-		printf("\n 1 %s \n ", cur->name);
-		printf("\n jjjjjjjjjjjjjj \n");
+		printf("\n  %s \n ", cur->name);
 		CelluleItemListe = creer_CelluleMenu_fils(doc, cur, accel_group);
 		CelluleMenuListe = Inserer_CeluleMenu(CelluleMenuListe, CelluleItemListe,
 											(char*)xmlGetProp(cur, "label"),
@@ -100,13 +98,15 @@ CelluleMenu* creer_Menu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel
  */
 void
 creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
-	int nat;
-	GtkWidget* fixed;
+	int nat,n=0;
+	Fixed* fixed;
 	Boutton *Btn;
 	CelluleMenu * celluleMenu =NULL;
 	Menu* menu;
 	CelluleMenu* CelluleMenuListe = NULL;
 	GtkAccelGroup* accel_group;
+	ToolBar* toolbar;
+	CelluleToolItem* celluleToolItem;
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
 	// boucler jusqu'il y a pas encore une autre balise (frere)
@@ -117,18 +117,17 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 		{
 		case 2:// si la balise est fixed
 			// la creation d'un fixed
-			fixed = create_fixed((char*)xmlGetProp(cur, "name"));
+			fixed = Allouer_fixed((char*)xmlGetProp(cur, "name"));
 			printf("\nfixed created\n");
 			//ajouter  le fixed a la balise parent
-			gtk_container_add(GTK_CONTAINER(Gtk_parent), fixed);
+			gtk_container_add(GTK_CONTAINER(Gtk_parent), fixed->mon_fixed);
 			printf("\nfixed added to the window\n");
 			//creation de tous les fils de ce fixed
-			creer_fils(doc, cur, fixed);
+			creer_fils(doc, cur,fixed->mon_fixed);
 			break;
 		case 3:// si la balise est un bouton
 			// initialisation d'un bouton
-			Btn = Initialiser_boutton((char*)xmlGetProp(cur, "name"),
-										(char*)xmlGetProp(cur, "label"),
+			Btn = Initialiser_boutton(	(char*)xmlGetProp(cur, "label"),
 										(char*)xmlGetProp(cur, "tooltip"),
 										(char*)xmlGetProp(cur, "image_icon"),
 										atoi((char*)xmlGetProp(cur, "largeur")),
@@ -157,9 +156,35 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			gtk_window_add_accel_group(Gtk_parent, accel_group);
 			GtkWidget* fixed;
 			fixed = gtk_fixed_new();
-			gtk_fixed_put(GTK_FIXED( fixed), menu->main_menu, 50, 50);
+			gtk_fixed_put(GTK_FIXED( fixed), menu->main_menu,0,0);
 			gtk_container_add(Gtk_parent, fixed);
 
+			break;
+		case 7: 
+			printf("\ntoolbar trouver\n");
+			toolbar=Init_toolbar(NULL, atoi((char*)xmlGetProp(cur, "icon_size")),
+										atoi((char*)xmlGetProp(cur, "style")),
+										atoi((char*)xmlGetProp(cur, "orientation")));
+			toolbar = Creer_toolbar(toolbar);
+			creer_fils(doc, cur, toolbar->toolbar);
+			gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET(toolbar->toolbar), 150, 150);
+			printf("\ntoolbar creer\n");
+			break;
+		case 8 :
+
+			do
+			{
+				printf("\nCelluleToolItem trouver\n");
+				celluleToolItem = Init_CelluleTooolItem((char*)xmlGetProp(cur, "label"),
+					(char*)xmlGetProp(cur, "icon"),
+					atoi((char*)xmlGetProp(cur, "callback")));
+				celluleToolItem = Creer_CelluleToolItem(celluleToolItem);//creer le nouvel élément
+				gtk_toolbar_insert(GTK_TOOLBAR(Gtk_parent), celluleToolItem->item, n++);
+				printf("\nCelluleToolItem inserer\n");
+				//pointer sur la balise suivante
+				cur = cur->next;
+			} while(!xmlStrcmp(cur->name, (const xmlChar*)"CelluleToolItem"));
+			cur=cur->prev;
 			break;
 		default:break;
 		}
