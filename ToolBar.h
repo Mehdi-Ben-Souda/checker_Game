@@ -19,6 +19,7 @@ typedef struct
     guint orientation;//entier indiquant l'orientation des éléments du toolbar
     CelluleToolItem *liste_item;//liste des éléments du toolbar
     int compteur;// le nombre de item
+    coordonne x_y;
 }ToolBar;//structure du toolbar
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------       Fonction supplémentaires      ---------------------------------------------
@@ -65,9 +66,12 @@ CelluleToolItem *Creer_CelluleToolItem(CelluleToolItem *item)
              -> la taille de l'icône
              -> le style des éléments du toolbar
              -> l'orientation des éléments du toolbar
+             -> la position du toolbar selon les absices
+             -> la position du toplbar selon les ordonees
  * sorties : un pointeur sur un sous-menu après initialisation
  */
-ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,guint style,guint orientation)
+ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,
+                guint style,guint orientation, guint x , guint y)
 {
     ToolBar *NE;//déclaration d'un nouvel élément
     NE=(ToolBar*) malloc(sizeof (ToolBar));//allocation de la mémoire
@@ -82,6 +86,8 @@ ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,guint style,guint o
     NE->style=style;
     NE->orientation=orientation;
     NE->compteur = 0;
+    NE->x_y.X = x;
+    NE->x_y.Y = y;
     return ((ToolBar*)NE);
 }
 //----------------------------------------------------------------------------------------------------------------------
