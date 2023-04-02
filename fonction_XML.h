@@ -4,7 +4,7 @@
 #include "Menu.h"
 #include "ToolBar.h"
 #include "conteuneurs.h"
-
+#include "InfoToolBar.h"
 
 /*
  * Fonction qui permet de identifier la nature de balise
@@ -29,9 +29,30 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toolbar")))return((int)7);
 	//tester si la balise est un CelluleToolItem
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleToolItem")))return((int)8);
+	//tester si la balise est un Box
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Box")))return((int)9);
 	return((int)-1);
 }
 
+
+void ajoueter_a_conteuneur(xmlNodePtr cur_parent, GtkWidget* parent, GtkWidget *fils,int X, int Y)
+{
+	int nat;
+	nat = nature_balise(cur_parent);
+	//tester la nature de la balise parent
+	if (nat == 2)// si le parent est fixed
+	{
+		Ajouter_Fixed(fils, X, Y, parent);
+		printf("\nbutton was added to the container Fixed\n");
+	}
+	else {
+		if (nat == 9)
+		{
+
+		}
+	}
+
+}
 CelluleItem* creer_CelluleMenu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel_group)
 {
 	CelluleItem* CelluleItemListe = NULL;
@@ -107,6 +128,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	GtkAccelGroup* accel_group;
 	ToolBar* toolbar;
 	CelluleToolItem* celluleToolItem;
+	Box* boite;
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
 	// boucler jusqu'il y a pas encore une autre balise (frere)
@@ -138,13 +160,9 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			//creation d'un bouton
 			Btn = creer_boutton(Btn);
 			printf("\na button was created\n");
-			nat = nature_balise(cur->parent);
-			//tester la nature de la balise parent
-			if (nat == 2)// si le parent est fixed
-			{
-				gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET(Btn->button), Btn->pos.X, Btn->pos.Y);
-				printf("\nbutton was added to the container Fixed\n");
-			}
+
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->button,Btn->pos.X, Btn->pos.Y);
+
 			break;
 		case 4:
 
@@ -171,7 +189,6 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			printf("\ntoolbar creer\n");
 			break;
 		case 8 :
-
 			do
 			{
 				printf("\nCelluleToolItem trouver\n");
@@ -185,6 +202,12 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				cur = cur->next;
 			} while(!xmlStrcmp(cur->name, (const xmlChar*)"CelluleToolItem"));
 			cur=cur->prev;
+			break;
+		case 9:
+			printf("\nBox trouver\n");
+			boite = Allouer_Box(atoi((char*)xmlGetProp(cur, "orientation")), atoi((char*)xmlGetProp(cur, "espacement")));
+			Creer_Box(boite, Gtk_parent);
+			printf("\nBox est creer\n");
 			break;
 		default:break;
 		}
@@ -254,7 +277,7 @@ Lire_doc(char* docname) {
 				"C:\\Users\\HP FOLIO 9470m\\Desktop\\gtk atelier\\ts\\ts\\home.png",
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")),
-				NULL, NULL, (char*)xmlGetProp(cur, "name"));
+				NULL, (char*)xmlGetProp(cur, "couleur"), (char*)xmlGetProp(cur, "name"));
 			//la creation d'une fenetre
 			Fen = Creer_Fenetre(Fen);
 
