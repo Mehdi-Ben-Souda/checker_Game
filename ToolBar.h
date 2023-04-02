@@ -9,7 +9,6 @@ typedef struct to
     GtkToolItem *item;//pointeur sur l'élément
     char label[NB_Cara_titre];//le titre de l'élément
     char icon[NB_Cara_chemin];//le nom de l'icône
-    GCallback callback;//l'action faite par l'élément
     struct to *svt;//pointeur sur le suivant
 }CelluleToolItem;//structure d'un élément du toolbar
 typedef struct
@@ -31,7 +30,7 @@ typedef struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du toolbar après initialisation
  */
-CelluleToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_Cara_chemin],GCallback callback)
+CelluleToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_Cara_chemin])
 {
     CelluleToolItem *NE;//déclaration d'un nouvel élément
     NE=(CelluleToolItem*)malloc(sizeof (CelluleToolItem));//l'allocation de la mémoire
@@ -44,7 +43,6 @@ CelluleToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_
     NE->svt=NULL;//pas de suivant
     //Initialisation des champs de la structure
     strcpy(NE->icon,icon);
-    NE->callback=callback;
     return ((CelluleToolItem*)NE);
 }
 /*
@@ -59,7 +57,6 @@ CelluleToolItem *Creer_CelluleToolItem(CelluleToolItem *item)
         return ((CelluleToolItem*)NULL);
     icon= gtk_image_new_from_file(item->icon);//création de l'icône
     item->item=gtk_tool_button_new(icon,item->label);//création d'élément du toolbar
-    g_signal_connect(item->item,"clicked",item->callback,NULL);//lier l'action à l'élément du toolbar
     return ((CelluleToolItem*)item);//retourner l'élément
 }
 /*
@@ -98,10 +95,10 @@ ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,guint style,guint o
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur la liste des éléments
  */
-CelluleToolItem *Inserer_CelluleToolItem(CelluleToolItem *liste,const gchar *label, const gchar *icon,GCallback callback)
+CelluleToolItem *Inserer_CelluleToolItem(CelluleToolItem *liste,const gchar *label, const gchar *icon)
 {
     CelluleToolItem *NE,*ptc;//pointeur courant pour parcourir la liste
-    NE= Init_CelluleTooolItem(label,icon,callback);//initialiser le nouvel élément
+    NE= Init_CelluleTooolItem(label,icon);//initialiser le nouvel élément
     NE= Creer_CelluleToolItem(NE);//creer le nouvel élément
     if(!liste)//si la liste n'existe pas
         return ((CelluleToolItem*)NE);//retourner le nouvel élément

@@ -1,8 +1,10 @@
+#include "common.h"
+
 typedef struct
 {
     GtkWidget *info_toolbar;//pointeur sur le toolbar d'information
-    char message[maxcarac];//le message
-    char boutton_Label[maxcarac];//le titre du boutton
+    char message[NB_Cara_titre];//le message
+    char boutton_Label[NB_Cara_titre];//le titre du boutton
     guint type_message;//le type de message
 }InfoToolBar;//structure du toolbar d'information
 /*
@@ -12,7 +14,7 @@ typedef struct
              -> //le type de message
  * sorties : un pointeur sur un toolbar d'information
  */
-InfoToolBar *Init_InfoToolBar(char message[maxcarac],char boutton_Label[maxcarac],guint type_message)
+InfoToolBar *Init_InfoToolBar(char message[NB_Cara_titre],char boutton_Label[NB_Cara_titre],guint type_message)
 {
     InfoToolBar *NE;//déclaration d'un nouvel élément
     NE=(InfoToolBar*)malloc(sizeof (InfoToolBar));//l'allocation de la mémoire
