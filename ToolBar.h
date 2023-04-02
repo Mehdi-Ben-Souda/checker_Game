@@ -1,11 +1,14 @@
+#pragma once
+#include "common.h"
+
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------        structures de données       ----------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 typedef struct to
 {
     GtkToolItem *item;//pointeur sur l'élément
-    char label[maxcarac];//le titre de l'élément
-    char icon[maxcarac];//le nom de l'icône
+    char label[NB_Cara_titre];//le titre de l'élément
+    char icon[NB_Cara_chemin];//le nom de l'icône
     GCallback callback;//l'action faite par l'élément
     struct to *svt;//pointeur sur le suivant
 }CelluleToolItem;//structure d'un élément du toolbar
@@ -16,6 +19,7 @@ typedef struct
     guint style;//entier indiquant le style des éléments du toolbar
     guint orientation;//entier indiquant l'orientation des éléments du toolbar
     CelluleToolItem *liste_item;//liste des éléments du toolbar
+    int compteur;// le nombre de item
 }ToolBar;//structure du toolbar
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------       Fonction supplémentaires      ---------------------------------------------
@@ -27,7 +31,7 @@ typedef struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du toolbar après initialisation
  */
-CelluleToolItem *Init_CelluleTooolItem( char label[maxcarac], char icon[maxcarac],GCallback callback)
+CelluleToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_Cara_chemin],GCallback callback)
 {
     CelluleToolItem *NE;//déclaration d'un nouvel élément
     NE=(CelluleToolItem*)malloc(sizeof (CelluleToolItem));//l'allocation de la mémoire
@@ -80,6 +84,7 @@ ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,guint style,guint o
     NE->icon_size=icon_size;
     NE->style=style;
     NE->orientation=orientation;
+    NE->compteur = 0;
     return ((ToolBar*)NE);
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -113,7 +118,6 @@ CelluleToolItem *Inserer_CelluleToolItem(CelluleToolItem *liste,const gchar *lab
  */
 ToolBar *Creer_toolbar(ToolBar *toolbar)
 {
-    int i=0;//compteur
     CelluleToolItem *ptc;//pointeur courant pour parcourir la liste des éléments
     if(!toolbar)//vérification d'initialisation du toolbar
         return ((ToolBar*)NULL);
@@ -126,11 +130,11 @@ ToolBar *Creer_toolbar(ToolBar *toolbar)
     gtk_toolbar_set_style(GTK_TOOLBAR(toolbar->toolbar),toolbar->style);
     //mettre l'orientation des éléments
     gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar->toolbar),toolbar->orientation);
-    ptc=toolbar->liste_item;
-    while (ptc)//tant qu'il y a des éléments dans la liste des éléments, on les ajoute à notre toolbar
+    //ptc=toolbar->liste_item;
+    /*while (ptc)//tant qu'il y a des éléments dans la liste des éléments, on les ajoute à notre toolbar
     {
         gtk_toolbar_insert(GTK_TOOLBAR(toolbar->toolbar),ptc->item,i++);
         ptc=ptc->svt;//passer à l'élément suivant
-    }
+    }*/
     return ((ToolBar*)toolbar);
 }
