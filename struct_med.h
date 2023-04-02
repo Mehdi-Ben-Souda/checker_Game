@@ -5,9 +5,9 @@
 /*------------------------------------------------------    position    -----------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------*/
 /*
-InfoToolBar *inf= Init_InfoToolBar("ths is a test !!!!!!!!!","ok",1);
-    inf= Creer_InfoToolBar(inf);
-    Afficher_InfoToolBar(inf);
+    GdkPixbuf* pixt = gdk_pixbuf_new_from_file(item->icon, NULL);
+    icon= gtk_image_new_from_pixbuf(pixt);//création de l'icône
+    item->item=gtk_tool_button_new(icon,item->label);//création d'élément du toolbar
 */
 /*-----------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------    BOUTTON    -----------------------------------------------*/
