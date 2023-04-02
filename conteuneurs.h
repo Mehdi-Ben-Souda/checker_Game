@@ -8,18 +8,43 @@
 
 typedef enum
 {
-	BoxPositionInsertion_Debut,
-	BoxPositionInsertion_Fin
+	BoxPositionInsertion_Debut,//0 ---> pour l'insertion au debut
+	BoxPositionInsertion_Fin//1 ---> pour l'insertion a la fin
 }BoxPositionInsertion;
+
+typedef enum
+{
+	ORIENTATION_HORIZONTAL,
+	ORIENTATION_VERTICAL
+}Orientation;
 
 typedef struct
 {
-	GtkWidget* mon_box;
-	GtkOrientation orientation;
-	int espacement;
-}Box;
+	GtkWidget* mon_box;//le pointeur sur le conteneur box
+	/*
+		Orientation: 
+		ORIENTATION_HORIZONTAL
+		ORIENTATION_VERTICAL
+	*/
+	Orientation orientation;
+	int espacement;//l'espacement entre les elements
 
-Box* Allouer_Box(GtkOrientation orientation, int espacement)
+}Box;//Struture du widget BOX
+
+/*
+	Nom Fonction : Allouer_Box
+
+	Entree :_enumeration pour determiner l'orientation
+				(soit horizontal , soit vertical)
+			_un entier servant a determiner l'espacement
+				entre les elements du box
+
+	Sortie :Pointeur sur la structure cree
+
+	Description :On fait une allocation d'une structure de
+					Type Box avec les paramatres passes
+*/
+Box* Allouer_Box(Orientation orientation, int espacement)
 {
 	Box* boite = (Box*)malloc(sizeof(Box));
 
@@ -34,7 +59,19 @@ Box* Allouer_Box(GtkOrientation orientation, int espacement)
 
 	return (Box*)boite;
 }
+/*
+	Nom Fonction : Creer_Box
 
+	Entree :_pointeur sur une structure
+			_pointeur sur le widget parent au quel 
+				on va l'ajouter
+
+	Sortie :VOID
+
+	Description :On cree le conteneur BOX avec les paramatres 
+		passee dans la structure et on l'assosie a un conteneur
+		parent
+*/
 void Creer_Box(Box* boite, GtkWidget* parent)
 {
 
@@ -44,25 +81,53 @@ void Creer_Box(Box* boite, GtkWidget* parent)
 
 		Parametres:
 			1) l'orientation :
-				_GTK_ORIENTATION_HORIZONTAL :pour aligner les elements
-				du conteneur Horizontallement
-				_GTK_ORIENTATION_VERTICAL : pour aligner les elements
-				verticallement
+				_GTK_ORIENTATION_HORIZONTAL :pour aligner 
+				les elements du conteneur Horizontallement
+				_GTK_ORIENTATION_VERTICAL : pour aligner 
+				les elements verticallement
 			2) spacing: (entier/ int)
-				le nombre de pixels à placer par défaut entre les enfants.
+				le nombre de pixels à placer par défaut entre
+				les enfants.
 
 	*/
-	boite->mon_box = gtk_box_new(boite->orientation, boite->espacement);
+	boite->mon_box = gtk_box_new(boite->orientation, 
+									boite->espacement);
 
 	if (parent)
 	{
-		//On met le conteuneur box a l'interieur de l'element parent 
-		gtk_container_add(GTK_CONTAINER(parent), boite->mon_box);
+		/*
+		On met le conteuneur box a l'interieur de l'element
+		parent 
+		*/
+		gtk_container_add(GTK_CONTAINER(parent), 
+							boite->mon_box);
 	}
 }
+/*____________________________________________________________*/
 
-void Ajouter_Box(Box* boite, GtkWidget* fils, BoxPositionInsertion position
-	, gboolean expension, gboolean remplissage, int padding)
+/*
+	Nom Fonction : Ajouter_Box
+
+	Entree :_pointeur sur une structure
+			_pointeur sur le widget fils qu'on
+				va ajouter
+			_la position d'insertion (debut ou fin)
+			_Un booleen indiquant si le widget doit être etire
+				pour remplir l'espace disponible dans la boîte
+			_ Un booléen indiquant si le widget doit être rempli
+				pour occuper tout l'espace disponible dans 
+				la direction de l'axe principal de la boîte
+			_La quantité d'espace à ajouter autour du widget, 
+				en pixels.
+
+	Sortie :VOID
+
+	Description :On ajoute un widget a un conteneur parent de type
+		BOX
+*/
+void Ajouter_Box(Box* boite, GtkWidget* fils, 
+			BoxPositionInsertion position, gboolean expension, 
+					gboolean remplissage, int padding)
 {
 	if (fils)
 	{
@@ -70,18 +135,26 @@ void Ajouter_Box(Box* boite, GtkWidget* fils, BoxPositionInsertion position
 		{
 			/*
 				On ajoute les bouttons aux conteneur
-				La methode pack_start permet d'ajouter au debut des elements
+				La methode pack_start permet d'ajouter au 
+				debut des elements
+
 				Les Parametres:
-				3) expand : TRUE ---> Si il y a un espace supplementaire alloué ,
-				les enfants de box vont le prendre de maniere egales
+				3) expand : TRUE ---> Si il y a un espace 
+				supplementaire alloué ,
+				les enfants de box vont le prendre de maniere
+				egales
+
 				4) fill
+
 				5) pading : l'espace exterieur
 			*/
-			gtk_box_pack_start(GTK_BOX(boite->mon_box), fils, expension, remplissage, padding);
+			gtk_box_pack_start(GTK_BOX(boite->mon_box), fils, 
+				expension, remplissage, padding);
 		}
 		else if (position == BoxPositionInsertion_Fin)
 		{
-			gtk_box_pack_end(GTK_BOX(boite->mon_box), fils, expension, remplissage, padding);
+			gtk_box_pack_end(GTK_BOX(boite->mon_box), fils, 
+				expension, remplissage, padding);
 		}
 	}
 }
@@ -187,7 +260,8 @@ Fixed* Ajouter_Fixed(GtkWidget* fils,int x,int y, Fixed * lefixed)
 			_On change la place du widget dans le fixed
 
 */
-Fixed* Deplacer_Fixed(GtkWidget* fils, int new_x, int new_y, Fixed* lefixed)
+Fixed* Deplacer_Fixed(GtkWidget* fils, int new_x, int new_y, 
+		Fixed* lefixed)
 {
 	//Si les elements existent 
 	if (fils && lefixed)
