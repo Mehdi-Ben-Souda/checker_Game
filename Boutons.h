@@ -9,9 +9,9 @@ typedef struct
 typedef struct
 {
     GtkWidget *button;//pointeur sur un bouton
-    char label[maxcarac];//le nom du bouton
+    char label[NB_Cara_titre];//le nom du bouton
 }Boutons;
-Boutons *Initialiser_Boutons(char label[maxcarac])
+Boutons *Initialiser_Boutons(char label[NB_Cara_titre])
 {
     Boutons *NE= (Boutons*)malloc(sizeof (Boutons));
     if(!NE)
