@@ -1,6 +1,4 @@
 #pragma once
-#include "common.h"
-
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------        structures de données       ----------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
@@ -9,17 +7,14 @@ typedef struct to
     GtkToolItem *item;//pointeur sur l'élément
     char label[NB_Cara_titre];//le titre de l'élément
     char icon[NB_Cara_chemin];//le nom de l'icône
-    struct to *svt;//pointeur sur le suivant
-}CelluleToolItem;//structure d'un élément du toolbar
+}ToolItem;//structure d'un élément du toolbar
 typedef struct
 {
     GtkWidget *toolbar;//pointeur sur le toolbar
     guint icon_size;//entier indiquant la taille de l'icône
     guint style;//entier indiquant le style des éléments du toolbar
     guint orientation;//entier indiquant l'orientation des éléments du toolbar
-    CelluleToolItem *liste_item;//liste des éléments du toolbar
-    int compteur;// le nombre de item
-    coordonne x_y;
+    coordonne x_y;//position du toolbar
 }ToolBar;//structure du toolbar
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------       Fonction supplémentaires      ---------------------------------------------
@@ -31,34 +26,34 @@ typedef struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du toolbar après initialisation
  */
-CelluleToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_Cara_chemin])
+ToolItem *Init_CelluleTooolItem( char label[NB_Cara_titre], char icon[NB_Cara_chemin])
 {
-    CelluleToolItem *NE;//déclaration d'un nouvel élément
-    NE=(CelluleToolItem*)malloc(sizeof (CelluleToolItem));//l'allocation de la mémoire
+    ToolItem *NE;//déclaration d'un nouvel élément
+    NE=(ToolItem*)malloc(sizeof (ToolItem));//l'allocation de la mémoire
     if(!NE)//vérification d'allocation
     {
-        printf("\nerrur d'allocation !!!!");
+        printf("\nerreur d'allocation !!!!");
         exit(0);
     }
     strcpy(NE->label,label);
-    NE->svt=NULL;//pas de suivant
     //Initialisation des champs de la structure
+    NE->item=NULL;
     strcpy(NE->icon,icon);
-    return ((CelluleToolItem*)NE);
+    return ((ToolItem*)NE);
 }
 /*
  * Fonction qui permet creer un élément du toolbar
  * entrées : -> pointeur sur l'élément
  * sorties : un pointeur sur élément du toolbar après création
  */
-CelluleToolItem *Creer_CelluleToolItem(CelluleToolItem *item)
+ToolItem *Creer_CelluleToolItem(ToolItem *item)
 {
     GtkWidget *icon;//variable pour creer l'icône
     if(!item)//vérification d'initialisation de la cellule
-        return ((CelluleToolItem*)NULL);
+        return ((ToolItem*)NULL);
     icon= gtk_image_new_from_file(item->icon);//création de l'icône
     item->item=gtk_tool_button_new(icon,item->label);//création d'élément du toolbar
-    return ((CelluleToolItem*)item);//retourner l'élément
+    return ((ToolItem*)item);//retourner l'élément
 }
 /*
  * Fonction qui permet l'initialisation du toolbar
@@ -70,8 +65,8 @@ CelluleToolItem *Creer_CelluleToolItem(CelluleToolItem *item)
              -> la position du toplbar selon les ordonees
  * sorties : un pointeur sur un sous-menu après initialisation
  */
-ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,
-                guint style,guint orientation, guint x , guint y)
+ToolBar *Init_toolbar(guint icon_size,guint style,guint orientation,
+                      int x , int y)
 {
     ToolBar *NE;//déclaration d'un nouvel élément
     NE=(ToolBar*) malloc(sizeof (ToolBar));//allocation de la mémoire
@@ -81,11 +76,9 @@ ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,
         exit(0);
     }//vérification de l'allocation
     //initialisation du nouvel élément
-    NE->liste_item=liste;
     NE->icon_size=icon_size;
     NE->style=style;
     NE->orientation=orientation;
-    NE->compteur = 0;
     NE->x_y.X = x;
     NE->x_y.Y = y;
     return ((ToolBar*)NE);
@@ -94,34 +87,12 @@ ToolBar *Init_toolbar(CelluleToolItem *liste,guint icon_size,
 //------------------------------------        Fonction prancipales        ----------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 /*
- * Fonction qui permet d'insérer un élément dans une liste des éléments
- * entrées : -> pointeur de type CelluleToolItem
- *           -> le titre de l'élément
-             -> le nom de l'icône de l'élément
-             -> la fonction de rappelle lorsque l'élément est activé
- * sorties : un pointeur sur la liste des éléments
- */
-CelluleToolItem *Inserer_CelluleToolItem(CelluleToolItem *liste,const gchar *label, const gchar *icon)
-{
-    CelluleToolItem *NE,*ptc;//pointeur courant pour parcourir la liste
-    NE= Init_CelluleTooolItem(label,icon);//initialiser le nouvel élément
-    NE= Creer_CelluleToolItem(NE);//creer le nouvel élément
-    if(!liste)//si la liste n'existe pas
-        return ((CelluleToolItem*)NE);//retourner le nouvel élément
-    ptc=liste;
-    while(ptc->svt)//parcourir la liste jusqu'au dernier élément
-        ptc=ptc->svt;//passer à l'élément suivant
-    ptc->svt=NE;//lier le nouvel élément à la fin de la liste
-    return ((CelluleToolItem*)liste);
-}
-/*
  * Fonction qui permet la création du toolbar
  * entrées : -> pointeur sur le toolbar
  * sorties : -> un pointeur sur le toolbar après création
  */
 ToolBar *Creer_toolbar(ToolBar *toolbar)
 {
-    CelluleToolItem *ptc;//pointeur courant pour parcourir la liste des éléments
     if(!toolbar)//vérification d'initialisation du toolbar
         return ((ToolBar*)NULL);
     //création du toolbar
@@ -133,11 +104,20 @@ ToolBar *Creer_toolbar(ToolBar *toolbar)
     gtk_toolbar_set_style(GTK_TOOLBAR(toolbar->toolbar),toolbar->style);
     //mettre l'orientation des éléments
     gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar->toolbar),toolbar->orientation);
-    //ptc=toolbar->liste_item;
-    /*while (ptc)//tant qu'il y a des éléments dans la liste des éléments, on les ajoute à notre toolbar
-    {
-        gtk_toolbar_insert(GTK_TOOLBAR(toolbar->toolbar),ptc->item,i++);
-        ptc=ptc->svt;//passer à l'élément suivant
-    }*/
     return ((ToolBar*)toolbar);
+}
+/*
+ * Fonction qui permet d'insérer un toolitem dans une toolbar
+ * entrées : -> pointeur sur le toolbar
+             ->pointeur sur le tool item
+             ->compteur de l'ordre du tool item
+ * sorties : -> le tool item inséré dans le toolbar
+ */
+void Inserer_Tool_Item(GtkWidget *toolbar,ToolItem *item, int *compt)
+{
+    //test d'existance des widgets
+    if(!toolbar || !item)
+        exit(-2) ;
+    //insertion du tool item dan le toolbar
+    gtk_toolbar_insert(GTK_TOOLBAR(toolbar),item->item, *compt++);
 }
