@@ -196,10 +196,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				atoi((char*)xmlGetProp(cur, "Y")), atoi((char*)xmlGetProp(cur, "orientation")));
 			printf("\nMenu creer\n");
 			gtk_window_add_accel_group(Gtk_parent, accel_group);
-			GtkWidget* fixed;
-			fixed = gtk_fixed_new();
-			gtk_fixed_put(GTK_FIXED( fixed), menu->main_menu,0,0);
-			gtk_container_add(Gtk_parent, fixed);
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, menu->main_menu, 
+				menu->pos.X, menu->pos.Y);
 
 			break;
 		case 7: 

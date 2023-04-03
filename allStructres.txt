@@ -1,0 +1,94 @@
+	
+=========================// BUTTON 
+<Fenetre name="MyWindow2" Titre="mon titre 2" type="1" largeur="300" 
+			hauteur="200" X="850" Y="300" couleur="#FFFFF">
+
+		<Fixed name="MyFixed2">
+
+			<Button name="MyButtonf2" label="_homef2" tooltip="this is a button home win2" 
+				image_icon="C:\\Users\\HP FOLIO 9470m\\Desktop\\gtk atelier\\ts\\ts\\home.png" largeur="70" longueur="20" relief="1" X="110" Y="50">
+			</Button>
+
+			<Button name="My2Buttonf2" label="h_ome2f2" tooltip="this is a button2 home win2" 
+				image_icon="C:\\Users\\HP FOLIO 9470m\\Desktop\\gtk atelier\\ts\\ts\\home.png" largeur="70" longueur="20" relief="1" X="210" Y="50">
+			</Button>
+
+		</Fixed>
+
+	</Fenetre>
+
+
+==================================// MENU
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
+			hauteur="500" X="250" Y="300" couleur="#FFFFF">
+		<Menu X="" Y="" orientation="">
+			<CelluleMenu label="add" name="celluleMenu1">
+				<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
+				<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" ></CelluleItem>
+			</CelluleMenu>
+
+			<CelluleMenu label="edit" name="celluleMenu2">
+				<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' ></CelluleItem>
+				<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' ></CelluleItem>
+			</CelluleMenu>
+
+		</Menu>
+
+	</Fenetre>
+
+==================================//toolbar
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
+			hauteur="500" X="250" Y="300" couleur="#FFFFF">
+		<Fixed name="THEfixed">
+		<Toolbar icon_size="4" style="0" orientation="0">
+			<CelluleToolItem label="item1" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
+			</CelluleToolItem>
+
+			<CelluleToolItem label="item2" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
+			</CelluleToolItem>
+		</Toolbar>
+		</Fixed>
+	</Fenetre>
+====================================infobar
+
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
+			hauteur="500" X="250" Y="300">
+		<Fixed name="THEfixed">
+			<InfoToolBar message="This is infotoolbar !!!!" boutton_Label="ok" type_message="1">
+			</InfoToolBar>
+		</Fixed>
+	</Fenetre>
+
+==============================radio
+
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
+			hauteur="500" X="250" Y="300"> 
+			<Radio_Check_Buttons X="50" Y="50" orientation="0" spacing="20">
+				<Radio_Button label="radio1">
+				</Radio_Button>
+				<Radio_Button label="radio2">
+				</Radio_Button>
+				<Radio_Button label="radio3">
+				</Radio_Button>
+			</Radio_Check_Buttons>
+	</Fenetre>
+
+======================================check
+
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
+			hauteur="500" X="250" Y="300"> 
+			<Radio_Check_Buttons X="50" Y="50" orientation="0" spacing="20">
+				<Check_Button label="check1">
+				</Check_Button>
+				<Check_Button label="check2n">
+				</Check_Button>
+			</Radio_Check_Buttons>
+	</Fenetre>
++++++++++++++++++++++++++++++++++++++++++ ComboBox
+		<Fixed name="THEfixed">
+			<ComboBox entry="1" X="500" Y="650">
+				<Option id="id3">option1</Option>
+				<Option id="id3">option2</Option>
+				<Option id="id2">option3</Option>
+			</ComboBox>
+		</Fixed>
