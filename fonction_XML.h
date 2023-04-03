@@ -192,7 +192,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			printf("\n menu trouver\n");
 			accel_group = gtk_accel_group_new();
 			CelluleMenuListe=creer_Menu_fils(doc, cur, accel_group);
-			menu = Creer_Menu(CelluleMenuListe);
+			menu = Creer_Menu(CelluleMenuListe,atoi((char*)xmlGetProp(cur,"X")),
+				atoi((char*)xmlGetProp(cur, "Y")), atoi((char*)xmlGetProp(cur, "orientation")));
 			printf("\nMenu creer\n");
 			gtk_window_add_accel_group(Gtk_parent, accel_group);
 			GtkWidget* fixed;
