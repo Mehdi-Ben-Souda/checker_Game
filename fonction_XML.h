@@ -1,3 +1,4 @@
+#pragma once
 #include <libxml2/libxml/parser.h>
 #include "Fenetre.h"
 
@@ -146,7 +147,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	CelluleMenu* CelluleMenuListe = NULL;
 	GtkAccelGroup* accel_group=NULL;
 	ToolBar* toolbar=NULL;
-	CelluleToolItem* celluleToolItem=NULL;
+	ToolItem* celluleToolItem=NULL;
 	Box* boite=NULL;
 	InfoToolBar* infotoolbar=NULL;
 	CelluleBouton* listeButton=NULL;
@@ -204,7 +205,9 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			printf("\ntoolbar trouver\n");
 			toolbar=Init_toolbar(NULL, atoi((char*)xmlGetProp(cur, "icon_size")),
 										atoi((char*)xmlGetProp(cur, "style")),
-										atoi((char*)xmlGetProp(cur, "orientation")));
+										atoi((char*)xmlGetProp(cur, "orientation")),
+										atoi((char*)xmlGetProp(cur, "X")),
+										atoi((char*)xmlGetProp(cur, "Y")));
 			toolbar = Creer_toolbar(toolbar);
 			creer_fils(doc, cur, toolbar->toolbar);
 			gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET(toolbar->toolbar), 150, 150);
@@ -361,7 +364,7 @@ Lire_doc(char* docname) {
 				"C:\\Users\\HP FOLIO 9470m\\Desktop\\gtk atelier\\ts\\ts\\home.png",
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")),
-				NULL, (char*)xmlGetProp(cur, "couleur"), (char*)xmlGetProp(cur, "name"));
+				(char*)xmlGetProp(cur, "couleur"), (char*)xmlGetProp(cur, "name"));
 			//la creation d'une fenetre
 			Fen = Creer_Fenetre(Fen);
 

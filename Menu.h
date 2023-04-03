@@ -1,6 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------        structures de données       ----------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
+#pragma warning(disable: 4996)
+#pragma once
 typedef struct ce
 {
     GtkWidget *menu_item; //pointeur sur un élément
@@ -226,3 +228,4 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
     }
     return ((CelluleItem*)item);
 }
+#pragma warning(disable: 4996)

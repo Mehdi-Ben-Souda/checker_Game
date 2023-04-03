@@ -1,3 +1,4 @@
+#pragma once
 #define maxcarac 50
 #include "common.h"
 //La structure de données du switch

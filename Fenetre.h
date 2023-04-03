@@ -60,7 +60,7 @@ typedef struct
 */
 Fenetre* Allouer_Fenetre(WindowType type, int largeur, 
 		int hauteur, char* titre,char* chemin_icone, int x,
-			int y, int position, char couleur[8],char name[20])
+			int y, char couleur[8],char name[20])
 {
 	Fenetre* mafenetre;
 
@@ -226,18 +226,34 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 		gtk_css_provider_load_from_data(provider, buffer, -1, NULL);
 		
 	}
-/*____________________________________________________________*/
+
 
 	return ((Fenetre*)mafenetre);
 }
+/*____________________________________________________________*/
 
+/*
+	Nom Fonction : Ajouter_fenetre
+
+	Entree :Pointeur sur un element de type Fenetre
+			Pointeur sur un element fils
+
+	Sortie :Pointeur sur un element de type Fenetre
+
+	Description :la folction associe un widget a la fenetre qui
+				Sont tous les deux passe en parametres
+*/
 Fenetre* Ajouter_fenetre(Fenetre* mafenetre, GtkWidget* element)
 {
 	if (mafenetre->ma_fenetre)
 	{
-		gtk_container_add(GTK_CONTAINER(mafenetre->ma_fenetre), element);
+		//Assoiciation du widget a la fenetre
+		gtk_container_add(GTK_CONTAINER(mafenetre->ma_fenetre),
+			element);
 	}
 	return (Fenetre*)mafenetre;
 }
+
+/*____________________________________________________________*/
 
 
