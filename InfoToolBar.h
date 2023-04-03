@@ -48,7 +48,7 @@ InfoToolBar *Creer_InfoToolBar(InfoToolBar *inftoolbar)
     //ajouter le message à l'espace du message dans le toolbar d'information
     gtk_container_add (GTK_CONTAINER (content_area),message_label);
     //ajouter un boutton dans le toolbar d'information
-    gtk_info_bar_add_button (GTK_INFO_BAR (inftoolbar->info_toolbar),inftoolbar->boutton_Label,GTK_RESPONSE_OK);
+    gtk_info_bar_add_button (inftoolbar->info_toolbar,inftoolbar->boutton_Label,GTK_RESPONSE_OK);
     //mettre le type de message
     gtk_info_bar_set_message_type (GTK_INFO_BAR (inftoolbar->info_toolbar),inftoolbar->type_message);
     //cacher le toolbar d'information après cliquer sur le boutton

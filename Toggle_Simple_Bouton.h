@@ -1,20 +1,21 @@
+#include "Boutons.h"
 typedef struct
 {
     Boutons *Mabouton;
-    char name[maxcarac];
-    char tooltip[maxcarac];
+    char name[NB_Cara_titre];
+    char tooltip[NB_Cara_titre];
     GtkWidget *img;
     Taille size;
     coordonne pos;
     int relief;
 }Bouton;//structure d'un simple bouton et d'un toggle bouton
-Bouton * Initialiser_boutton(char label[maxcarac],
-                             char tooltip[maxcarac],
-                             char image[maxcarac],
+Bouton * Initialiser_boutton(char label[NB_Cara_titre],
+                             char tooltip[NB_Cara_titre],
+                             char image[NB_Cara_chemin],
                              int largeur,int longueur,
                              int rlf,int x, int y)
 {
-    Bouton *maboutton;
+    Bouton *maboutton=NULL;
     maboutton = (Bouton *)malloc(sizeof(Bouton));
     maboutton->Mabouton= Initialiser_Boutons(label);
     maboutton->pos.X=x;
@@ -97,4 +98,61 @@ Bouton * Creer_ToggleBoutton(Bouton* maboutton)
                                          TRUE);
     }
     return ((Bouton *)maboutton);
+}
+
+
+
+typedef struct
+{
+    GtkWidget* combo_box;
+    int entry;
+    int idElem;//indice dernier element dans le combo box disponible
+    coordonne pos;
+}comboBox;
+
+
+comboBox* creer_combo_Box(int entry,int X,int Y)
+{
+    comboBox* comboB=NULL;
+    comboB = (comboBox*)malloc(sizeof(comboB));
+    comboB->entry = entry;
+    comboB->pos.X = X;
+    comboB->pos.Y = Y;
+    comboB->idElem = 0;
+    if (!entry){
+        comboB->combo_box = gtk_combo_box_text_new();
+        printf("\n ComboBox creer\n");
+    }
+    else{
+        comboB->combo_box = gtk_combo_box_text_new_with_entry();
+        printf("\n ComboBox creer\n");
+       }
+    return ((comboBox*)comboB);
+}
+
+comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, char* id) {
+    printf("\n <<%s>> \n", valeur);
+    if (position == -1)
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), id, valeur);
+    else
+        gtk_combo_box_text_insert(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), position, id, valeur);
+    maComboBox->idElem++;
+    return ((comboBox*)maComboBox);
+}
+
+
+comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
+    if (position == -1)
+    {
+        gtk_combo_box_text_remove_all(maComboBox->combo_box);
+        maComboBox->idElem = 0;
+    }
+    else
+    {
+        gtk_combo_box_text_remove(maComboBox->combo_box, position);
+        maComboBox->idElem--;
+    }
+
+
+    return ((Fenetre*)maComboBox);
 }

@@ -1,10 +1,13 @@
 #include <libxml2/libxml/parser.h>
 #include "Fenetre.h"
-#include "struct_med.h"
+
 #include "Menu.h"
 #include "ToolBar.h"
 #include "conteuneurs.h"
 #include "InfoToolBar.h"
+//#include "salma.h"
+#include "Radio_Check_Boutton.h"
+
 
 /*
  * Fonction qui permet de identifier la nature de balise
@@ -30,7 +33,19 @@ int nature_balise(xmlNodePtr balise)
 	//tester si la balise est un CelluleToolItem
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleToolItem")))return((int)8);
 	//tester si la balise est un Box
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Box")))return((int)9);
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Box")))return((int)9); 
+	//tester si la balise est un InfoToolBar
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"InfoToolBar")))return((int)10); 
+	//tester si la balise est un Radio_Check_Buttons
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Radio_Check_Buttons")))return((int)11); 
+	//tester si la balise est un Radio_Check_Buttons
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Check_Button")))return((int)12);
+	//tester si la balise est un Radio_Check_Buttons
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Radio_Button")))return((int)13);
+	//tester si la balise est un ComboBox
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"ComboBox")))return((int)14);
+	//tester si la balise est un ComboBox
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Option")))return((int)15);
 	return((int)-1);
 }
 
@@ -42,16 +57,19 @@ void ajoueter_a_conteuneur(xmlNodePtr cur_parent, GtkWidget* parent, GtkWidget *
 	//tester la nature de la balise parent
 	if (nat == 2)// si le parent est fixed
 	{
-		Ajouter_Fixed(fils, X, Y, parent);
-		printf("\nbutton was added to the container Fixed\n");
+		gtk_fixed_put(GTK_FIXED(parent), GTK_WIDGET(fils),X,Y);
+		printf("\n an element was added to the container Fixed\n");
 	}
 	else {
 		if (nat == 9)
 		{
 
 		}
+		else {
+			printf("\n an element was added to his parent %s\n",cur_parent->name);
+			gtk_container_add(GTK_CONTAINER(parent), fils);
+		}
 	}
-
 }
 CelluleItem* creer_CelluleMenu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel_group)
 {
@@ -120,15 +138,20 @@ CelluleMenu* creer_Menu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel
 void
 creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	int nat,n=0;
-	Fixed* fixed;
-	Boutton *Btn;
+	xmlNodePtr cur_parent;
+	Fixed* fixed=NULL;
+	//Boutton *Btn=NULL;
 	CelluleMenu * celluleMenu =NULL;
-	Menu* menu;
+	Menu* menu=NULL;
 	CelluleMenu* CelluleMenuListe = NULL;
-	GtkAccelGroup* accel_group;
-	ToolBar* toolbar;
-	CelluleToolItem* celluleToolItem;
-	Box* boite;
+	GtkAccelGroup* accel_group=NULL;
+	ToolBar* toolbar=NULL;
+	CelluleToolItem* celluleToolItem=NULL;
+	Box* boite=NULL;
+	InfoToolBar* infotoolbar=NULL;
+	CelluleBouton* listeButton=NULL;
+	RadioCheckBouttons* RC_Bouttons = NULL;
+	comboBox* combo=NULL;
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
 	// boucler jusqu'il y a pas encore une autre balise (frere)
@@ -148,7 +171,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			creer_fils(doc, cur,fixed->mon_fixed);
 			break;
 		case 3:// si la balise est un bouton
-			// initialisation d'un bouton
+		/*	// initialisation d'un bouton
 			Btn = Initialiser_boutton(	(char*)xmlGetProp(cur, "label"),
 										(char*)xmlGetProp(cur, "tooltip"),
 										(char*)xmlGetProp(cur, "image_icon"),
@@ -162,7 +185,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			printf("\na button was created\n");
 
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->button,Btn->pos.X, Btn->pos.Y);
-
+			*/
 			break;
 		case 4:
 
@@ -209,8 +232,70 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			Creer_Box(boite, Gtk_parent);
 			printf("\nBox est creer\n");
 			break;
-		default:break;
+		case 10:
+			printf("\n infotoolbar trouver\n");
+
+			infotoolbar = Init_InfoToolBar((char*)xmlGetProp(cur, "message"),
+											(char*)xmlGetProp(cur, "boutton_Label"),
+											atoi((char*)xmlGetProp(cur, "type_message")));
+			
+			infotoolbar = Creer_InfoToolBar(infotoolbar);
+			gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET( infotoolbar->info_toolbar), 10, 10);
+			//Afficher_InfoToolBar(infotoolbar);
+			printf("\n infotoolbar est creer\n");
+			break;
+		case 11:
+			printf("\n Radio_Check_Buttons trouver\n");
+			cur_parent = cur;
+			char cara;
+			cur = cur->xmlChildrenNode;
+			while (cur)
+			{
+				if (nature_balise(cur) == 12)
+				{
+					listeButton = Inserer_Bouton(listeButton, 'c', (char*)xmlGetProp(cur, "label"));
+					printf("\n Check_Button trouver et creer\n");
+				}
+				if (nature_balise(cur) == 13)
+				{
+					listeButton = Inserer_Bouton(listeButton, 'r', (char*)xmlGetProp(cur, "label"));
+					printf("\n Radio_Button trouver et creer\n");
+				}
+				cur = cur->next;
+			}
+			RC_Bouttons = Crerr_Radio_Check_Boutons(listeButton,
+				atoi((char*)xmlGetProp(cur_parent, "X")),
+				atoi((char*)xmlGetProp(cur_parent, "Y")),
+				atoi((char*)xmlGetProp(cur_parent, "orientation")),
+				atoi((char*)xmlGetProp(cur_parent, "spacing")));
+			printf("\n Radio_Check_Buttons creer\n");
+			ajoueter_a_conteuneur(cur_parent->parent, Gtk_parent, RC_Bouttons->groupe->mon_box, RC_Bouttons->pos.X, RC_Bouttons->pos.Y);
+			cur = cur_parent;
+			break;
+		case 14:
+			printf("\n ComboBox trouver\n");
+			cur_parent = cur;
+			combo = creer_combo_Box(atoi((char*)xmlGetProp(cur_parent, "entry")),
+				atoi((char*)xmlGetProp(cur_parent, "X")),
+				atoi((char*)xmlGetProp(cur_parent, "Y")));
+			
+			cur = cur->xmlChildrenNode;
+			while (cur)
+			{
+				if (nature_balise(cur) == 15)
+				{
+					combo = combo_box_inserer(combo, -1, (char*)xmlNodeGetContent(cur),
+						(char*)xmlGetProp(cur_parent, "id"));
+					printf("\n Option trouver et creer\n");
+				}
+				cur = cur->next;
+			}
+			ajoueter_a_conteuneur(cur_parent->parent, Gtk_parent, combo->combo_box, combo->pos.X, combo->pos.Y);
+			cur = cur_parent;
+			break;
+		default:break; 
 		}
+
 		//pointer sur la balise suivante
 		cur = cur->next;
 	}
@@ -284,6 +369,7 @@ Lire_doc(char* docname) {
 			printf("\nfenetre creer\n");
 			//creation de tous les fils de la fenetre creer
 			creer_fils(doc, cur, Fen->ma_fenetre);
+			printf("\nfenetre sera afficher apres 1 2 3 ..\n");
 			gtk_widget_show_all(Fen->ma_fenetre);
 
 		}
