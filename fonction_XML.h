@@ -6,6 +6,7 @@
 #include "conteuneurs.h"
 #include "InfoToolBar.h"
 #include "Radio_Check_Boutton.h"
+#include "input_switch.h"
 
 
 /*
