@@ -46,6 +46,8 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"ComboBox")))return((int)14);
 	//tester si la balise est un Option
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Option")))return((int)15);
+	//tester si la balise est un Switch
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Switch")))return((int)16);
 	return((int)-1);
 }
 
@@ -170,7 +172,7 @@ void
 creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	//les declaration de tous les elements
 	int nat,n=0;
-	xmlNodePtr cur_parent;
+	xmlNodePtr cur_parent=NULL;
 	Fixed* fixed=NULL;
 	CelluleMenu * celluleMenu =NULL;
 	Menu* menu=NULL;
@@ -183,6 +185,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	CelluleBouton* listeButton=NULL;
 	RadioCheckBouttons* RC_Bouttons = NULL;
 	comboBox* combo=NULL;
+	Switch* swtch = NULL;
 
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
@@ -360,6 +363,12 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			//retourner cur a la balise parent pour la suite de traitement
 			cur = cur_parent;
 			break;
+		case 16:// si la balise est un Switch 
+			swtch = Creer_Switch(atoi((char*)xmlGetProp(cur, "etat")),
+				atoi((char*)xmlGetProp(cur, "X")),
+				atoi((char*)xmlGetProp(cur, "Y")));
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent,swtch->my_switch, swtch->pos.X, swtch->pos.Y);
+			break;
 		default:break; 
 		}
 
@@ -418,7 +427,7 @@ Lire_doc(char* docname) {
 		// tester si la balise est une fenetre
 		if (nat == 1)
 		{
-			printf("\nFenetre trouver \n", (char*)cur->name);
+			printf("\nFenetre trouver %s\n", (char*)cur->name);
 			//l'appel de la fonction Allouer_Fenetre
 			Fen = Allouer_Fenetre(0,
 				atoi((char*)xmlGetProp(cur, "largeur")),

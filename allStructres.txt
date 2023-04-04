@@ -92,3 +92,9 @@
 				<Option id="id2">option3</Option>
 			</ComboBox>
 		</Fixed>
+=============================
+    <Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" hauteur="500" X="250" Y="300" >
+        <Fixed name="THEfixed">
+			<Switch etat="1" X="100" Y="100"></Switch>
+        </Fixed>
+    </Fenetre>

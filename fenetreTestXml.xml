@@ -1,17 +1,15 @@
 <?xml version="1.0"?>
 <interface>
-    <Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" hauteur="500" X="250" Y="300" >
-        <Fixed name="THEfixed">
-            <Toolbar icon_size="1" style="0" orientation="0" X="100" Y="0">
-                <CelluleToolItem label="item1" icon="about.png" callback="1">
-                </CelluleToolItem>
-                <CelluleToolItem label="item2" icon="download.png" callback="1">
-                </CelluleToolItem>
-                <CelluleToolItem label="item3" icon="add_icon.png" callback="1">
-                </CelluleToolItem>
-                <CelluleToolItem label="item4" icon="home.png" callback="1">
-                </CelluleToolItem>
-            </Toolbar>
-        </Fixed>
-    </Fenetre>
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
+			hauteur="500" X="250" Y="300" >
+		<Fixed name="THEfixed">
+			<Toolbar icon_size="4" style="0" orientation="0" X="100" Y="100">
+				<CelluleToolItem label="item1" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
+				</CelluleToolItem>
+
+				<CelluleToolItem label="item2" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
+				</CelluleToolItem>
+			</Toolbar>
+		</Fixed>
+	</Fenetre>
 </interface>
