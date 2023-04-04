@@ -48,6 +48,10 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Option")))return((int)15);
 	//tester si la balise est un Switch
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Switch")))return((int)16);
+	//tester si la balise est un Search_bar
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Search_bar")))return((int)17);
+	//tester si la balise est un Entry
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Entry")))return((int)18);
 	return((int)-1);
 }
 
@@ -186,6 +190,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	RadioCheckBouttons* RC_Bouttons = NULL;
 	comboBox* combo=NULL;
 	Switch* swtch = NULL;
+	Search* srch=NULL;
+	Entree* entry=NULL;
 
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
@@ -364,10 +370,30 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			cur = cur_parent;
 			break;
 		case 16:// si la balise est un Switch 
+			//la creation d'un switch
 			swtch = Creer_Switch(atoi((char*)xmlGetProp(cur, "etat")),
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")));
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent,swtch->my_switch, swtch->pos.X, swtch->pos.Y);
+			break;
+		case 17:// si la balise est un Search_bar
+			//la creation d'un search bar
+			srch = Creer_Search((char*)xmlGetProp(cur, "name"),
+				atoi((char*)xmlGetProp(cur, "X")),
+				atoi((char*)xmlGetProp(cur, "Y")));
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, srch->search, srch->pos.X, srch->pos.Y);
+			break;
+		case 18:// si la balise est une entree
+			//l'inatialisation d'une entree
+			entry = Entry_init((char*)xmlGetProp(cur, "text"),
+				(char*)xmlGetProp(cur, "cache"),
+				(char*)xmlGetProp(cur, "icon"),
+				atoi((char*)xmlGetProp(cur, "X")),
+				atoi((char*)xmlGetProp(cur, "Y")));
+			//la creation
+			entry = Creer_Entree(entry);
+			//l'ajouter a son parent
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, entry->entry, entry->pos.X, entry->pos.Y);
 			break;
 		default:break; 
 		}

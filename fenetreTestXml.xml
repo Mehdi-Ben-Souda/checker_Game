@@ -2,14 +2,8 @@
 <interface>
 	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
 			hauteur="500" X="250" Y="300" >
-		<Fixed name="THEfixed">
-			<Toolbar icon_size="4" style="0" orientation="0" X="100" Y="100">
-				<CelluleToolItem label="item1" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
-				</CelluleToolItem>
-
-				<CelluleToolItem label="item2" icon="C:\Users\HP FOLIO 9470m\Desktop\gtk atelier\ts\ts\home.png" callback="1">
-				</CelluleToolItem>
-			</Toolbar>
+		<Fixed name="fixed name">
+			<Entry text="cest un text" cache="*" X="100" Y="100"></Entry>
 		</Fixed>
 	</Fenetre>
 </interface>

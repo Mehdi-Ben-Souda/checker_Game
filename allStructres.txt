@@ -98,3 +98,10 @@
 			<Switch etat="1" X="100" Y="100"></Switch>
         </Fixed>
     </Fenetre>
+===============================
+	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
+			hauteur="500" X="250" Y="300" >
+		<Fixed name="fixed name">
+			<Search_bar name="switch1" X="100" Y="100"></Search_bar>
+		</Fixed>
+	</Fenetre>
