@@ -52,6 +52,8 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Search_bar")))return((int)17);
 	//tester si la balise est un Entry
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Entry")))return((int)18);
+	//tester si la balise est un Toggle_Boutton
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toggle_Boutton")))return((int)19);
 	return((int)-1);
 }
 
@@ -72,7 +74,7 @@ void ajoueter_a_conteuneur(xmlNodePtr cur_parent, GtkWidget* parent, GtkWidget *
 	if (nat == 2)// si le parent est fixed
 	{
 		//ajouet le element au Fixed
-		gtk_fixed_put(GTK_FIXED(parent), GTK_WIDGET(fils),X,Y);
+		gtk_fixed_put(GTK_FIXED(parent), fils,X,Y);
 		printf("\n an element was added to the container Fixed\n");
 	}
 	else {
@@ -178,6 +180,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	int nat,n=0;
 	xmlNodePtr cur_parent=NULL;
 	Fixed* fixed=NULL;
+	Bouton* Btn=NULL;
 	CelluleMenu * celluleMenu =NULL;
 	Menu* menu=NULL;
 	CelluleMenu* CelluleMenuListe = NULL;
@@ -212,7 +215,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			creer_fils(doc, cur,fixed->mon_fixed);
 			break;
 		case 3:// si la balise est un bouton
-		/*	// initialisation d'un bouton
+			// initialisation d'un bouton
 			Btn = Initialiser_boutton(	(char*)xmlGetProp(cur, "label"),
 										(char*)xmlGetProp(cur, "tooltip"),
 										(char*)xmlGetProp(cur, "image_icon"),
@@ -222,11 +225,10 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 										atoi((char*)xmlGetProp(cur, "X")),
 										atoi((char*)xmlGetProp(cur, "Y")));
 			//creation d'un bouton
-			Btn = creer_boutton(Btn);
+			Btn = Creer_SimpleBoutton(Btn);
 			printf("\na button was created\n");
-
-			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->button,Btn->pos.X, Btn->pos.Y);
-			*/
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent,Btn->Mabouton->button ,Btn->pos.X, Btn->pos.Y);
+			
 			break;
 		case 4:// si la balise est un menu
 			printf("\n menu trouver\n");
@@ -394,6 +396,22 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			entry = Creer_Entree(entry);
 			//l'ajouter a son parent
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, entry->entry, entry->pos.X, entry->pos.Y);
+			break;
+		case 19:// si la balise est un bouton
+			// initialisation d'un bouton
+			Btn = Initialiser_boutton((char*)xmlGetProp(cur, "label"),
+				(char*)xmlGetProp(cur, "tooltip"),
+				(char*)xmlGetProp(cur, "image_icon"),
+				atoi((char*)xmlGetProp(cur, "largeur")),
+				atoi((char*)xmlGetProp(cur, "longueur")),
+				atoi((char*)xmlGetProp(cur, "relief")),
+				atoi((char*)xmlGetProp(cur, "X")),
+				atoi((char*)xmlGetProp(cur, "Y")));
+			//creation d'un bouton
+			Btn = Creer_ToggleBoutton(Btn);
+			printf("\na ToggleBoutton was created\n");
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->Mabouton->button,Btn->pos.X, Btn->pos.Y);
+
 			break;
 		default:break; 
 		}
