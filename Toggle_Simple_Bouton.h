@@ -1,23 +1,38 @@
-#pragma once
-#include "Boutons.h"
 typedef struct
 {
-    Boutons *Mabouton;
-    char name[NB_Cara_titre];
-    char tooltip[NB_Cara_titre];
-    GtkWidget *img;
-    Taille size;
-    coordonne pos;
+    Boutons *Mabouton;//champs du bouton
+    char name[maxcarac];//identifiant
+    char tooltip[maxcarac];//le tooltip
+    GtkWidget *img;//l'image
+    Taille size;//la taille du bouton
+    coordonne pos;//la position du bouton
     int relief;
 }Bouton;//structure d'un simple bouton et d'un toggle bouton
-Bouton * Initialiser_boutton(char label[NB_Cara_titre],
-                             char tooltip[NB_Cara_titre],
-                             char image[NB_Cara_chemin],
+/*
+ * Fonction qui permet d'initialiser la structure Bouton
+ * entrées : -> le label du bouton
+             -> le tooltip
+             ->l'image
+             ->la taille (largeur ,longueur)
+             ->la position (X,Y)
+             ->
+ * sorties : ->Bouton initialisé
+*/
+Bouton * Initialiser_boutton(char label[maxcarac],
+                             char tooltip[maxcarac],
+                             char image[maxcarac],
                              int largeur,int longueur,
                              int rlf,int x, int y)
 {
-    Bouton *maboutton=NULL;
+    Bouton *maboutton;//déclaration de variable
+    //allocation de la mémoire
     maboutton = (Bouton *)malloc(sizeof(Bouton));
+    if(!maboutton)//vérification d'allocation
+    {
+        printf("Erreur d'allocation !!!");
+        exit(0);
+    }
+    //initialisation des champs de la structure
     maboutton->Mabouton= Initialiser_Boutons(label);
     maboutton->pos.X=x;
     maboutton->pos.Y=y;
@@ -25,43 +40,51 @@ Bouton * Initialiser_boutton(char label[NB_Cara_titre],
     maboutton->size.largeur = largeur;
     maboutton->relief = rlf;
     strcpy(maboutton->tooltip,tooltip);
-    if (strcmp(image,"vide")!=0)
+    if (strcmp(image,"vide")!=0)//s'il y a une immage on l'ajout
     {
         GdkPixbuf* pixt;
-        pixt= gdk_pixbuf_new_from_file_at_size(image,
-                                                           maboutton->size.largeur,
-                                                           maboutton->size.longueur,
-                                                           NULL);
+        //création de l'image
+        pixt= gdk_pixbuf_new_from_file_at_size(image,maboutton->size.largeur,
+                                               maboutton->size.longueur,
+                                               NULL);
         maboutton->img = gtk_image_new_from_pixbuf(pixt);
     }
-    else
+    else //sinon on met l'image à NULL
         maboutton->img = NULL;
     return ((Bouton *)maboutton);
 }
+/*
+ * Fonction qui permet de créer un simple bouton
+ * entrées : -> pointeur sur Bouton
+ * sorties : ->Bouton crée
+*/
 Bouton* Creer_SimpleBoutton(Bouton* maboutton)
 {
+    //s'il existe un label on crée le bouton avec ce label
     if (strcmp(maboutton->Mabouton->label,"vide")!=0)
     {
         maboutton->Mabouton->button = gtk_button_new_with_mnemonic(maboutton->Mabouton->label);
         gtk_button_set_use_underline(GTK_BUTTON(maboutton->Mabouton->button),
                                      TRUE);
     }
-    else
+    else //sinon on le crée sans label
         maboutton->Mabouton->button = gtk_button_new();
-
+    //mettre la taille du boutton
     gtk_widget_set_size_request(maboutton->Mabouton->button,
                                 maboutton->size.largeur,
                                 maboutton->size.longueur);
+    //si le bouton a un relief on le met
     if (maboutton->relief)
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
                               GTK_RELIEF_NORMAL);
-    else
+    else //sinon on le met pas
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
                               GTK_RELIEF_NONE);
-
+    //si on veut le bouton avoir un tooltip
     if (strcmp(maboutton->tooltip,"vide")!=0)
         gtk_widget_set_tooltip_text(GTK_WIDGET(maboutton->Mabouton->button),
                                     maboutton->tooltip);
+    //si on veut une image dans le bouton
     if (maboutton->img)
     {
         gtk_button_set_image(GTK_BUTTON(maboutton->Mabouton->button),
@@ -71,27 +94,31 @@ Bouton* Creer_SimpleBoutton(Bouton* maboutton)
     }
     return ((Bouton *)maboutton);
 }
+/*
+ * Fonction qui permet de créerun toggle bouton
+ * entrées : -> pointeur sur Bouton
+ * sorties : ->Bouton crée
+*/
 Bouton * Creer_ToggleBoutton(Bouton* maboutton)
 {
+    //s'il existe un label on crée le bouton avec ce label
     if (strcmp(maboutton->Mabouton->label,"vide")!=0)
         maboutton->Mabouton->button = gtk_toggle_button_new_with_mnemonic(maboutton->Mabouton->label);
-    else
+    else //sinon on le crée sans label
         maboutton->Mabouton->button = gtk_toggle_button_new();
     gtk_widget_set_size_request(maboutton->Mabouton->button,
                                 maboutton->size.largeur,
                                 maboutton->size.longueur);
-
-    if (maboutton->relief)
+    if (maboutton->relief)//si le bouton a un relief on le met
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
                               GTK_RELIEF_NORMAL);
-    else
+    else//sinon on le met pas
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
                               GTK_RELIEF_NONE);
-
-    if (strcmp(maboutton->tooltip,"vide")!=0)
+    if (strcmp(maboutton->tooltip,"vide")!=0)//si on veut le bouton avoir un tooltip
         gtk_widget_set_tooltip_text(GTK_WIDGET(maboutton->Mabouton->button),
                                     maboutton->tooltip);
-    if (maboutton->img)
+    if (maboutton->img)//si on veut une image dans le bouton
     {
         gtk_button_set_image(GTK_BUTTON(maboutton->Mabouton->button),
                              maboutton->img);
@@ -99,88 +126,4 @@ Bouton * Creer_ToggleBoutton(Bouton* maboutton)
                                          TRUE);
     }
     return ((Bouton *)maboutton);
-}
-
-
-
-typedef struct
-{
-    GtkWidget* combo_box;
-    int entry;
-    int idElem;//indice dernier element dans le combo box disponible
-    coordonne pos;
-}comboBox;
-
-/*____________________________________________________________________________
-
- * Fonction qui permet de creer tous les fils d'une balise
- * entr�es : -> un entier indique si le combo box anec une entree ou non
- *			 -> deux entier pour la position
- * sorties : combobox
- */
-comboBox* creer_combo_Box(int entry,int X,int Y)
-{
-    comboBox* comboB=NULL;
-    //l'allocation de la memeoire
-    comboB = (comboBox*)malloc(sizeof(comboB));
-    if (!comboB)
-    {
-        printf("!!!\nErreur dans l'Allocation de la fenetre!!!\n");
-        return (Fenetre*)comboB;
-    }
-    comboB->entry = entry;
-    comboB->pos.X = X;
-    comboB->pos.Y = Y;
-    comboB->idElem = 0;
-    //tester si combo box sera sans entree
-    if (!entry){
-        //creation de combo box sans entree
-        comboB->combo_box = gtk_combo_box_text_new();
-        printf("\n ComboBox creer\n");
-    }
-    else{
-        //creation de combo box avec entree
-        comboB->combo_box = gtk_combo_box_text_new_with_entry();
-        printf("\n ComboBox creer\n");
-       }
-    return ((comboBox*)comboB);
-}
-/*____________________________________________________________________________
-
- * Fonction qui permet de creer tous les fils d'une balise
- * entr�es : -> un combo box
- *			 -> un entier indique la postion ou on va inserer
- *           ->la valeur a inserer
- *           ->un id pour la valeur a inserer
- * sorties : combobox
- */
-comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, char* id) {
-    if (position == -1)
-        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), id, valeur);
-    else
-        gtk_combo_box_text_insert(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), position, id, valeur);
-    maComboBox->idElem++;
-    return ((comboBox*)maComboBox);
-}
-
-/*____________________________________________________________________________
-
- * Fonction qui permet de creer tous les fils d'une balise
- * entr�es : -> un combo box
- *			 -> un entier indique la postion de l'element a supprimer
- * sorties : combobox
- */
-comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
-    if (position == -1)
-    {
-        gtk_combo_box_text_remove_all(maComboBox->combo_box);
-        maComboBox->idElem = 0;
-    }
-    else
-    {
-        gtk_combo_box_text_remove(maComboBox->combo_box, position);
-        maComboBox->idElem--;
-    }
-
-    return ((Fenetre*)maComboBox);
 }
