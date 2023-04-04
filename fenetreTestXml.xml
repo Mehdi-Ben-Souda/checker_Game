@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <interface>
-    <Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" hauteur="500" X="250" Y="300" couleur="#FFFFF">
+    <Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" hauteur="500" X="250" Y="300" >
         <Fixed name="THEfixed">
-            <Toolbar icon_size="4" style="0" orientation="0" X="100" Y="0">
+            <Toolbar icon_size="1" style="0" orientation="0" X="100" Y="0">
                 <CelluleToolItem label="item1" icon="about.png" callback="1">
                 </CelluleToolItem>
                 <CelluleToolItem label="item2" icon="download.png" callback="1">

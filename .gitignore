@@ -1,6 +1,10 @@
 Macros_GTK
 Main.c
+x64
 .vs
+chabab_GTK.vcxproj.user
+chabab_GTK.vcxproj.filters
+chabab_GTK.vcxproj
 
 # Prerequisites
 *.d
