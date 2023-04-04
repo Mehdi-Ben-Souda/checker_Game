@@ -107,5 +107,5 @@
 	</Fenetre>
 =================================
 		<Fixed name="fixed name">
-			<Entry text="cest un text" cache="*" X="100" Y="100"></Entry>
+			<Entry text="cest un text" cache="*" X="100 icon="" Y="100"></Entry>
 		</Fixed>

@@ -385,9 +385,9 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			break;
 		case 18:// si la balise est une entree
 			//l'inatialisation d'une entree
-			entry = Entry_init((char*)xmlGetProp(cur, "text"),
-				(char*)xmlGetProp(cur, "cache"),
-				(char*)xmlGetProp(cur, "icon"),
+			entry = Entry_init((gchar*)xmlGetProp(cur, "text"),
+				(gchar*)xmlGetProp(cur, "cache"),
+				(gchar*)xmlGetProp(cur, "icon"),
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")));
 			//la creation
