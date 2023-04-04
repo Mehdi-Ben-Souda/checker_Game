@@ -117,7 +117,7 @@ CelluleItem* creer_CelluleMenu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup
 				(char*)xmlGetProp(cur, "icon"),
 				(char*)xmlGetProp(cur, "name"),
 				(char*)xmlGetProp(cur, "accel_key"),
-				accel_group,NULL);
+				accel_group);
 			printf("\n CelluleItem inserer\n");
 		}
 		//pointer sur la balise suivante (frere)
@@ -154,8 +154,7 @@ CelluleMenu* creer_Menu_fils(xmlDocPtr doc, xmlNodePtr cur, GtkAccelGroup* accel
 		CelluleItemListe = creer_CelluleMenu_fils(doc, cur, accel_group);
 		// inserer a la liste
 		CelluleMenuListe = Inserer_CeluleMenu(CelluleMenuListe, CelluleItemListe,
-											(char*)xmlGetProp(cur, "label"),
-											(char*)xmlGetProp(cur, "name"));
+											(char*)xmlGetProp(cur, "label"));
 		printf("\n cellule menu inserer\n");
 		}
 		//pointer sur la balise suivante (frere)
@@ -251,7 +250,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 		case 7:// si la balise est un toolbar
 			printf("\ntoolbar trouver\n");
 			//l'initialisation d'un toolbar
-			toolbar=Init_toolbar(NULL, atoi((char*)xmlGetProp(cur, "icon_size")),
+			toolbar=Init_toolbar(atoi((char*)xmlGetProp(cur, "icon_size")),
 										atoi((char*)xmlGetProp(cur, "style")),
 										atoi((char*)xmlGetProp(cur, "orientation")),
 										atoi((char*)xmlGetProp(cur, "X")),
@@ -270,8 +269,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				printf("\nCelluleToolItem trouver\n");
 				//l'initialisation d'un CelluleTooolItem
 				celluleToolItem = Init_CelluleTooolItem((char*)xmlGetProp(cur, "label"),
-														(char*)xmlGetProp(cur, "icon"),
-														atoi((char*)xmlGetProp(cur, "callback")));
+														(char*)xmlGetProp(cur, "icon"));
 				//la creation d'un CelluleToolItem
 				celluleToolItem = Creer_CelluleToolItem(celluleToolItem);
 				//l'inserer a son parent (toolbar)
