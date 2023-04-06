@@ -1,22 +1,20 @@
 //----------------------------------------------------------------------------------------------------------------------
 //------------------------------------        structures de données       ----------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
-#pragma warning(disable: 4996)
-#pragma once
 typedef struct ce
 {
     GtkWidget *menu_item; //pointeur sur un élément
-    char label[NB_Cara_titre]; //le titre de l'élément
+    char label[maxcarac]; //le titre de l'élément
     guint accel_key;//le code ASCII de la lettre du raccourci
-    char icon[NB_Cara_titre];//le nom de l'icône
-    char name[NB_Cara_titre];
+    char icon[maxcarac];//le nom de l'icône
+    char name[maxcarac];
     struct ce *svt;//pointeur sur le suivant
     struct ce *sous_menu;//sous menu s'il existe
 }CelluleItem;//structure d'un élément du menu
 typedef struct ne
 {
     GtkWidget *sous_menu; //pointeur sur un sous-menu
-    char label[NB_Cara_titre];//le titre de l'élément
+    char label[maxcarac];//le titre de l'élément
     CelluleItem *liste_item;//liste des éléments du sous-menu
     struct ne *svt;//pointeur sur le suivant
 }CelluleMenu;//structure d'un sous-menu du menu principal
@@ -38,10 +36,12 @@ typedef  struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du menu après initialisation
  */
-CelluleItem *Init_CelluleItem(char label[NB_Cara_titre],char icon[NB_Cara_titre],char name[NB_Cara_titre],char accel_key)
+CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],
+                              char name[maxcarac], char accel_key)
 {
     CelluleItem *NE;//déclaration d'un nouvel élément
-    NE=(CelluleItem*) malloc(sizeof (CelluleItem));//l'allocation de la mémoire
+    //l'allocation de la mémoire
+    NE=(CelluleItem*) malloc(sizeof (CelluleItem));
     if(!NE)//vérification d'allocation
     {
         printf("\nerrur d'allocation !!!!");
@@ -68,16 +68,20 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
 {
     if(!item)//vérification d'initialisation de la cellule
         return ((CelluleItem*)NULL);
-    if(strcmp(item->icon,"vide")!=0)//s'il n'y a pas d'icône, on le crée avec seulement le titre
+    //s'il n'y a pas d'icône, on le crée avec seulement le titre
+    if(strcmp(item->icon,"vide")!=0)
         item->menu_item=gtk_menu_item_new_with_label(item->label);
     else//sinon, on le crée avec l'icône aussi
     {
         item->menu_item=gtk_image_menu_item_new_from_stock( item->icon,NULL);
-        gtk_image_menu_item_set_always_show_image(GTK_IMAGE_MENU_ITEM(item->menu_item),TRUE);
+        gtk_image_menu_item_set_always_show_image(GTK_IMAGE_MENU_ITEM(item->menu_item)
+                                                  ,TRUE);
         gtk_menu_item_set_label(GTK_MENU_ITEM(item->menu_item),item->label);
     }
     //l'ajout du raccourci
-    gtk_widget_add_accelerator (item->menu_item, "activate", accel_group,item->accel_key, GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator (item->menu_item, "activate", 
+                                accel_group,item->accel_key,
+                                GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
     return ((CelluleItem*)item);
 }
 /*
@@ -87,7 +91,7 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
              -> l'icône de sous-menu'
  * sorties : un pointeur sur un sous-menu après initialisation
  */
-CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[NB_Cara_titre])
+CelluleMenu *Init_CelluleMenu(CelluleItem *Liste_item,char label[maxcarac])
 {
     CelluleMenu *NE;//déclaration d'un nouvel élément
 
@@ -143,10 +147,13 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur la liste des éléments
  */
-CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[NB_Cara_titre],char icon[NB_Cara_titre],char name[NB_Cara_titre],char accel_key[1], GtkAccelGroup* accel_group)
+CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],
+                                char icon[maxcarac],char name[maxcarac],
+                                char accel_key[1], GtkAccelGroup* accel_group)
 {
     CelluleItem *ptc;//pointeur courant pour parcourir la liste
-    CelluleItem *NE= Init_CelluleItem(label,icon,name,accel_key[0]);//initialiser le nouvel élément
+    //initialiser le nouvel élément
+    CelluleItem *NE= Init_CelluleItem(label,icon,name,accel_key[0]);
     NE= Creer_CelluleItem(NE,accel_group);//creer le nouvel élément
     if(!Liste_item)//si la liste n'existe pas
         return ((CelluleItem*)NE);//retourner le nouvel élément
@@ -164,10 +171,13 @@ CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[NB_Cara_titr
              -> le nom de l'icône du sous-menu
  * sorties : un pointeur sur la liste des sous-menus
  */
-CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,char label[NB_Cara_titre])
+CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,
+                                CelluleItem *Liste_item,
+                                char label[maxcarac])
 {
     CelluleMenu *ptc;//pointeur courant pour parcourir la liste
-    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label);//initialiser le nouvel sous-menu
+    //initialiser le nouvel sous-menu
+    CelluleMenu *NE= Init_CelluleMenu(Liste_item,label);
     NE= Creer_CelluleMenu(NE);//creer le nouvel sous-menu
     if(!Liste_menu)//si la liste n'existe pas
         return ((CelluleMenu*)NE);
@@ -182,7 +192,8 @@ CelluleMenu *Inserer_CeluleMenu(CelluleMenu *Liste_menu,CelluleItem *Liste_item,
  * entrées : -> pointeur sur la liste des sous-menus
  * sorties : un pointeur sur le menu principal
  */
-Menu *Creer_Menu(CelluleMenu *Liste_Menu,int x,int y,int orientation)
+Menu *Creer_Menu(CelluleMenu *Liste_Menu,int x,int y,
+                int orientation)
 {
     CelluleMenu *ptc;//pointeur courant pour parcourir la liste
     Menu *NE;//déclaration d'un nouvel menu
@@ -228,4 +239,3 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
     }
     return ((CelluleItem*)item);
 }
-#pragma warning(disable: 4996)

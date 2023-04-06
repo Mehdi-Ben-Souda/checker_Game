@@ -1,6 +1,3 @@
-#pragma once
-#include "conteuneurs.h"
-#include "Toggle_Simple_Bouton.h"
 /*-----------------------------------------------------------------------------------------------------------------*/
 /*-----------------------------------------------   RADIO  BOUTTON    ---------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------*/
@@ -15,7 +12,7 @@ typedef struct
     Box *groupe;
     coordonne pos;
 }RadioCheckBouttons;
-CelluleBouton *Creer_Cellule_CHBouton(char label[NB_Cara_titre])
+CelluleBouton *Creer_Cellule_CHBouton(char label[maxcarac])
 {
     CelluleBouton *NE;
     NE=(CelluleBouton*) malloc(sizeof (CelluleBouton));
@@ -32,7 +29,7 @@ CelluleBouton *Creer_Cellule_CHBouton(char label[NB_Cara_titre])
     NE->svt=NULL;
     return ((CelluleBouton*)NE);
 }
-CelluleBouton *Creer_Cellule_RBouton(char label[NB_Cara_titre],GtkWidget *groupe)
+CelluleBouton *Creer_Cellule_RBouton(char label[maxcarac],GtkWidget *groupe)
 {
     CelluleBouton *NE;
     NE=(CelluleBouton*) malloc(sizeof (CelluleBouton));
@@ -49,7 +46,7 @@ CelluleBouton *Creer_Cellule_RBouton(char label[NB_Cara_titre],GtkWidget *groupe
     NE->svt=NULL;
     return ((CelluleBouton*)NE);
 }
-CelluleBouton *Inserer_Bouton(CelluleBouton *Maliste,char type,char label[NB_Cara_titre])
+CelluleBouton *Inserer_Bouton(CelluleBouton *Maliste,char type,char label[maxcarac])
 {
     CelluleBouton *NE;
     CelluleBouton *ptcourant;
@@ -87,6 +84,7 @@ RadioCheckBouttons *Crerr_Radio_Check_Boutons(CelluleBouton *Maliste,int x,int y
         printf("Erreur d'allocation !!!");
         exit(0);
     }
+
     NE->pos.X=x;
     NE->pos.Y=y;
     NE->groupe= Allouer_Box(orientation,spacing);

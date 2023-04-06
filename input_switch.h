@@ -1,6 +1,4 @@
 #pragma once
-#define maxcarac 50
-#include "common.h"
 //La structure de données du switch
 typedef struct sw
 {
@@ -13,12 +11,12 @@ typedef struct sw
 La fonction Creer_Switch
 -Entrees :etat1:un entier indique l'état du boutton.
 -Sortie :Objet de type Switch.
--Description: Cette fonction permet de créer un switch boutton 
+-Description: Cette fonction permet de créer un switch boutton
         on prenons on concidération l'état qu'on veut
 */
 Switch*Creer_Switch(int etat1,int x,int y)
 {
-    //allocation de la mémoire 
+    //allocation de la mémoire
     Switch*my_switch1=(Switch*)malloc(sizeof(Switch));
     //si l'allocation a échoué
     if(!my_switch1)
@@ -36,9 +34,9 @@ Switch*Creer_Switch(int etat1,int x,int y)
     {
         //si on veut choisir l'état activé pour le switch
         case 0:gtk_switch_set_state(GTK_SWITCH(my_switch1->my_switch), TRUE);break;
-        //si on veut choisir l'état désactivé pour le switch
+            //si on veut choisir l'état désactivé pour le switch
         case 1: gtk_switch_set_state(GTK_SWITCH(my_switch1->my_switch), FALSE);break;
-        //activé par défaut 
+            //activé par défaut
         default: gtk_switch_set_active(GTK_SWITCH(my_switch1->my_switch), TRUE);
     }
     return((Switch*)my_switch1);
@@ -49,19 +47,19 @@ typedef struct
 {
     //un widget de la sous classe des GtkEntry
     GtkWidget *search;
-   gchar name[maxcarac];
-   coordonne pos;
+    gchar name[maxcarac];
+    coordonne pos;
 }Search;
 /*
 La fonction Creer_Search
 -Entrees :name->un tableau de caractère.
 -Sortie : une zone de recherche.
--Description: Cette fonction permet de créer une zone de 
-            recherche 
+-Description: Cette fonction permet de créer une zone de
+            recherche
 */
 Search*Creer_Search(gchar name1[maxcarac],int x,int y)
 {
-    //allocation de la mémoire 
+    //allocation de la mémoire
     Search*sea=(Search*)malloc(sizeof(Search));
     //si l'allocation a échoué
     if(!sea)
@@ -72,7 +70,7 @@ Search*Creer_Search(gchar name1[maxcarac],int x,int y)
     strcpy(sea->name,name1);
     sea->pos.X=x;
     sea->pos.Y=y;
-     //créer un nouveau Gtk widget de recherche
+    //créer un nouveau Gtk widget de recherche
     sea->search=gtk_search_entry_new ();
     return ((Search*)sea);
 }
@@ -87,9 +85,9 @@ typedef struct et
 }Entree;
 /*
 La fonction Entry_init
--Entrees :text1:une chaine de caractere pour le text saisi 
+-Entrees :text1:une chaine de caractere pour le text saisi
           par défaut dans la zone.
-    cache1:caractère indique le caractère choisi pour 
+    cache1:caractère indique le caractère choisi pour
            cacher le text saisi
     cont:de type GtkWidget le conteneur qui va contenir
          la zone de text
@@ -101,7 +99,7 @@ la structure de type Entree et d'initialiser
 ses champs et de la retourner .
 */
 Entree* Entry_init(gchar text1[maxcarac],gchar cache1,
-gchar *mon_icon,int x,int y)
+                   gchar *mon_icon,int x,int y)
 {
     Entree* mon_entre=(Entree*)malloc(sizeof(Entree));
     if(!mon_entre)
@@ -112,7 +110,7 @@ gchar *mon_icon,int x,int y)
     if(cache1)
         mon_entre->cache=cache1;
     else mon_entre->cache='\0';
-    //initilisation de text par défaut 
+    //initilisation de text par défaut
     if (text1)
     {
         strcpy (mon_entre->text, text1);
@@ -135,8 +133,8 @@ gchar *mon_icon,int x,int y)
 La fonction Creer_Entree
 -Entrees :L'objet Entree initialisé.
 -Sortie :Objet de type Entree.
--Description: Cette fonction permet de créer un objet entree 
-    en fonction des paramétres récupéres de la fonction 
+-Description: Cette fonction permet de créer un objet entree
+    en fonction des paramétres récupéres de la fonction
     Entree_init
 */
 Entree*Creer_Entree(Entree*mon_entre)
@@ -144,26 +142,26 @@ Entree*Creer_Entree(Entree*mon_entre)
     //Création d'une nouvelle entrée
     mon_entre->entry = gtk_entry_new ();
     //si on veut que le texte saisi soit visible
- if ( mon_entre->cache=='\0')
-  gtk_entry_set_visibility (GTK_ENTRY( mon_entre->entry),TRUE);
+    if ( mon_entre->cache=='\0')
+        gtk_entry_set_visibility (GTK_ENTRY( mon_entre->entry),TRUE);
 
- else   //si on veut un mot de passe
- {
-     //avec choix de caractère de cache
+    else   //si on veut un mot de passe
+    {
+        //avec choix de caractère de cache
 
-    gtk_entry_set_invisible_char(GTK_ENTRY( mon_entre->entry),
-                                 mon_entre->cache);
-}
- //si on veut un texte saisi par défaut dans la zone de texte
- if(!strcmp(mon_entre->text,"vide"))
-  {
- gtk_entry_set_text (GTK_ENTRY(mon_entre->entry),mon_entre->text);
-  }
- //si on veut ajouter un icon
- if(mon_entre->icon)
- {
-     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(mon_entre->entry),
-                                                 GTK_ENTRY_ICON_SECONDARY,mon_entre->icon);
- }
+        gtk_entry_set_invisible_char(GTK_ENTRY( mon_entre->entry),
+                                     mon_entre->cache);
+    }
+    //si on veut un texte saisi par défaut dans la zone de texte
+    if(!strcmp(mon_entre->text,"vide"))
+    {
+        gtk_entry_set_text (GTK_ENTRY(mon_entre->entry),mon_entre->text);
+    }
+    //si on veut ajouter un icon
+    if(mon_entre->icon)
+    {
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(mon_entre->entry),
+                                          GTK_ENTRY_ICON_SECONDARY,mon_entre->icon);
+    }
     return ((Entree*)mon_entre);
 }
