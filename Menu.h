@@ -37,6 +37,7 @@ typedef  struct
              -> la fonction de rappelle lorsque l'élément est activé
  * sorties : un pointeur sur élément du menu après initialisation
  */
+#pragma warning(disable: 4996)
 CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],
                               char name[maxcarac], char accel_key)
 {
@@ -240,3 +241,4 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
     }
     return ((CelluleItem*)item);
 }
+#pragma warning(disable: 4996)

@@ -343,7 +343,7 @@ void Lire_doc(char* docname) {
         // tester si la balise est une fenetre
         if (nat == 1)
         {
-            printf("\nFenetre trouver \n", (char*)cur->name);
+            printf("\nFenetre trouver \n");
             //l'appel de la fonction Allouer_Fenetre
             Fen = Allouer_Fenetre(0,
                                   atoi((char*)xmlGetProp(cur, "largeur")),

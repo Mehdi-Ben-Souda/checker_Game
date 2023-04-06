@@ -4,7 +4,7 @@
 #define maxcarac 50
 #include "common.h"
 #include "Fenetre.h"
-#include "FileChooser.h"
+//#include "FileChooser.h"
 #include "conteneurs.h"
 #include "Boutons.h"
 #include "Radio_Check_Boutton.h"
