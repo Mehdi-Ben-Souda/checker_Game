@@ -1,3 +1,4 @@
+#pragma once
 typedef struct
 {
     Boutons *Mabouton;//champs du bouton

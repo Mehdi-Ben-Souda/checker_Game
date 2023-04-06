@@ -1,3 +1,4 @@
+#pragma once
 #include <gtk/gtk.h>
 #include <libxml2/libxml/parser.h>
 #define maxcarac 50

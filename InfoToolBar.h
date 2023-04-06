@@ -1,3 +1,4 @@
+#pragma once
 typedef struct
 {
     GtkWidget *info_toolbar;//pointeur sur le toolbar d'information

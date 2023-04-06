@@ -243,7 +243,7 @@ Fixed* Ajouter_Fixed(GtkWidget* fils,int x,int y, Fixed * lefixed)
 }
 
 /*____________________________________________________________*/
-
+#pragma once
 
 /*
 	Nom Fonction : Deplacer_Fixed
