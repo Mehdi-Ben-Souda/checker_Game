@@ -74,7 +74,8 @@ comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
     }
     else
     {
-        gtk_combo_box_text_remove(maComboBox->combo_box, position);
+        gtk_combo_box_text_remove(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), position);
         maComboBox->idElem--;
     }
+    return((comboBox*)maComboBox);
 }

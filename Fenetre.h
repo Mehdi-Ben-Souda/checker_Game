@@ -254,12 +254,15 @@ Fenetre* Ajouter_fenetre(Fenetre* mafenetre, GtkWidget* element)
 	}
 	return (Fenetre*)mafenetre;
 }
-void afficher_fenetre(GtkWidget* Fen)
+
+/*____________________________________________________________*/
+
+void afficher_fenetre(GtkWindow* Fen)
 {
 	if (Fen)
 	{
 		printf("\nune fenetre sera afficher en 1 2 3 ..\n");
-		gtk_widget_show_all(Fen);
+		gtk_widget_show_all(GTK_WIDGET(Fen));
 	}
 	else
 	{
@@ -267,7 +270,16 @@ void afficher_fenetre(GtkWidget* Fen)
 	}
 
 }
+void afficher_fenetre_et_destroy(GtkWindow* Fen)
+{
+	if (Fen)
+	{
+		printf("\nune fenetre sera afficher en 1 2 3 ..\n");
+		gtk_widget_show_all(GTK_WIDGET(Fen));
+	}
+	else
+	{
+		printf("\nparametre errone\n");
+	}
 
-/*____________________________________________________________*/
-
-
+}

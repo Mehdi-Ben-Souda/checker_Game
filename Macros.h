@@ -15,8 +15,9 @@
 #include "Radio_Check_Boutton.h"
 #include "input_switch.h"
 #include "ComboBox.h"
-
+#include "Signal.h"
 #include "fonction_XML.h"
+
 
 
 

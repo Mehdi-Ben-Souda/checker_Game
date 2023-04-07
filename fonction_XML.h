@@ -1,54 +1,6 @@
 #pragma once
 
 /*
- * Fonction qui permet de identifier la nature de balise
- * entr�es : un element de type xmlNodePtr ,c'est la balise a identifier
- * sorties : un entier selon la nature ce la balise entrer en parametre
- */
-int nature_balise(xmlNodePtr balise)
-{
-	//tester si la balise est une fenetre
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Fenetre")))return((int)1);
-	//tester si la balise est un fixed
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Fixed")))return((int)2);
-	//tester si la balise est un bouton
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Button")))return((int)3);
-	//tester si la balise est un Menu
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Menu")))return((int)4);
-	//tester si la balise est un CelluleMenu
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleMenu")))return((int)5);
-	//tester si la balise est un CelluleItem
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleItem")))return((int)6);
-	//tester si la balise est un Toolbar
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toolbar")))return((int)7);
-	//tester si la balise est un CelluleToolItem
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"CelluleToolItem")))return((int)8);
-	//tester si la balise est un Box
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Box")))return((int)9);
-	//tester si la balise est un InfoToolBar
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"InfoToolBar")))return((int)10);
-	//tester si la balise est un Radio_Check_Buttons
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Radio_Check_Buttons")))return((int)11);
-	//tester si la balise est un Check_Button
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Check_Button")))return((int)12);
-	//tester si la balise est un Radio_Button
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Radio_Button")))return((int)13);
-	//tester si la balise est un ComboBox
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"ComboBox")))return((int)14);
-	//tester si la balise est un Option
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Option")))return((int)15);
-	//tester si la balise est un Switch
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Switch")))return((int)16);
-	//tester si la balise est un Search_bar
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Search_bar")))return((int)17);
-	//tester si la balise est un Entry
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Entry")))return((int)18);
-	//tester si la balise est un Toggle_Boutton
-	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toggle_Boutton")))return((int)19);
-	return((int)-1);
-}
-
-/*
  * Fonction qui permet d'ajouter un element a un conteneur
 	ou juste de l'ajouter a son parent
  * entr�es: -un element de type xmlNodePtr ,c'est la balise parent
@@ -181,10 +133,11 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	InfoToolBar* infotoolbar = NULL;
 	CelluleBouton* listeButton = NULL;
 	RadioCheckBouttons* RC_Bouttons = NULL;
-	comboBox* combo = NULL;
+	//comboBox* combo = NULL;
 	Switch* swtch = NULL;
 	Search* srch = NULL;
 	Entree* entry = NULL;
+	comboBox* combo = NULL;
 
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
@@ -218,7 +171,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			Btn = Creer_SimpleBoutton(Btn);
 			printf("\na button was created\n");
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->Mabouton->button, Btn->pos.X, Btn->pos.Y);
-
+			Signal(doc, cur, Btn->Mabouton->button);
 			break;
 		case 4:// si la balise est un menu
 			printf("\n menu trouver\n");
@@ -232,7 +185,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				atoi((char*)xmlGetProp(cur, "orientation")));
 
 			printf("\nMenu creer\n");
-			gtk_window_add_accel_group(Gtk_parent, accel_group);
+			gtk_window_add_accel_group(GTK_WINDOW( Gtk_parent), accel_group);
 			//ajouter le menu a un son pere (FIXED ,BOX ,SIMPLE ELEMENT)
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, menu->main_menu,
 				menu->pos.X, menu->pos.Y);
@@ -296,7 +249,6 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 		case 11:// si la balise est un Radio_Check_Buttons
 			printf("\n Radio_Check_Buttons trouver\n");
 			cur_parent = cur;
-			char cara;
 			//pointer sur le premier fils de la balise cur
 			cur = cur->xmlChildrenNode;
 			//boucler jusqu'il ne reste aucune balise a traiter
@@ -377,8 +329,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 		case 18:// si la balise est une entree
 			//l'inatialisation d'une entree
 			entry = Entry_init((gchar*)xmlGetProp(cur, "text"),
-				(gchar*)xmlGetProp(cur, "cache"),
-				(gchar*)xmlGetProp(cur, "icon"),
+				(char*)xmlGetProp(cur, "cache"),
+				(char*)xmlGetProp(cur, "icon"),
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")));
 			//la creation
@@ -386,8 +338,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			//l'ajouter a son parent
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, entry->entry, entry->pos.X, entry->pos.Y);
 			break;
-		case 19:// si la balise est un bouton
-			// initialisation d'un bouton
+		case 19:// si la balise est un bouton toogle
+			// initialisation d'un bouton toogle
 			Btn = Initialiser_boutton((char*)xmlGetProp(cur, "label"),
 				(char*)xmlGetProp(cur, "tooltip"),
 				(char*)xmlGetProp(cur, "image_icon"),
@@ -396,7 +348,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				atoi((char*)xmlGetProp(cur, "relief")),
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")));
-			//creation d'un bouton
+			//creation d'un bouton toggle
 			Btn = Creer_ToggleBoutton(Btn);
 			printf("\na ToggleBoutton was created\n");
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->Mabouton->button, Btn->pos.X, Btn->pos.Y);
@@ -469,16 +421,18 @@ Lire_doc(char* docname) {
 				"C:\\Users\\HP FOLIO 9470m\\Desktop\\gtk atelier\\ts\\ts\\home.png",
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")),
-				(char*)xmlGetProp(cur, "couleur"), (char*)xmlGetProp(cur, "name"));
+				(char*)xmlGetProp(cur, "couleur"), (char*)xmlGetProp(cur, "name"),
+				atoi((char*)xmlGetProp(cur, "visible")));
 			//la creation d'une fenetre
 			Fen = Creer_Fenetre(Fen);
 
 			printf("\nfenetre creer\n");
 			//creation de tous les fils de la fenetre creer
 			creer_fils(doc, cur, Fen->ma_fenetre);
-			printf("\nfenetre sera afficher apres 1 2 3 ..\n");
-			gtk_widget_show_all(Fen->ma_fenetre);
-
+			if (Fen->visible)
+				afficher_fenetre(GTK_WINDOW( Fen->ma_fenetre));
+			else
+				printf("\nfentre creer est non visible(visible = 0)");
 		}
 		//pointer sur la balise suivante
 		cur = cur->next;
