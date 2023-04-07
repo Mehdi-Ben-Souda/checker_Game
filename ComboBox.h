@@ -1,4 +1,4 @@
-
+#include "common.h"
 typedef struct
 {
     GtkWidget* combo_box;
@@ -22,7 +22,7 @@ comboBox* creer_combo_Box(int entry,int X,int Y)
     if (!comboB)
     {
         printf("!!!\nErreur dans l'Allocation de la fenetre!!!\n");
-        return (Fenetre*)comboB;
+        return (comboBox*)comboB;
     }
     comboB->entry = entry;
     comboB->pos.X = X;
@@ -69,7 +69,7 @@ comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, ch
 comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
     if (position == -1)
     {
-        gtk_combo_box_text_remove_all(maComboBox->combo_box);
+        gtk_combo_box_text_remove_all(GTK_COMBO_BOX_TEXT( maComboBox->combo_box));
         maComboBox->idElem = 0;
     }
     else
