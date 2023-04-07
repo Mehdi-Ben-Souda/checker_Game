@@ -53,9 +53,9 @@ ToolItem *Creer_CelluleToolItem(ToolItem *item)
     GtkWidget *icon; // variable pour creer l'icône
     if (!item)       // vérification d'initialisation de la cellule
         return ((ToolItem *)NULL);
-    icon = gtk_image_new_from_file(item->icon); // création de l'icône
-    // création d'élément du toolbar
-    item->item = gtk_tool_button_new(icon, item->label);
+    GdkPixbuf* pixt = gdk_pixbuf_new_from_file_at_size(item->icon, 50, 50, NULL);
+    icon = gtk_image_new_from_pixbuf(pixt);//création de l'icône
+    item->item = gtk_tool_button_new(icon, item->label);//création d'élément du toolbar
     return ((ToolItem *)item); // retourner l'élément
 }
 /*
