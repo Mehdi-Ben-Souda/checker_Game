@@ -34,7 +34,7 @@ typedef struct
 	char couleur[8];//Couleur de fond en HEX
 	char name[20];//le nom de la fenetre par la quelle on va la
 			//cibler par le code CSS
-
+	int visible;//un entier qui indique si la fanetre sera visible ou non
 }Fenetre;//structure d'une fenetre
 /*____________________________________________________________*/
 
@@ -60,7 +60,7 @@ typedef struct
 */
 Fenetre* Allouer_Fenetre(WindowType type, int largeur, 
 		int hauteur, char* titre,char* chemin_icone, int x,
-			int y, char couleur[8],char name[20])
+			int y, char couleur[8],char name[20],int visible)
 {
 	Fenetre* mafenetre;
 
@@ -75,6 +75,7 @@ Fenetre* Allouer_Fenetre(WindowType type, int largeur,
 
 	mafenetre->type = type;
 	mafenetre->Largeur = largeur;
+	mafenetre->visible = visible;
 	mafenetre->Hauteur = hauteur;
 		//Si le titre n'existe pas , on met "vide" dans 
 			//le paramatre
@@ -252,6 +253,19 @@ Fenetre* Ajouter_fenetre(Fenetre* mafenetre, GtkWidget* element)
 			element);
 	}
 	return (Fenetre*)mafenetre;
+}
+void afficher_fenetre(GtkWidget* Fen)
+{
+	if (Fen)
+	{
+		printf("\nune fenetre sera afficher en 1 2 3 ..\n");
+		gtk_widget_show_all(Fen);
+	}
+	else
+	{
+		printf("\nparametre errone\n");
+	}
+
 }
 
 /*____________________________________________________________*/

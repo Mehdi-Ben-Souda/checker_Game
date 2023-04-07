@@ -1,6 +1,6 @@
 	
 =========================// BUTTON 
-	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
+	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="1" largeur="500"
 			hauteur="500" X="250" Y="300" >
 		<Fixed name="fixed name">
 			<Button label="_homef2" tooltip="this is a button home win2"
@@ -9,8 +9,7 @@
 		</Fixed>
 	</Fenetre>
 ===================================toggel
-
-	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
+	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="1" largeur="500"
 			hauteur="500" X="250" Y="300" >
 		<Fixed name="fixed name">
 			<Toggle_Boutton label="_homef2" tooltip="this is a button home win2"
@@ -19,8 +18,8 @@
 		</Fixed>
 	</Fenetre>
 ==================================// MENU
-	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500" 
-			hauteur="500" X="250" Y="300" couleur="#FFFFF">
+	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="1" largeur="500"
+			hauteur="500" X="250" Y="300" >
 		<Menu X="" Y="" orientation="">
 			<CelluleMenu label="add" name="celluleMenu1">
 				<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
