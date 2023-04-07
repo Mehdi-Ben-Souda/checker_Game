@@ -1,4 +1,4 @@
-#include "common.h"
+#pragma once
 typedef struct
 {
     GtkWidget* combo_box;
@@ -69,7 +69,7 @@ comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, ch
 comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
     if (position == -1)
     {
-        gtk_combo_box_text_remove_all(GTK_COMBO_BOX_TEXT( maComboBox->combo_box));
+        gtk_combo_box_text_remove_all(GTK_COMBO_BOX_TEXT(maComboBox->combo_box));
         maComboBox->idElem = 0;
     }
     else
@@ -77,3 +77,4 @@ comboBox* combo_box_spprimer(comboBox* maComboBox, int position) {
         gtk_combo_box_text_remove(maComboBox->combo_box, position);
         maComboBox->idElem--;
     }
+}
