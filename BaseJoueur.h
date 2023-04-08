@@ -1,3 +1,4 @@
+#pragma once
 typedef struct
 {
     char username[maxcarac];
@@ -8,7 +9,6 @@ typedef struct cel
 {
     infojoueur *info;  // champ d'information de type infoetud
     struct cel *svt; // pointeur sur le suivant
-    int nbjoueur;
 } cellulejoueur;
 
 infojoueur *creer_etud()
@@ -40,7 +40,6 @@ cellulejoueur *creer_cellule(infojoueur *etud)
     // initialisation de la cellule crée
     NE->info = etud;
     NE->svt = NULL;
-    NE->nbjoueur=0;
     return ((cellulejoueur *)NE);
 }
 void lire_string(FILE *f, char mot[maxcarac])
@@ -53,7 +52,7 @@ void lire_string(FILE *f, char mot[maxcarac])
         mot[i++] = c;
     } while (c != ';');
     mot[i - 1] = '\0';
-    printf("\n%s",mot);
+   // printf("\n%s",mot);
 }
 cellulejoueur *inserer_etudiant(cellulejoueur *base, infojoueur *etudiant)
 { // declaration des variables
@@ -118,10 +117,8 @@ cellulejoueur *remplir_Base_Joueur()
     for (int i = 0; i < eof; i++) // charger les étudiants
     {
         joueur = Extraire_Info(f);
-        printf("\nt :%s",joueur->username);
         base = inserer_etudiant(base, joueur);
     }
-    base->nbjoueur = eof;
     fclose(f);               // fermeture de fichier
     return ((cellulejoueur *)base); // retourne la classe
 }

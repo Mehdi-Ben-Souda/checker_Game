@@ -1,0 +1,61 @@
+int main(int argc, char** argv)
+{
+	gtk_init(&argc, &argv);
+	
+	Fenetre* window = Allouer_Fenetre(WINDOW_TOPLEVEL, 600, 300, "Acceuil", NULL, 0, 0, NULL, "Acceuil", 1);
+
+	window = Creer_Fenetre(window);
+
+	Fixed* lefixed = Allouer_fixed("Leixed");
+
+	//Box* box_vertical = Allouer_Box(GTK_ORIENTATION_VERTICAL, 10);
+	//Creer_Box(box_vertical, window->ma_fenetre);
+
+	//Box* box_horizontal1 = Allouer_Box(GTK_ORIENTATION_HORIZONTAL,30);
+	//Creer_Box(box_horizontal1, window->ma_fenetre);
+
+	//Box* box_horizontal2 = Allouer_Box(GTK_ORIENTATION_HORIZONTAL, 30);
+
+	//Ajouter_Box(box_vertical, box_horizontal1->mon_box, BoxPositionInsertion_Fin, 0, 0, 0);
+	//Ajouter_Box(box_vertical, box_horizontal2->mon_box, BoxPositionInsertion_Fin, 0, 0, 0);
+
+
+	Label* username = Init_label("username", "username", 50, 100);
+	Label* password = Init_label("password", "password", 50, 145);
+
+
+	Entree *entre_username = Entry_init("your unsername",0, "about.png", 150, 100);
+	entre_username=Creer_Entree(entre_username);
+
+	Entree * entre_password = Entry_init("your password", '*', "about.png", 150, 145);
+	entre_password = Creer_Entree(entre_password);
+
+
+	Bouton* inscrire = Initialiser_boutton("sinscrire", "vide", "vide", 25, 10, 1, 160, 200);
+	Bouton* login =	Initialiser_boutton("login", "vide", "vide", 25, 10, 1, 90, 200);
+
+	login=Creer_SimpleBoutton(login);
+	inscrire = Creer_SimpleBoutton(inscrire);
+
+
+
+	lefixed=Ajouter_Fixed(entre_username->entry, entre_username->pos.X, entre_username->pos.Y,lefixed);
+	lefixed = Ajouter_Fixed(entre_password->entry, entre_password->pos.X, entre_password->pos.Y, lefixed);
+	lefixed = Ajouter_Fixed(username->leLabel, username->X_Y.X, username->X_Y.Y, lefixed);
+	lefixed = Ajouter_Fixed(password->leLabel, password->X_Y.X, password->X_Y.Y, lefixed);
+
+	lefixed = Ajouter_Fixed(login->Mabouton->button, login->pos.X, login->pos.Y, lefixed);
+	lefixed = Ajouter_Fixed(inscrire->Mabouton->button, inscrire->pos.X, inscrire->pos.Y, lefixed);
+
+	//Ajouter_Box(box_horizontal1, username->leLabel, BoxPositionInsertion_Fin, 0, 0, 5);
+
+	//Ajouter_Box(box_horizontal2, password->leLabel, BoxPositionInsertion_Fin, 0, 0, 5);
+
+	Ajouter_fenetre(window, lefixed->mon_fixed);
+		g_signal_connect(window->ma_fenetre, "delete_event", gtk_main_quit, NULL);
+
+	gtk_widget_show_all(window->ma_fenetre);
+	gtk_main();
+
+	return(int)0;
+}
