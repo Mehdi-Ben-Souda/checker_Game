@@ -1,5 +1,5 @@
 #pragma once
-#include "common.h"
+
 typedef struct {
 	GtkWidget* leLabel;
 	char text[250];//Le texte que continet le label

@@ -138,6 +138,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 	Search* srch = NULL;
 	Entree* entry = NULL;
 	comboBox* combo = NULL;
+	Label* label = NULL;
 
 	//pointer sur le premier fils de la balise cur
 	cur = cur->xmlChildrenNode;
@@ -352,7 +353,12 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			Btn = Creer_ToggleBoutton(Btn);
 			printf("\na ToggleBoutton was created\n");
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, Btn->Mabouton->button, Btn->pos.X, Btn->pos.Y);
-
+			break;
+		case 21:
+			printf("\n label trouver \n");
+			label = Init_label((char*)xmlGetProp(cur, "text"), (char*)xmlGetProp(cur, "name"),
+				atoi((char*)xmlGetProp(cur, "X")), atoi((char*)xmlGetProp(cur, "Y")));
+			ajoueter_a_conteuneur(cur->parent, Gtk_parent, label->leLabel, label->X_Y.X, label->X_Y.Y);
 			break;
 		default:break;
 		}

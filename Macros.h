@@ -16,6 +16,7 @@
 #include "input_switch.h"
 #include "ComboBox.h"
 #include "Signal.h"
+#include "label.h"
 #include "fonction_XML.h"
 
 

@@ -59,5 +59,7 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Toggle_Boutton")))return((int)19);
 	//tester si la balise est un signal
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"signal")))return((int)20);
+	//tester si la balise est un Label
+	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Label")))return((int)21);
 	return((int)-1);
 }
