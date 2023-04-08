@@ -274,3 +274,88 @@ Fixed* Deplacer_Fixed(GtkWidget* fils, int new_x, int new_y,
 }
 /*____________________________________________________________*/
 
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------	  Scrolled window     -----------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+enum police_asscenceur
+{
+    POLICY_ALWAYS,
+    POLICY_AUTOMATIC,
+    POLICY_NEVER,
+    POLICY_EXTERNAL
+};
+
+typedef struct
+{
+    GtkWidget* assc;
+    char name[20];
+    enum police_asscenceur assenceur_vertical;
+    enum police_asscenceur assenceur_horizontal;
+
+}Assenceur;
+
+
+/*
+    Nom Fonction : Allouer_Assenceur
+
+    Entree :_une chaine de caractere qui identifie le
+				conteneur que nous allons allouer
+
+            _pointuer sur le conteneur
+
+    Sortie :_pointeur sur une srtructure de type Assenceur
+
+    Description :
+            _On alloue 
+
+*/
+Assenceur* Allouer_Assenceur(char name[20],
+                    enum police_asscenceur vertical_policy,
+                    enum police_asscenceur horizontal_policy)
+{
+    Assenceur* ptr = (Assenceur*)malloc(sizeof(Assenceur));
+    if (!ptr)
+    {
+         printf("!!!\nErreur dans l'Allocation de l'assenceur!!\n");
+
+        return (Assenceur*)ptr;
+    }
+
+    ptr->assc = gtk_scrolled_window_new(NULL, NULL);
+    ptr->assenceur_horizontal = horizontal_policy;
+    ptr->assenceur_vertical = vertical_policy;
+
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(ptr->assc), 
+            ptr->assenceur_horizontal, ptr->assenceur_vertical);
+
+    return (Assenceur*)ptr;
+}
+
+
+/*
+    Nom Fonction : Ajouter_Assenceur
+
+    Entree :_pointeur sur le fils que nous desirons ajouter
+                au fixed
+            _pointuer sur le conteneur
+
+    Sortie :_pointeur sur une srtructure de type Assenceur
+
+    Description :
+            _On ajoute l'element qu'on veux ajouter
+                au conteneur Assenceur
+
+*/
+Assenceur* Ajouter_Assenceur(GtkWidget* fils, Assenceur* lassenceur)
+{
+    //Si les elements existent
+    if (fils && lassenceur)
+    {
+        //On ajoute le widget au fixed
+
+        gtk_container_add(GTK_CONTAINER(lassenceur->assc), fils);
+    }
+    return (Assenceur*)lassenceur;
+}
