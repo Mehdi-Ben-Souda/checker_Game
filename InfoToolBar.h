@@ -5,6 +5,7 @@ typedef struct
     char message[maxcarac];//le message
     char boutton_Label[maxcarac];//le titre du boutton
     guint type_message;//le type de message
+    char name[maxcarac];
 }InfoToolBar;//structure du toolbar d'information
 /*
  * Fonction qui permet l'initialisation d'un toolbar d'information
@@ -15,7 +16,7 @@ typedef struct
  */
 InfoToolBar *Init_InfoToolBar(char message[maxcarac],
                               char boutton_Label[maxcarac]
-                              ,int type_message)
+                              ,int type_message,char name[maxcarac])
 {
     InfoToolBar *NE;//déclaration d'un nouvel élément
     //l'allocation de la mémoire
@@ -28,6 +29,7 @@ InfoToolBar *Init_InfoToolBar(char message[maxcarac],
     //Initialisation des champs de la structure
     strcpy(NE->boutton_Label,boutton_Label);
     strcpy(NE->message,message);
+    strcpy(NE->name,name);
     NE->type_message=type_message;
     return ((InfoToolBar*)NE);
 }
@@ -60,6 +62,7 @@ InfoToolBar *Creer_InfoToolBar(InfoToolBar *inftoolbar)
     //cacher le toolbar d'information après cliquer sur le boutton
     g_signal_connect (inftoolbar->info_toolbar,"response",
                      G_CALLBACK (gtk_widget_hide),NULL);
+    gtk_widget_set_name(inftoolbar->info_toolbar,inftoolbar->name);
     return ((InfoToolBar*)inftoolbar);
 }
 /*

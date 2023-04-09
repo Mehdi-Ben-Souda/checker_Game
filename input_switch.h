@@ -105,7 +105,7 @@ La fonction Entry_init
 la structure de type Entree et d'initialiser
 ses champs et de la retourner .
 */
-Entree* Entry_init(gchar text1[maxcarac],gchar cache1,gchar *mon_icon,char name[maxcarac],int x,int y)
+Entree* Entry_init(gchar text1[maxcarac],char cache1[2],gchar *mon_icon,char name[maxcarac],int x,int y)
 {
     Entree* mon_entre=(Entree*)malloc(sizeof(Entree));
     if(!mon_entre)
@@ -114,7 +114,7 @@ Entree* Entry_init(gchar text1[maxcarac],gchar cache1,gchar *mon_icon,char name[
     }
     //Initialisation de caractère de remplacement
     if(cache1)
-        mon_entre->cache=cache1;
+        mon_entre->cache=cache1[0];
     else mon_entre->cache='\0';
     //initilisation de text par défaut
     if (text1)
@@ -149,7 +149,7 @@ Entree*Creer_Entree(Entree*mon_entre)
     //Création d'une nouvelle entrée
     mon_entre->entry = gtk_entry_new ();
     //si on veut que le texte saisi soit visible
-    if ( mon_entre->cache=='\0')
+    if ( mon_entre->cache=='$')
         gtk_entry_set_visibility (GTK_ENTRY( mon_entre->entry),TRUE);
 
     else   //si on veut un mot de passe

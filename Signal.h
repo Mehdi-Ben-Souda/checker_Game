@@ -6,7 +6,7 @@ typedef struct {
     GtkWidget *password_entry;
 }loginstructure;
 
-loginstructure *Init_Login_structure( GtkWindow *window,GtkWidget *username_entry,GtkWidget *password_entry)
+loginstructure *Init_Login_structure(GtkWindow *window,GtkWidget *username_entry,GtkWidget *password_entry)
 {
     loginstructure *NE=(loginstructure*) malloc(sizeof (loginstructure));
     if(!NE)
@@ -20,37 +20,7 @@ loginstructure *Init_Login_structure( GtkWindow *window,GtkWidget *username_entr
     NE->username_entry=username_entry;
     return ((loginstructure*)NE);
 }
-void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
-{
-    printf("\nlogin clicked");
-    int found=0;
-    const gchar *username,*pwd;
-    int nbjoueur;
-    cellulejoueur*Base=remplir_Base_Joueur(&nbjoueur);
-    cellulejoueur*ptc=Base;
-    username=(gchar *)malloc(maxcarac*sizeof (gchar));
-    username= gtk_entry_get_text(GTK_ENTRY(STR->username_entry));
-    pwd=(gchar *)malloc(maxcarac*sizeof (gchar));
-    pwd= gtk_entry_get_text(GTK_ENTRY(STR->password_entry));
-    while (ptc)
-    {
-        if(!strcmp(ptc->info->username,username))
-        {
-            found=1;
-            break;
-        }
-        ptc=ptc->svt;
-    }
-    if(found)
-    {
-        if(!strcmp(ptc->info->password,pwd))
-            gtk_widget_show_all(GTK_WIDGET(STR->window));
-        else
-            printf("\nfalse user info !!");
-    }
-    else
-        printf("\n not found !!");
-}
+
 
 GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 {
@@ -68,7 +38,7 @@ GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 		widget = GTK_WIDGET(iter2->data);
 		strcpy(name, gtk_widget_get_name(widget));
 		printf("\n the name %s \n", name);
-		if (name != NULL && !strcmp(name, nom)) {
+		if (!strcmp(name, nom)) {
 			child_widget = widget;
 			break;
 		}
@@ -143,15 +113,49 @@ void Signal_afficher_fenetre_et_destroy(GtkWindow* wdgt1, GtkWindow* wdgt2)
 {
 	GtkWindow* The2_wdgt = (GtkWindow*)wdgt2;
 	afficher_fenetre(The2_wdgt);
-	gtk_widget_destroy(chercher_fenetre_parFils(wdgt1));
+	gtk_widget_destroy(GTK_WIDGET(chercher_fenetre_parFils(GTK_WIDGET(wdgt1))));
 }
-
+void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
+{
+    printf("\nlogin clicked");
+    int found=0;
+    const gchar *username,*pwd;
+    InfoToolBar *warning;
+    int nbjoueur;
+    warning= Init_InfoToolBar("user name or password incorrect !!","ok",1,"vide");
+    warning= Creer_InfoToolBar(warning);
+    cellulejoueur*Base=remplir_Base_Joueur(&nbjoueur);
+    cellulejoueur*ptc=Base;
+    username=(gchar *)malloc(maxcarac*sizeof (gchar));
+    username= gtk_entry_get_text(GTK_ENTRY(STR->username_entry));
+    pwd=(gchar *)malloc(maxcarac*sizeof (gchar));
+    pwd= gtk_entry_get_text(GTK_ENTRY(STR->password_entry));
+    while (ptc)
+    {
+        if(!strcmp(ptc->info->username,username))
+        {
+            found=1;
+            break;
+        }
+        ptc=ptc->svt;
+    }
+    if(found)
+    {
+        if(!strcmp(ptc->info->password,pwd))
+            afficher_fenetre(STR->window);
+        else
+        printf("\nfalse user info !!");
+    }
+    else
+        printf("\n not found !!");
+}
 void Signal(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* wdgt)
 {
 	cur = cur->xmlChildrenNode;
+
     loginstructure *L;
     GtkWidget *usernameentry,*pwdentry;
-	GtkWindow* win;
+	GtkWindow* win,*window_parent;
 	int nat, callback;
 	while (cur)
 	{

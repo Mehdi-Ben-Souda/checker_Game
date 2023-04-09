@@ -6,11 +6,11 @@
 			</Label>
 			<Label text="username" name="lab_username" X="50" Y="100">
 			</Label>
-			<Entry text="" cache="" name ="signup_username" X="150" icon="" Y="100">
+			<Entry text="" cache ="$"  name ="signup_username" X="150" icon="" Y="100">
 			</Entry>
 			<Label text="password" name="lab_password" X="50" Y="145">
 			</Label>
-			<Entry text="" cache="*" name ="signup_password" X="150" icon="" Y="145">
+			<Entry text=""  cache ="*" name ="signup_password" X="150" icon="" Y="145">
 			</Entry>
 			<Label text="Ville" name="lab_password" X="50" Y="190">
 			</Label>
@@ -25,11 +25,11 @@
 			</Label>
 			<Label text="username" name="lab_username" X="50" Y="100">
 			</Label>
-			<Entry text="" cache="" name ="username" X="150" icon="" Y="100">
+			<Entry text="" cache ="$" name ="username" X="150" icon="" Y="100">
 			</Entry>
 			<Label text="password" name="lab_password" X="50" Y="145">
 			</Label>
-			<Entry text="" cache="*" name ="password"  X="150" icon="" Y="145">
+			<Entry text="" cache ="*"  name ="password"  X="150" icon="" Y="145">
 			</Entry>
 			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250">
 			</Button>

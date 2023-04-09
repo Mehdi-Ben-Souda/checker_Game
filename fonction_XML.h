@@ -241,7 +241,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			//l'initialisation d'un InfoToolBar
 			infotoolbar = Init_InfoToolBar((char*)xmlGetProp(cur, "message"),
 				(char*)xmlGetProp(cur, "boutton_Label"),
-				atoi((char*)xmlGetProp(cur, "type_message")));
+				atoi((char*)xmlGetProp(cur, "type_message"))
+                ,(char*)xmlGetProp(cur, "name"));
 			//la creation d'un InfoToolBar
 			infotoolbar = Creer_InfoToolBar(infotoolbar);
 			gtk_fixed_put(GTK_FIXED(Gtk_parent), GTK_WIDGET(infotoolbar->info_toolbar), 10, 10);
@@ -332,7 +333,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			//l'inatialisation d'une entree
             printf("\n entry trouver");
 			entry = Entry_init((gchar*)xmlGetProp(cur, "text"),
-				(char)xmlGetProp(cur, "cache"),
+                               (char*)xmlGetProp(cur, "cache"),
 				(char*)xmlGetProp(cur, "icon"),
                 (char*)xmlGetProp(cur, "name"),
 				atoi((char*)xmlGetProp(cur, "X")),
