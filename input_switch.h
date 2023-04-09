@@ -66,12 +66,19 @@ Search*Creer_Search(gchar name1[maxcarac],int x,int y)
     {
         printf("Erreur d'allocation"); exit(-1);
     }
-    //Remplir la structure
-    strcpy(sea->name,name1);
+
     sea->pos.X=x;
     sea->pos.Y=y;
     //créer un nouveau Gtk widget de recherche
     sea->search=gtk_search_entry_new ();
+    //Remplir la structure
+    if (!name1)
+        strcpy(sea->name, "vide");
+    else {
+        strcpy(sea->name, name1);
+        gtk_widget_set_name(sea->search, name1);
+    }
+
     return ((Search*)sea);
 }
 //La structure de données de l'entrée

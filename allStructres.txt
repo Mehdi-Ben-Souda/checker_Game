@@ -85,7 +85,7 @@
 	</Fenetre>
 +++++++++++++++++++++++++++++++++++++++++ ComboBox
 		<Fixed name="THEfixed">
-			<ComboBox entry="1" X="500" Y="650">
+			<ComboBox entry="1" X="500" Y="650" name="myComboBox">
 				<Option id="id3">option1</Option>
 				<Option id="id3">option2</Option>
 				<Option id="id2">option3</Option>
@@ -97,7 +97,7 @@
 			<Switch etat="1" X="100" Y="100"></Switch>
         </Fixed>
     </Fenetre>
-===============================
+=============================== Search_bar
 	<Fenetre name="MyWindow" Titre="mon titre" type="1" largeur="500"
 			hauteur="500" X="250" Y="300" >
 		<Fixed name="fixed name">

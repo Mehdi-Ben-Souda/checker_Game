@@ -2,6 +2,7 @@
 typedef struct
 {
     GtkWidget* combo_box;
+    char name[NB_Cara_titre];
     int entry;
     int idElem;//indice dernier element dans le combo box disponible
     coordonne pos;
@@ -14,7 +15,7 @@ typedef struct
  *			 -> deux entier pour la position
  * sorties : combobox
  */
-comboBox* creer_combo_Box(int entry,int X,int Y)
+comboBox* creer_combo_Box(int entry,int X,int Y,char *name)
 {
     comboBox* comboB=NULL;
     //l'allocation de la memeoire
@@ -28,6 +29,7 @@ comboBox* creer_combo_Box(int entry,int X,int Y)
     comboB->pos.X = X;
     comboB->pos.Y = Y;
     comboB->idElem = 0;
+
     //tester si combo box sera sans entree
     if (!entry){
         //creation de combo box sans entree
@@ -39,6 +41,12 @@ comboBox* creer_combo_Box(int entry,int X,int Y)
         comboB->combo_box = gtk_combo_box_text_new_with_entry();
         printf("\n ComboBox creer\n");
        }
+    if (!name)
+        strcpy(comboB->name, "vide");
+    else {
+        strcpy(comboB->name, name);
+        gtk_widget_set_name(comboB->combo_box, name);
+    }
     return ((comboBox*)comboB);
 }
 /*____________________________________________________________________________
@@ -55,6 +63,7 @@ comboBox* combo_box_inserer(comboBox* maComboBox, int position, char* valeur, ch
         gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), id, valeur);
     else
         gtk_combo_box_text_insert(GTK_COMBO_BOX_TEXT(maComboBox->combo_box), position, id, valeur);
+
     maComboBox->idElem++;
     return ((comboBox*)maComboBox);
 }

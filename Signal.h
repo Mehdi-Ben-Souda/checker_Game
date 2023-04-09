@@ -1,39 +1,55 @@
 #pragma once
 
-
-void chercher_widget(xmlDocPtr doc, char* nom, GtkWidget* wdgt)
+GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 {
 
-	/*
-
 	GtkWidget* child_widget = NULL;
-	GList* children = gtk_container_get_children(GTK_CONTAINER(container_widget));
-	GList* iter;
-	for (iter = children; iter != NULL; iter = iter->next) {
-		GtkWidget* widget = GTK_WIDGET(iter->data);
-		const char* name = gtk_widget_get_name(widget);
-		if (name != NULL && strcmp(name, child_name) == 0) {
+	GList* children = NULL;
+	GList* iter2;
+	char* name = NULL;
+	child_widget = NULL;
+	children = gtk_container_get_children(GTK_CONTAINER(widget));
+
+	for (iter2 = children; iter2 != NULL; iter2 = iter2->next) {
+		widget = GTK_WIDGET(iter2->data);
+		name = gtk_widget_get_name(widget);
+		printf("\n the name %s \n", name);
+		if (name != NULL && !strcmp(name, nom)) {
 			child_widget = widget;
 			break;
 		}
 		else
 		{
-			child_widget = chercher_widget(doc, name, widget);
-			if (child_widget != NULL) break;
+			child_widget = chercher_widget_par_conteneur(nom, widget);
 		}
-
 	}
-
+	if (child_widget)
+		printf("\n le widegt %s est trouve\n", name);
+	else
+		printf("\n le widegt n'est trouve\n");
 	g_list_free(children);
+	return((GtkWidget*)child_widget);
+}
 
-	if (child_widget != NULL) {
-		printf("\nwidget found\n");
+void chercher_widget( char* nom)
+{
+	GList* windows, * iter;
+	GtkWindow* window = NULL;
+	GtkWidget* child_widget = NULL;
+
+	char* name = NULL;
+	// Récupérer la liste des fenêtres principales
+	windows = gtk_window_list_toplevels();
+	for (iter = windows; iter != NULL; iter = g_list_next(iter)) {
+		window = GTK_WINDOW(iter->data);
+		child_widget = chercher_widget_par_conteneur(nom, window);
 	}
-	else {
-		wdgt = gtk_widget_get_toplevel(wdgt);
-		return((GtkWidget*)chercher_widget(doc,nom,wdgt));
-	}
-	return((GtkWidget*)child_widget);*/
+	if (child_widget)
+		printf("\n le widegt %s est trouve\n", nom);
+	else
+		printf("\n le widegt n'est trouve\n");
+	g_list_free(windows);	
+	return((GtkWidget*)child_widget);
 }
 
 GtkWindow* chercher_fenetre_parFils(GtkWidget *fils)

@@ -290,7 +290,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			// la creation de combobox
 			combo = creer_combo_Box(atoi((char*)xmlGetProp(cur_parent, "entry")),
 				atoi((char*)xmlGetProp(cur_parent, "X")),
-				atoi((char*)xmlGetProp(cur_parent, "Y")));
+				atoi((char*)xmlGetProp(cur_parent, "Y")),
+				(char*)xmlGetProp(cur_parent, "name"));
 			//pointer sur le premier fils de la balise cur
 			cur = cur->xmlChildrenNode;
 			//boucler tanqu'il y a une balise a traiter
@@ -300,8 +301,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				if (nature_balise(cur) == 15)
 				{
 					//inserer l'option trouver dans le combo box
-					combo = combo_box_inserer(combo, -1, (char*)xmlNodeGetContent(cur),
-						(char*)xmlGetProp(cur_parent, "id"));
+					combo = combo_box_inserer(combo, 1, (char*)xmlNodeGetContent(cur),
+						(char*)xmlGetProp(cur, "id"));
 					printf("\n Option trouver et creer\n");
 				}
 				//pointer sur la balise suivante (frere)

@@ -207,7 +207,11 @@ Fixed* Allouer_fixed(char name[20])
         exit(12);
     }
     else
+    {
         strcpy(ptr->name, name);
+        gtk_widget_set_name(ptr->mon_fixed, name);
+    }
+
 
     return(Fixed*)ptr;
 }
