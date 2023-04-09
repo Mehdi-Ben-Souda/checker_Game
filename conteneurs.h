@@ -364,4 +364,40 @@ Assenceur* Ajouter_Assenceur(GtkWidget* fils, Assenceur* lassenceur)
         gtk_container_add(GTK_CONTAINER(lassenceur->assc), fils);
     }
     return (Assenceur*)lassenceur;
+}//Frame
+typedef struct frm
+{
+    GtkFrame* frame;
+    char label[NB_Cara_titre];
+    char name[NB_Cara_titre];
+}Frame;
+
+Frame* creer_Frame(char label[NB_Cara_titre], char name[NB_Cara_titre])
+{
+    Frame* frame = (Frame*)malloc(sizeof(Frame));
+    if (!frame)
+    {
+        printf("!!!\nErreur dans l'Allocation de l'assenceur!!\n");
+
+        return (Frame*)frame;
+    }
+
+    if (!label)
+    {
+        frame->frame = gtk_frame_new(NULL);
+        strcpy(frame->label, "vide");
+    }
+    else
+    {
+        frame->frame = gtk_frame_new(label);
+        strcpy(frame->label, label);
+    }
+
+    if (!name)
+        strcpy(frame->name, "vide");
+    else {
+        strcpy(frame->name, name);
+        gtk_widget_set_name(frame->frame, name);
+    }
+    return (Assenceur*)frame;
 }
