@@ -28,7 +28,7 @@ Label* Init_label(char text[250], char name[NB_Cara_titre], int X, int Y)
 	ptr->X_Y.Y = Y;
 
 	//Creation du widget label
-	ptr->leLabel= gtk_label_new(name);
+	ptr->leLabel= gtk_label_new(text);
 	return (Label*)ptr;
 }
 

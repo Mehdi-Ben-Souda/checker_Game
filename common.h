@@ -11,7 +11,20 @@ typedef struct crd
     int Y;
 }coordonne;
 
+/**********************************fonction du couleur***********************************/
+#pragma warning(disable: 4996)
+void add_bgcolor(GtkWidget* widget, char couleur[NB_Cara_titre], gdouble opacite)
 
+{
+
+	if (couleur == NULL) return;
+
+	GdkRGBA color;
+	gdk_rgba_parse(&color, couleur);
+	color.alpha = opacite;
+	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &color);
+}
+#pragma warning(disable: 4996)
 /*
  * Fonction qui permet de identifier la nature de balise
  * entr�es : un element de type xmlNodePtr ,c'est la balise a identifier

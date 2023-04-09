@@ -53,7 +53,9 @@ Box* Allouer_Box(Orientation orientation, int espacement)
         printf("!!!\nErreur dans l'Allocation du Box!!!\n");
         return (Box*)boite;
     }
-    boite->mon_box = NULL;
+    boite->mon_box = gtk_box_new(boite->orientation,
+        boite->espacement);
+    //boite->mon_box = NULL;
     boite->orientation = orientation;
     boite->espacement = espacement;
 

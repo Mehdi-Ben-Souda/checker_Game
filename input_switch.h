@@ -155,9 +155,9 @@ Entree*Creer_Entree(Entree*mon_entre)
     else   //si on veut un mot de passe
     {
         //avec choix de caractère de cache
-
-        gtk_entry_set_invisible_char(GTK_ENTRY( mon_entre->entry),
-                                     mon_entre->cache);
+        gtk_entry_set_visibility(GTK_ENTRY(mon_entre->entry), FALSE);
+        gtk_entry_set_invisible_char(GTK_ENTRY(mon_entre->entry),
+            mon_entre->cache);
     }
     //si on veut un texte saisi par défaut dans la zone de texte
     if(!strcmp(mon_entre->text,"vide"))
