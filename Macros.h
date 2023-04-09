@@ -9,7 +9,7 @@
 #include "Boutons.h"
 #include "Menu.h"
 #include "ToolBar.h"
-
+#include "BaseJoueur.h"
 #include "InfoToolBar.h"
 #include "Toggle_Simple_Bouton.h"
 #include "Radio_Check_Boutton.h"
@@ -17,6 +17,7 @@
 #include "ComboBox.h"
 #include "Signal.h"
 #include "label.h"
+
 #include "fonction_XML.h"
 
 
