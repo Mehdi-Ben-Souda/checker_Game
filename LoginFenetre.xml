@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<interface>
+	<Fenetre visible="0" name="MyWindow2" Titre="Sing Up" type="0" largeur="500" hauteur="500" X="300" Y="300" >
+		<Fixed name="fixed name">
+			<Label text="Page d'inscription" name="lab_titre" X="200" Y="50">
+			</Label>
+			<Label text="username" name="lab_username" X="50" Y="100">
+			</Label>
+			<Entry text="" cache="" name ="username" X="150" icon="" Y="100">
+			</Entry>
+			<Label text="password" name="lab_password" X="50" Y="145">
+			</Label>
+			<Entry text="" cache="*" name ="username" X="150" icon="" Y="145">
+			</Entry>
+			<Label text="Ville" name="lab_password" X="50" Y="190">
+			</Label>
+			<ComboBox entry="1" X="150" Y="190" name="myComboBox">
+				<Option id="id3">Meknes</Option>
+				<Option id="id3">Fes</Option>
+				<Option id="id2">Tanger</Option>
+			</ComboBox>
+			<Button label="Login" tooltip="Login"  image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="300">
+				<signal type="clicked" callback="1" data1="MyWindow2"  data2="username"  data3="password">
+				</signal>
+			</Button>
+		</Fixed>
+	</Fenetre>
+	
+	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="0" largeur="500"
+   hauteur="500" X="850" Y="300" >
+		<Fixed name="fixed name">
+			<Label text="Page de login" name="lab_titre" X="200" Y="50">
+			</Label>
+			<Label text="username" name="lab_username" X="50" Y="100">
+			</Label>
+			<Entry text="" cache="" X="150" icon="" Y="100">
+			</Entry>
+			<Label text="password" name="lab_password" X="50" Y="145">
+			</Label>
+			<Entry text="" cache="*"   X="150" icon="" Y="145">
+			</Entry>
+			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250">
+			</Button>
+			<Button label="Login" tooltip="Login"
+				image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="250">
+			</Button>
+		</Fixed>
+	</Fenetre>
+</interface>
