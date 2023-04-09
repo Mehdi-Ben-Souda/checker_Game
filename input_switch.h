@@ -78,7 +78,6 @@ Search*Creer_Search(gchar name1[maxcarac],int x,int y)
         strcpy(sea->name, name1);
         gtk_widget_set_name(sea->search, name1);
     }
-
     return ((Search*)sea);
 }
 //La structure de données de l'entrée
@@ -88,6 +87,7 @@ typedef struct et
     gchar text[maxcarac];//le text par défaut dans la zone
     GtkWidget *entry;//le widget
     coordonne pos;
+    char name[maxcarac];
     gchar *icon;//l'icon dans la zone
 }Entree;
 /*
@@ -105,8 +105,7 @@ La fonction Entry_init
 la structure de type Entree et d'initialiser
 ses champs et de la retourner .
 */
-Entree* Entry_init(gchar text1[maxcarac],gchar cache1,
-                   gchar *mon_icon,int x,int y)
+Entree* Entry_init(gchar text1[maxcarac],gchar cache1,gchar *mon_icon,char name[maxcarac],int x,int y)
 {
     Entree* mon_entre=(Entree*)malloc(sizeof(Entree));
     if(!mon_entre)
@@ -133,6 +132,7 @@ Entree* Entry_init(gchar text1[maxcarac],gchar cache1,
     else mon_entre->icon =NULL;
     mon_entre->pos.X=x;
     mon_entre->pos.Y=y;
+    strcpy(mon_entre->name,name);
     //on retourne la structure initialisé
     return((Entree*)mon_entre);
 }
@@ -170,5 +170,6 @@ Entree*Creer_Entree(Entree*mon_entre)
         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(mon_entre->entry),
                                           GTK_ENTRY_ICON_SECONDARY,mon_entre->icon);
     }
+    gtk_widget_set_name(mon_entre->entry, mon_entre->name);
     return ((Entree*)mon_entre);
 }

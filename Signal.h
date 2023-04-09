@@ -1,5 +1,57 @@
 #pragma once
 
+typedef struct {
+    GtkWindow *window;
+    GtkWidget *username_entry;
+    GtkWidget *password_entry;
+}loginstructure;
+
+loginstructure *Init_Login_structure( GtkWindow *window,GtkWidget *username_entry,GtkWidget *password_entry)
+{
+    loginstructure *NE=(loginstructure*) malloc(sizeof (loginstructure));
+    if(!NE)
+    {
+        printf("\nerreur d'allocation");
+        exit(-1);
+    }
+    // NE->infoBar=infoBar;
+    NE->window=window;
+    NE->password_entry=password_entry;
+    NE->username_entry=username_entry;
+    return ((loginstructure*)NE);
+}
+void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
+{
+    printf("\nlogin clicked");
+    int found=0;
+    const gchar *username,*pwd;
+    int nbjoueur;
+    cellulejoueur*Base=remplir_Base_Joueur(&nbjoueur);
+    cellulejoueur*ptc=Base;
+    username=(gchar *)malloc(maxcarac*sizeof (gchar));
+    username= gtk_entry_get_text(GTK_ENTRY(STR->username_entry));
+    pwd=(gchar *)malloc(maxcarac*sizeof (gchar));
+    pwd= gtk_entry_get_text(GTK_ENTRY(STR->password_entry));
+    while (ptc)
+    {
+        if(!strcmp(ptc->info->username,username))
+        {
+            found=1;
+            break;
+        }
+        ptc=ptc->svt;
+    }
+    if(found)
+    {
+        if(!strcmp(ptc->info->password,pwd))
+            gtk_widget_show_all(GTK_WIDGET(STR->window));
+        else
+            printf("\nfalse user info !!");
+    }
+    else
+        printf("\n not found !!");
+}
+
 GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 {
 
@@ -31,25 +83,28 @@ GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 	return((GtkWidget*)child_widget);
 }
 
-void chercher_widget( char* nom)
+GtkWidget *chercher_widget( char* nom)
 {
 	GList* windows, * iter;
 	GtkWindow* window = NULL;
 	GtkWidget* child_widget = NULL;
-
 	char* name = NULL;
-	// Récupérer la liste des fenêtres principales
+	// Rï¿½cupï¿½rer la liste des fenï¿½tres principales
 	windows = gtk_window_list_toplevels();
 	for (iter = windows; iter != NULL; iter = g_list_next(iter)) {
 		window = GTK_WINDOW(iter->data);
 		child_widget = chercher_widget_par_conteneur(nom, window);
 	}
 	if (child_widget)
-		printf("\n le widegt %s est trouve\n", nom);
+    {
+        g_list_free(windows);
+        return ((GtkWidget*)child_widget);
+    }
+
 	else
 		printf("\n le widegt n'est trouve\n");
-	g_list_free(windows);	
-	return((GtkWidget*)child_widget);
+    g_list_free(windows);
+    return ((GtkWidget*)child_widget);
 }
 
 GtkWindow* chercher_fenetre_parFils(GtkWidget *fils)
@@ -66,11 +121,11 @@ GtkWindow* chercher_fenetre_parNom(char name[NB_Cara_titre])
 	GList* windows, * iter;
 	GtkWindow* window=NULL;
 
-	// Récupérer la liste des fenêtres principales
+	// Rï¿½cupï¿½rer la liste des fenï¿½tres principales
 	windows = gtk_window_list_toplevels();
 	for (iter = windows; iter != NULL; iter = g_list_next(iter)) {
 		window = GTK_WINDOW(iter->data);
-		if (!strcmp(gtk_widget_get_name(window), name))return((GtkWindow*)window);
+		if (!strcmp(gtk_widget_get_name(GTK_WIDGET(window)), name))return((GtkWindow*)window);
 		window = NULL;
 	}
 	//if (!window)printf("\n fenetre inexistant\n");
@@ -92,6 +147,8 @@ void Signal_afficher_fenetre_et_destroy(GtkWindow* wdgt1, GtkWindow* wdgt2)
 void Signal(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* wdgt)
 {
 	cur = cur->xmlChildrenNode;
+    loginstructure *L;
+    GtkWidget *usernameentry,*pwdentry;
 	GtkWindow* win;
 	int nat, callback;
 	while (cur)
@@ -111,8 +168,11 @@ void Signal(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* wdgt)
 				printf("\n signal realiser \n");
 				break;
 			case 2:
-				win = chercher_fenetre_parNom((char*)xmlGetProp(cur, "data"));
-				g_signal_connect(wdgt, "clicked", G_CALLBACK(Signal_afficher_fenetre_et_destroy), win);
+				win = chercher_fenetre_parNom((char*)xmlGetProp(cur, "data1"));
+                usernameentry= chercher_widget((char*)xmlGetProp(cur, "data2"));
+                pwdentry= chercher_widget((char*)xmlGetProp(cur, "data3"));
+                L= Init_Login_structure(win,usernameentry,pwdentry);
+				g_signal_connect(wdgt, "clicked", G_CALLBACK(login_clicked), L);
 				printf("\n signal realiser \n");
 				break;
 			default:break;

@@ -330,15 +330,18 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 			break;
 		case 18:// si la balise est une entree
 			//l'inatialisation d'une entree
+            printf("\n entry trouver");
 			entry = Entry_init((gchar*)xmlGetProp(cur, "text"),
-				(char*)xmlGetProp(cur, "cache"),
+				(char)xmlGetProp(cur, "cache"),
 				(char*)xmlGetProp(cur, "icon"),
+                (char*)xmlGetProp(cur, "name"),
 				atoi((char*)xmlGetProp(cur, "X")),
 				atoi((char*)xmlGetProp(cur, "Y")));
 			//la creation
 			entry = Creer_Entree(entry);
 			//l'ajouter a son parent
 			ajoueter_a_conteuneur(cur->parent, Gtk_parent, entry->entry, entry->pos.X, entry->pos.Y);
+            printf("\nentry ajouter !!!!");
 			break;
 		case 19:// si la balise est un bouton toogle
 			// initialisation d'un bouton toogle
