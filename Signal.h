@@ -58,13 +58,15 @@ GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 	GtkWidget* child_widget = NULL;
 	GList* children = NULL;
 	GList* iter2;
-	char* name = NULL;
+	char name[NB_Cara_titre];
 	child_widget = NULL;
+	if (GTK_IS_ENTRY(widget) || GTK_IS_LABEL(widget)|| GTK_IS_IMAGE(widget))return((GtkWidget*)child_widget);
+
 	children = gtk_container_get_children(GTK_CONTAINER(widget));
 
 	for (iter2 = children; iter2 != NULL; iter2 = iter2->next) {
 		widget = GTK_WIDGET(iter2->data);
-		name = gtk_widget_get_name(widget);
+		strcpy(name, gtk_widget_get_name(widget));
 		printf("\n the name %s \n", name);
 		if (name != NULL && !strcmp(name, nom)) {
 			child_widget = widget;
@@ -72,7 +74,7 @@ GtkWidget* chercher_widget_par_conteneur(char* nom, GtkWidget* widget)
 		}
 		else
 		{
-			child_widget = chercher_widget_par_conteneur(nom, widget);
+			child_widget = chercher_widget_par_conteneur(nom, GTK_WIDGET(widget));
 		}
 	}
 	if (child_widget)
@@ -93,14 +95,10 @@ GtkWidget *chercher_widget( char* nom)
 	windows = gtk_window_list_toplevels();
 	for (iter = windows; iter != NULL; iter = g_list_next(iter)) {
 		window = GTK_WINDOW(iter->data);
-		child_widget = chercher_widget_par_conteneur(nom, window);
+		child_widget = chercher_widget_par_conteneur(nom, GTK_WIDGET( window));
 	}
 	if (child_widget)
-    {
-        g_list_free(windows);
-        return ((GtkWidget*)child_widget);
-    }
-
+		printf("\n le widegt est trouve\n");
 	else
 		printf("\n le widegt n'est trouve\n");
     g_list_free(windows);
@@ -125,7 +123,11 @@ GtkWindow* chercher_fenetre_parNom(char name[NB_Cara_titre])
 	windows = gtk_window_list_toplevels();
 	for (iter = windows; iter != NULL; iter = g_list_next(iter)) {
 		window = GTK_WINDOW(iter->data);
-		if (!strcmp(gtk_widget_get_name(GTK_WIDGET(window)), name))return((GtkWindow*)window);
+		if (!strcmp(gtk_widget_get_name(GTK_WIDGET(window)), name))
+		{
+			printf("\n fenetre trouver %s \n", name);
+			return((GtkWindow*)window);
+		}
 		window = NULL;
 	}
 	//if (!window)printf("\n fenetre inexistant\n");
