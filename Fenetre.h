@@ -211,7 +211,7 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 	if (strcmp("vide", mafenetre->couleur))//Si la couleur existe
 	{
 		/*_______________Changement couleur background____________*/
-		provider = gtk_css_provider_new();
+		/*provider = gtk_css_provider_new();
 		display = gdk_display_get_default();
 		screen = gdk_display_get_default_screen(display);
 
@@ -219,12 +219,13 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 			GTK_STYLE_PROVIDER(provider), 
 			GTK_STYLE_PROVIDER_PRIORITY_USER);
 
-
+		printf("alllo______________________________");
 		snprintf(buffer, sizeof(buffer), 
 			"#%s { background-color:%s;}",mafenetre->name, 
 				mafenetre->couleur);
 			//Ajout du code CSS
-		gtk_css_provider_load_from_data(provider, buffer, -1, NULL);
+		gtk_css_provider_load_from_data(provider, buffer, -1, NULL);*/
+		add_bgcolor(mafenetre->ma_fenetre, mafenetre->couleur, 0.5);
 		
 	}
 

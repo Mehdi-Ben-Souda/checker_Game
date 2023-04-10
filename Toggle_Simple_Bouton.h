@@ -7,6 +7,7 @@ typedef struct
     GtkWidget *img;//l'image
     Taille size;//la taille du bouton
     coordonne pos;//la position du bouton
+    char couleur[8];//Couleur de fond en HEX
     int relief;
 }Bouton;//structure d'un simple bouton et d'un toggle bouton
 /*
@@ -23,7 +24,7 @@ Bouton * Initialiser_boutton(char label[maxcarac],
                              char tooltip[maxcarac],
                              char image[maxcarac],
                              int largeur,int longueur,
-                             int rlf,int x, int y)
+                             int rlf,int x, int y, char* couleur)
 {
     Bouton *maboutton;//déclaration de variable
     //allocation de la mémoire
@@ -52,6 +53,15 @@ Bouton * Initialiser_boutton(char label[maxcarac],
     }
     else //sinon on met l'image à NULL
         maboutton->img = NULL;
+    //Si la couleur n'existe pas , on met "vide" dans 
+    //le paramatre
+    if (!couleur)
+    {
+        strcpy(maboutton->couleur, "vide");
+    }
+    else
+        //Si non on le met on la couleur dans la structure
+        strcpy(maboutton->couleur, couleur);
     return ((Bouton *)maboutton);
 }
 /*
@@ -92,6 +102,12 @@ Bouton* Creer_SimpleBoutton(Bouton* maboutton)
                              maboutton->img);
         gtk_button_set_always_show_image(GTK_BUTTON(maboutton->Mabouton->button),
                                          TRUE);
+    }
+    if (strcmp("vide", maboutton->couleur))//Si la couleur existe
+    {
+
+        add_bgcolor(maboutton->Mabouton->button, maboutton->couleur, 0.5);
+
     }
     return ((Bouton *)maboutton);
 }

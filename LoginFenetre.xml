@@ -1,19 +1,8 @@
 <?xml version="1.0"?>
 <interface>
-	<Fenetre visible="0" name="MyWindow2" Titre="Sing Up" type="0" largeur="500" hauteur="500" X="300" Y="300" >
+	<Fenetre visible="0" name="sinup fenetre" Titre="Sing Up" type="0" largeur="500" hauteur="500" X="300" Y="300" >
 		<Fixed name="fixed name">
-			<Menu X="0" Y="0" orientation="0">
-				<CelluleMenu label="add" name="celluleMenu1">
-					<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
-					<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" ></CelluleItem>
-				</CelluleMenu>
-
-				<CelluleMenu label="edit" name="celluleMenu2">
-					<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' ></CelluleItem>
-					<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' ></CelluleItem>
-				</CelluleMenu>
-
-			</Menu>
+			
 			<Label text="Page d'inscription" name="lab_titre" X="200" Y="50">
 			</Label>
 			<Label text="username" name="lab_username" X="50" Y="100">
@@ -52,17 +41,42 @@
 		</Fixed>
 	</Fenetre>
 
-	<Fenetre visible="1" name="MyWindow3" Titre="Acceuil" type="0" largeur="500"
-   hauteur="500" X="850" Y="300" >
+	<Fenetre visible="0" name="acceuil fenetre" Titre="Acceuil" type="0" largeur="500"
+   hauteur="500" X="1000" Y="300" couleur="#c2c2d6" >
 		<Fixed name="fixed name">
+			<Menu X="0" Y="0" orientation="0">
+				<CelluleMenu label="add" name="celluleMenu1">
+					<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
+					<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" ></CelluleItem>
+				</CelluleMenu>
+
+				<CelluleMenu label="edit" name="celluleMenu2">
+					<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' ></CelluleItem>
+					<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' ></CelluleItem>
+				</CelluleMenu>
+
+			</Menu>
+			<Toolbar icon_size="4" style="0" orientation="1" X="0" Y="25">
+				
+
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\home.png">
+				</CelluleToolItem>
+				<CelluleToolItem label="item1" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\about.png" >
+				</CelluleToolItem>
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\download.png">
+				</CelluleToolItem>
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\qutter_exporter.png">
+				</CelluleToolItem>
+				
+			</Toolbar>
 			<Label text="Page d'acceuil " name="lab_titre" X="200" Y="50">
 			</Label>
 			
 		</Fixed>
 	</Fenetre>
 	
-	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="0" largeur="500"
-   hauteur="500" X="850" Y="300" >
+	<Fenetre visible="1" name="signin fenetre" Titre="sing in" type="0" largeur="500"
+   hauteur="500" X="850" Y="300" couleur="#FFEEFF" >
 		<Fixed name="fixed name">
 			<Label text="Page de login" name="lab_titre" X="200" Y="50">
 			</Label>
@@ -74,12 +88,12 @@
 			</Label>
 			<Entry text="" cache ="*"  name ="password"  X="150" icon="" Y="145">
 			</Entry>
-			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250">
-				<signal type="clicked" callback="1" data="MyWindow2">
+			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250" couleur="#FFEEFF">
+				<signal type="clicked" callback="1" data="sinup fenetre">
 				</signal>
 			</Button>
-			<Button label="Login" tooltip="Login" image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="250">
-				<signal type="clicked" callback="2" data1="MyWindow2"  data2="username"  data3="password">
+			<Button label="Login" tooltip="Login" image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="250" couleur="#FFEEFF">
+				<signal type="clicked" callback="2" data1="acceuil fenetre"  data2="username"  data3="password">
 				</signal>
 			</Button>
 		</Fixed>

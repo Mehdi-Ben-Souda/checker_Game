@@ -167,7 +167,7 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				atoi((char*)xmlGetProp(cur, "longueur")),
 				atoi((char*)xmlGetProp(cur, "relief")),
 				atoi((char*)xmlGetProp(cur, "X")),
-				atoi((char*)xmlGetProp(cur, "Y")));
+				atoi((char*)xmlGetProp(cur, "Y")), (char*)xmlGetProp(cur, "couleur"));
 			//creation d'un bouton
 			Btn = Creer_SimpleBoutton(Btn);
 			printf("\na button was created\n");
@@ -353,7 +353,8 @@ creer_fils(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* Gtk_parent) {
 				atoi((char*)xmlGetProp(cur, "longueur")),
 				atoi((char*)xmlGetProp(cur, "relief")),
 				atoi((char*)xmlGetProp(cur, "X")),
-				atoi((char*)xmlGetProp(cur, "Y")));
+				atoi((char*)xmlGetProp(cur, "Y")), 
+				(char*)xmlGetProp(cur, "couleur"));
 			//creation d'un bouton toggle
 			Btn = Creer_ToggleBoutton(Btn);
 			printf("\na ToggleBoutton was created\n");
