@@ -113,7 +113,7 @@ void Signal_afficher_fenetre_et_destroy(GtkWindow* wdgt1, GtkWindow* wdgt2)
 {
 	GtkWindow* The2_wdgt = (GtkWindow*)wdgt2;
 	afficher_fenetre(The2_wdgt);
-	gtk_widget_destroy(GTK_WIDGET(chercher_fenetre_parFils(GTK_WIDGET(wdgt1))));
+	gtk_widget_destroy(GTK_WIDGET(wdgt1));
 }
 void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
 {

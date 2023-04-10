@@ -2,6 +2,18 @@
 <interface>
 	<Fenetre visible="0" name="MyWindow2" Titre="Sing Up" type="0" largeur="500" hauteur="500" X="300" Y="300" >
 		<Fixed name="fixed name">
+			<Menu X="0" Y="0" orientation="0">
+				<CelluleMenu label="add" name="celluleMenu1">
+					<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
+					<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" ></CelluleItem>
+				</CelluleMenu>
+
+				<CelluleMenu label="edit" name="celluleMenu2">
+					<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' ></CelluleItem>
+					<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' ></CelluleItem>
+				</CelluleMenu>
+
+			</Menu>
 			<Label text="Page d'inscription" name="lab_titre" X="200" Y="50">
 			</Label>
 			<Label text="username" name="lab_username" X="50" Y="100">
@@ -12,12 +24,43 @@
 			</Label>
 			<Entry text=""  cache ="*" name ="signup_password" X="150" icon="" Y="145">
 			</Entry>
-			<Label text="Ville" name="lab_password" X="50" Y="190">
+			
+
+			<Label text="Sex" name="lable_sex" X="50" Y="250">
 			</Label>
-			<Button label="Login" tooltip="Login"  image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="300">
+			<Radio_Check_Buttons X="150" Y="250" orientation="0" spacing="20">
+				<Radio_Button label="homme">
+				</Radio_Button>
+				<Radio_Button label="femme">
+				</Radio_Button>
+				<Radio_Button label="??? Non Binaire ???">
+				</Radio_Button>
+			</Radio_Check_Buttons>
+
+
+			<Label text="Choix" name="" X="50" Y="300">
+			</Label>
+			<Radio_Check_Buttons X="150" Y="300" orientation="0" spacing="20">
+				<Check_Button label="Choix 1">
+				</Check_Button>
+				<Check_Button label="Choix 2">
+				</Check_Button>
+			</Radio_Check_Buttons>
+			
+			<Button label="Register" tooltip="Login"  image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="350">
 			</Button>
 		</Fixed>
 	</Fenetre>
+
+	<Fenetre visible="1" name="MyWindow3" Titre="Acceuil" type="0" largeur="500"
+   hauteur="500" X="850" Y="300" >
+		<Fixed name="fixed name">
+			<Label text="Page d'acceuil " name="lab_titre" X="200" Y="50">
+			</Label>
+			
+		</Fixed>
+	</Fenetre>
+	
 	<Fenetre visible="1" name="MyWindow1" Titre="mon titre1" type="0" largeur="500"
    hauteur="500" X="850" Y="300" >
 		<Fixed name="fixed name">
@@ -32,6 +75,8 @@
 			<Entry text="" cache ="*"  name ="password"  X="150" icon="" Y="145">
 			</Entry>
 			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250">
+				<signal type="clicked" callback="1" data="MyWindow2">
+				</signal>
 			</Button>
 			<Button label="Login" tooltip="Login" image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="250">
 				<signal type="clicked" callback="2" data1="MyWindow2"  data2="username"  data3="password">

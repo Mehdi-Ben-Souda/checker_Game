@@ -105,7 +105,7 @@ cellulejoueur *remplir_Base_Joueur()
     infojoueur *joueur;
     // creation de la classe
     cellulejoueur *base = NULL;
-    f = fopen("BaseJoueurs.csv", "r");
+    f = fopen("C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\BaseJoueurs.csv", "r");
     if(!f)
     {
         printf("erreur");
