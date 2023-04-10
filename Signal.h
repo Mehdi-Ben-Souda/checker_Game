@@ -119,6 +119,7 @@ void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
 {
     printf("\nlogin clicked");
     int found=0;
+	GtkWindow* win = NULL;
     const gchar *username,*pwd;
     InfoToolBar *warning;
     int nbjoueur;
@@ -141,10 +142,20 @@ void login_clicked(G_GNUC_UNUSED GtkButton* bouton,loginstructure*STR)
     }
     if(found)
     {
-        if(!strcmp(ptc->info->password,pwd))
-            afficher_fenetre(STR->window);
-        else
-        printf("\nfalse user info !!");
+		if (!strcmp(ptc->info->password, pwd))
+		{
+			printf("\n login et password correct\n");
+			afficher_fenetre(STR->window);
+			gtk_widget_destroy(GTK_WIDGET(chercher_fenetre_parFils(GTK_WIDGET(bouton))));
+		}
+
+		else {
+			GtkWidget* fixed = gtk_widget_get_parent(GTK_WIDGET(bouton));
+			InfoToolBar* info = Init_InfoToolBar("login et mot de passe incorrecte", "ok", 1, "infobar");
+			info = Creer_InfoToolBar(info);
+			gtk_fixed_put(fixed, info->info_toolbar, 0, 0);
+			Afficher_InfoToolBar(info);
+		}
     }
     else
         printf("\n not found !!");
@@ -155,7 +166,7 @@ void Signal(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* wdgt)
 
     loginstructure *L;
     GtkWidget *usernameentry,*pwdentry;
-	GtkWindow* win,*window_parent;
+	GtkWindow* win;
 	int nat, callback;
 	while (cur)
 	{
@@ -179,6 +190,11 @@ void Signal(xmlDocPtr doc, xmlNodePtr cur, GtkWidget* wdgt)
                 pwdentry= chercher_widget((char*)xmlGetProp(cur, "data3"));
                 L= Init_Login_structure(win,usernameentry,pwdentry);
 				g_signal_connect(wdgt, "clicked", G_CALLBACK(login_clicked), L);
+				printf("\n signal realiser \n");
+				break;
+			case 3:
+				win = chercher_fenetre_parNom((char*)xmlGetProp(cur, "data"));
+				g_signal_connect(wdgt, "clicked", G_CALLBACK(Signal_afficher_fenetre_et_destroy), win);
 				printf("\n signal realiser \n");
 				break;
 			default:break;
