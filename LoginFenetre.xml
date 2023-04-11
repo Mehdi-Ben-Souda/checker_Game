@@ -3,98 +3,66 @@
 	<Fenetre visible="0" name="sinup fenetre" Titre="Sing Up" type="0" largeur="500" hauteur="500" X="300" Y="300" >
 		<Fixed name="fixed name">
 			
-			<Label text="Page d'inscription" name="lab_titre" X="200" Y="50">
-			</Label>
-			<Label text="username" name="lab_username" X="50" Y="100">
-			</Label>
-			<Entry text="" cache ="$"  name ="signup_username" X="150" icon="" Y="100">
-			</Entry>
-			<Label text="password" name="lab_password" X="50" Y="145">
-			</Label>
-			<Entry text=""  cache ="*" name ="signup_password" X="150" icon="" Y="145">
-			</Entry>
-			
-
-			<Label text="Sex" name="lable_sex" X="50" Y="250">
-			</Label>
+			<Label text="Page d'inscription" name="lab_titre" X="200" Y="50"/>
+			<Label text="username" name="lab_username" X="50" Y="100"/>
+			<Entry text="" cache ="$"  name ="signup_username" X="150" icon="" Y="100"/>
+			<Label text="password" name="lab_password" X="50" Y="145"/>
+			<Entry text=""  cache ="*" name ="signup_password" X="150" icon="" Y="145"/>
+			<Label text="Sex" name="lable_sex" X="50" Y="250"/>
 			<Radio_Check_Buttons X="150" Y="250" orientation="0" spacing="20">
-				<Radio_Button label="homme">
-				</Radio_Button>
-				<Radio_Button label="femme">
-				</Radio_Button>
-				<Radio_Button label="??? Non Binaire ???">
-				</Radio_Button>
+				<Radio_Button label="homme"/>
+				<Radio_Button label="femme"/>
+				<Radio_Button label="??? Non Binaire ???"/>
 			</Radio_Check_Buttons>
-
-
-			<Label text="Choix" name="" X="50" Y="300">
-			</Label>
+			<Label text="Choix" name="" X="50" Y="300"/>
 			<Radio_Check_Buttons X="150" Y="300" orientation="0" spacing="20">
-				<Check_Button label="Choix 1">
-				</Check_Button>
-				<Check_Button label="Choix 2">
-				</Check_Button>
+				<Check_Button label="Choix 1"/>
+				<Check_Button label="Choix 2"/>
 			</Radio_Check_Buttons>
-			
-			<Button label="Register" tooltip="Login"  image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="350">
-			</Button>
+			<Button label="Register" tooltip="Login"  image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="350"/>
 		</Fixed>
 	</Fenetre>
+
+
 
 	<Fenetre visible="0" name="acceuil fenetre" Titre="Acceuil" type="0" largeur="500"
    hauteur="500" X="1000" Y="300" couleur="#c2c2d6" >
 		<Fixed name="fixed name">
 			<Menu X="0" Y="0" orientation="0">
 				<CelluleMenu label="add" name="celluleMenu1">
-					<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" ></CelluleItem>
-					<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" ></CelluleItem>
+					<CelluleItem label="item1" icon="GTK_STOCK_NEW" name="" accel_key="c" />
+					<CelluleItem label="item2" icon="GTK_STOCK_NEW" name="" accel_key="l" />
 				</CelluleMenu>
-
 				<CelluleMenu label="edit" name="celluleMenu2">
-					<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' ></CelluleItem>
-					<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' ></CelluleItem>
+					<CelluleItem label="item3" icon="GTK_STOCK_NEW" name="" accel_key='h' />
+					<CelluleItem label="item4" icon="GTK_STOCK_NEW" name="" accel_key='k' />
 				</CelluleMenu>
-
 			</Menu>
 			<Toolbar icon_size="4" style="0" orientation="1" X="0" Y="25">
-				
-
-				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\home.png">
-				</CelluleToolItem>
-				<CelluleToolItem label="item1" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\about.png" >
-				</CelluleToolItem>
-				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\download.png">
-				</CelluleToolItem>
-				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\qutter_exporter.png">
-				</CelluleToolItem>
-				
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\home.png"/>
+				<CelluleToolItem label="item1" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\about.png" />
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\download.png"/>
+				<CelluleToolItem label="item2" icon="C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\qutter_exporter.png"/>
 			</Toolbar>
-			<Label text="Page d'acceuil " name="lab_titre" X="200" Y="50">
-			</Label>
-			
+			<Label text="Page d'acceuil " name="lab_titre" X="200" Y="50"/>
 		</Fixed>
 	</Fenetre>
+
+
 	
 	<Fenetre visible="1" name="signin fenetre" Titre="sing in" type="0" largeur="500"
    hauteur="500" X="850" Y="300" couleur="#FFEEFF" >
 		<Fixed name="fixed name">
-			<Label text="Page de login" name="lab_titre" X="200" Y="50">
-			</Label>
-			<Label text="username" name="lab_username" X="50" Y="100">
-			</Label>
-			<Entry text="" cache ="$" name ="username" X="150" icon="" Y="100">
-			</Entry>
-			<Label text="password" name="lab_password" X="50" Y="145">
-			</Label>
-			<Entry text="" cache ="*"  name ="password"  X="150" icon="" Y="145">
-			</Entry>
+			<Label text="Page de login" name="lab_titre" X="200" Y="50"/>
+			<Label text="username" name="lab_username" X="50" Y="100"/>
+			<Entry text="" cache ="$" name ="username" X="150" icon="" Y="100"/>
+			<Label text="password" name="lab_password" X="50" Y="145"/>
+			<Entry text="" cache ="*"  name ="password"  X="150" icon="" Y="145"/>
 			<Button label="S'inscrire" tooltip="S'inscrire" image_icon="" largeur="70" longueur="20" relief="1" X="160" Y="250" couleur="#FFEEFF">
-				<signal type="clicked" callback="1" data="sinup fenetre">
-				</signal>
+				<signal type="clicked" callback="1" data="sinup fenetre"/>
 			</Button>
 			<Button label="Login" tooltip="Login" image_icon="" largeur="70" longueur="20" relief="1" X="90" Y="250" couleur="#FFEEFF">
-				<signal type="clicked" callback="2" data1="acceuil fenetre"  data2="username"  data3="password">
-				</signal>
+				<signal type="clicked" callback="2" data1="acceuil fenetre"  data2="username"  data3="password"/>
 			</Button>
 		</Fixed>
 	</Fenetre>
