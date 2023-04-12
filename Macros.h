@@ -11,6 +11,7 @@
 #include "ToolBar.h"
 #include "BaseJoueur.h"
 #include "InfoToolBar.h"
+#include "spin_boutton.h"
 #include "Toggle_Simple_Bouton.h"
 #include "Radio_Check_Boutton.h"
 #include "input_switch.h"
