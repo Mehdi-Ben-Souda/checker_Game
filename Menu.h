@@ -151,11 +151,11 @@ CelluleMenu *Creer_CelluleMenu(CelluleMenu *cel)
  */
 CelluleItem *Inserer_CelluleItem(CelluleItem *Liste_item,char label[maxcarac],
                                 char icon[maxcarac],char name[maxcarac],
-                                char accel_key[1], GtkAccelGroup* accel_group)
+                                char accel_key, GtkAccelGroup* accel_group)
 {
     CelluleItem *ptc;//pointeur courant pour parcourir la liste
     //initialiser le nouvel élément
-    CelluleItem *NE= Init_CelluleItem(label,icon,name,accel_key[0]);
+    CelluleItem *NE= Init_CelluleItem(label,icon,name,accel_key);
     NE= Creer_CelluleItem(NE,accel_group);//creer le nouvel élément
     if(!Liste_item)//si la liste n'existe pas
         return ((CelluleItem*)NE);//retourner le nouvel élément
