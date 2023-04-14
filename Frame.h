@@ -44,7 +44,6 @@ frame* Init_frame( char label[maxcarac],char name[maxcarac],int border_size,int 
         gtk_widget_set_size_request(F->monframe,F->Taille.X,F->Taille.Y);
         gtk_widget_set_name(F->monframe,F->name);
     }
-
     void Ajouter_Frame(frame *frame,GtkWidget *fils)
     {
         if(!frame)

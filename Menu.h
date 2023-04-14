@@ -71,17 +71,16 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
     if(!item)//vérification d'initialisation de la cellule
         return ((CelluleItem*)NULL);
     //s'il n'y a pas d'icône, on le crée avec seulement le titre
-    if(strcmp(item->icon,"vide")!=0)
+    if(strcmp(item->icon,"vide")==0)
         item->menu_item=gtk_menu_item_new_with_label(item->label);
     else//sinon, on le crée avec l'icône aussi
     {
         item->menu_item=gtk_image_menu_item_new_from_stock( item->icon,NULL);
-        gtk_image_menu_item_set_always_show_image(GTK_IMAGE_MENU_ITEM(item->menu_item)
-                                                  ,TRUE);
+        gtk_image_menu_item_set_always_show_image(GTK_IMAGE_MENU_ITEM(item->menu_item),TRUE);
         gtk_menu_item_set_label(GTK_MENU_ITEM(item->menu_item),item->label);
     }
     //l'ajout du raccourci
-    gtk_widget_add_accelerator (item->menu_item, "activate", 
+    gtk_widget_add_accelerator (item->menu_item, "activate",
                                 accel_group,item->accel_key,
                                 GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
     return ((CelluleItem*)item);
@@ -241,4 +240,7 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
     }
     return ((CelluleItem*)item);
 }
+
+
+
 #pragma warning(disable: 4996)
