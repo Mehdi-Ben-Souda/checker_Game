@@ -75,7 +75,7 @@ CelluleBouton *Inserer_Bouton(CelluleBouton *Maliste,char type,char label[maxcar
     ptcourant->svt = NE;  // insérer le nouvel élément
     return ((CelluleBouton*)Maliste);
 }
-RadioCheckBouttons *Crerr_Radio_Check_Boutons(CelluleBouton *Maliste,int x,int y,int orientation,int spacing)
+RadioCheckBouttons *Crerr_Radio_Check_Boutons(CelluleBouton *Maliste,int x,int y,Orientation orientation,int spacing)
 {
     RadioCheckBouttons *NE;
     CelluleBouton *ptc;
