@@ -20,6 +20,7 @@
 #include "label.h"
 #include "Frame.h"
 #include "image.h"
+#include "Dialog.h"
 #include "fonction_XML.h"
 
 
