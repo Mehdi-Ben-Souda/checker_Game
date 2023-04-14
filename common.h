@@ -76,3 +76,13 @@ int nature_balise(xmlNodePtr balise)
 	if ((!xmlStrcmp(balise->name, (const xmlChar*)"Label")))return((int)21);
 	return((int)-1);
 }
+
+void initialiser_GTK(int* argc, char* argv[])
+{
+	gtk_init(&argc, &argv);
+}
+
+void boucle_gtk()
+{
+	gtk_main();
+}
