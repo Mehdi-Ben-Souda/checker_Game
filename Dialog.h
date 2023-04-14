@@ -59,10 +59,20 @@ Dialog* Creer_Dialog(Dialog* ledialog)
 
         gtk_container_add(GTK_CONTAINER(content_area), hbox);
 
-        gtk_widget_show_all(ledialog->mon_dialog );
 
-        gtk_dialog_run(GTK_DIALOG(ledialog->mon_dialog ));
-
-        gtk_widget_destroy(ledialog->mon_dialog );
 	return (Dialog*)ledialog;
+}
+
+void Afficher_dialogue(Dialog *mondialogue)
+{
+    if(!mondialogue)
+    {
+        printf("\nDialogue dosen't exist !!");
+        exit(-1);
+    }
+    gtk_widget_show_all(mondialogue->mon_dialog );
+
+    gtk_dialog_run(GTK_DIALOG(mondialogue->mon_dialog ));
+
+    gtk_widget_destroy(mondialogue->mon_dialog );
 }
