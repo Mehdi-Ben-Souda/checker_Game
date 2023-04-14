@@ -31,7 +31,7 @@ typedef struct
 	char Titre[NB_Cara_titre];//le titre du fenetre
 	char chemin_icone[NB_Cara_chemin];//Icone de la fenetre
 	coordonne x_y;//Les cordonees de la position 
-	char couleur[8];//Couleur de fond en HEX
+	char couleur[10];//Couleur de fond en HEX
 	char name[20];//le nom de la fenetre par la quelle on va la
 			//cibler par le code CSS
 	int visible;//un entier qui indique si la fanetre sera visible ou non
