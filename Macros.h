@@ -18,6 +18,7 @@
 #include "ComboBox.h"
 #include "Signal.h"
 #include "label.h"
+#include "Frame.h"
 
 #include "fonction_XML.h"
 
