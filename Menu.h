@@ -52,6 +52,8 @@ CelluleItem *Init_CelluleItem(char label[maxcarac],char icon[maxcarac],
     //Initialisation des champs de la structure
     strcpy(NE->label,label);
     strcpy(NE->name,name);
+    if(accel_key=='$')
+        NE->accel_key=100;
     NE->accel_key=(int)accel_key;
     strcpy(NE->icon,icon);
     NE->svt=NULL;//pas de suivant
@@ -80,9 +82,8 @@ CelluleItem *Creer_CelluleItem(CelluleItem *item,GtkAccelGroup *accel_group)
         gtk_menu_item_set_label(GTK_MENU_ITEM(item->menu_item),item->label);
     }
     //l'ajout du raccourci
-    gtk_widget_add_accelerator (item->menu_item, "activate",
-                                accel_group,item->accel_key,
-                                GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
+    if(item->accel_key != 100)
+        gtk_widget_add_accelerator (item->menu_item, "activate",accel_group,item->accel_key,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
     return ((CelluleItem*)item);
 }
 /*
