@@ -19,7 +19,7 @@ comboBox* creer_combo_Box(int entry,int X,int Y,char *name)
 {
     comboBox* comboB=NULL;
     //l'allocation de la memeoire
-    comboB = (comboBox*)malloc(sizeof(comboB));
+    comboB = (comboBox*)malloc(sizeof(comboBox));
     if (!comboB)
     {
         printf("!!!\nErreur dans l'Allocation de la fenetre!!!\n");

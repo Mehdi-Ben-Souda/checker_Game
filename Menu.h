@@ -232,13 +232,14 @@ CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
         return ((CelluleItem *)NULL);
     item->sous_menu=liste_item;//remplir le champ du sous-menu
     smenu=gtk_menu_new();//création du sous-menu
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(item->menu_item),smenu);
+
     ptc=item->sous_menu;
     while(ptc)//tant qu'il y a des éléments dans la liste, on les ajoute à notre sous menu
     {
         gtk_menu_shell_append(GTK_MENU_SHELL(smenu), ptc->menu_item);
         ptc=ptc->svt;//passer à l'élément suivant
     }
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(item->menu_item),smenu);
     return ((CelluleItem*)item);
 }
 
