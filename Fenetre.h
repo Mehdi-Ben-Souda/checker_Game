@@ -258,12 +258,12 @@ Fenetre* Ajouter_fenetre(Fenetre* mafenetre, GtkWidget* element)
 
 /*____________________________________________________________*/
 
-void afficher_fenetre(GtkWindow* Fen)
+void afficher_fenetre(GtkWidget * Fen)
 {
 	if (Fen)
 	{
 		printf("\nune fenetre sera afficher en 1 2 3 ..\n");
-		gtk_widget_show_all(GTK_WIDGET(Fen));
+		gtk_widget_show_all(Fen);
 	}
 	else
 	{
