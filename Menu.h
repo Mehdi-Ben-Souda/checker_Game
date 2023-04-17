@@ -224,22 +224,26 @@ Menu *Creer_Menu(CelluleMenu *Liste_Menu,int x,int y,
              -> pointeur sur la liste des éléments du sous-menu
  * sorties : un pointeur sur élément après l'ajout du sous-menu
  */
-CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item)
+CelluleItem *ajouter_sous_menu(CelluleItem *item,CelluleItem *liste_item,int position)
 {
     CelluleItem *ptc;//pointeur courant pour parcourir la liste des éléments
     GtkWidget *smenu;//déclaration d'un pointeur qui va centenir le sous menu
     if(!item)//vérification d'existance de l'élément racine
         return ((CelluleItem *)NULL);
-    item->sous_menu=liste_item;//remplir le champ du sous-menu
-    smenu=gtk_menu_new();//création du sous-menu
 
-    ptc=item->sous_menu;
+    ptc=item;
+    for (int i=1;i<position;i++)
+        ptc=ptc->svt;
+
+    ptc->sous_menu=liste_item;//remplir le champ du sous-menu
+    smenu=gtk_menu_new();//création du sous-menu
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(ptc->menu_item),smenu);
+    ptc=ptc->sous_menu;
     while(ptc)//tant qu'il y a des éléments dans la liste, on les ajoute à notre sous menu
     {
         gtk_menu_shell_append(GTK_MENU_SHELL(smenu), ptc->menu_item);
         ptc=ptc->svt;//passer à l'élément suivant
     }
-    gtk_menu_item_set_submenu(GTK_MENU_ITEM(item->menu_item),smenu);
     return ((CelluleItem*)item);
 }
 
