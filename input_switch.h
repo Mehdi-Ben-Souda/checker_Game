@@ -21,7 +21,8 @@ Switch*Creer_Switch(int etat1,int x,int y)
     //si l'allocation a échoué
     if(!my_switch1)
     {
-        printf("Erreur d'allocation"); exit(-1);
+        printf("Erreur d'allocation");
+        exit(-1);
     }
     //initialisation de position
     my_switch1->pos.X=x;
@@ -160,10 +161,8 @@ Entree*Creer_Entree(Entree*mon_entre)
             mon_entre->cache);
     }
     //si on veut un texte saisi par défaut dans la zone de texte
-    if(!strcmp(mon_entre->text,"vide"))
-    {
-        gtk_entry_set_text (GTK_ENTRY(mon_entre->entry),mon_entre->text);
-    }
+    if(strcmp(mon_entre->text,"vide"))
+        gtk_entry_set_placeholder_text(GTK_ENTRY(mon_entre->entry),mon_entre->text);
     //si on veut ajouter un icon
     if(mon_entre->icon)
     {
