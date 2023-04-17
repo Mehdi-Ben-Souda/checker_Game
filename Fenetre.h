@@ -166,13 +166,11 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 	if (strcmp("vide", mafenetre->Titre))
 		//Seulement si le titre n'est pas NULL
     {
+        gtk_window_set_icon_from_file(GTK_WINDOW(mafenetre->ma_fenetre),mafenetre->chemin_icone,NULL);
         gtk_header_bar_set_title(GTK_HEADER_BAR(titlebar), mafenetre->Titre);
         gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(titlebar), TRUE);
         gtk_window_set_titlebar(GTK_WINDOW(mafenetre->ma_fenetre), titlebar);
     }
-	//	gtk_window_set_title(GTK_WINDOW(mafenetre->ma_fenetre),mafenetre->Titre);
-
-
 		//Mettre une icone 
 	if (strcmp("vide", mafenetre->chemin_icone))
 		//Seulement si le champs icone n'est pas NULL
@@ -184,7 +182,7 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 			Image est une chaine de caractere contenant 
 				le nom du fichier
 		*/
-        image *fenetre_icon= creer_image("E:\\chabab_GTK\\icons\\home.png",30,30,0,0);
+        image *fenetre_icon= creer_image(mafenetre->chemin_icone,40,40,0,0);
         gtk_header_bar_pack_start(GTK_HEADER_BAR(titlebar),fenetre_icon->img);
 		/*
 			pour utiliser gtk_window_set_icon on lui passe GdkPixbuf
