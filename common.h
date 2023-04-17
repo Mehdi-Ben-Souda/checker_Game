@@ -1,16 +1,13 @@
 ﻿#pragma once
 #include <gtk/gtk.h>
-
 #define NB_Cara_titre 50
 #define NB_Cara_chemin 150
-
 
 typedef struct crd
 {
     int X;
     int Y;
 }coordonne;
-
 /**********************************fonction du couleur***********************************/
 #pragma warning(disable: 4996)
 void add_bgcolor(GtkWidget* widget, char couleur[NB_Cara_titre], gdouble opacite)
@@ -18,7 +15,6 @@ void add_bgcolor(GtkWidget* widget, char couleur[NB_Cara_titre], gdouble opacite
 {
 
 	if (couleur == NULL) return;
-
 	GdkRGBA color;
 	gdk_rgba_parse(&color, couleur);
 	color.alpha = opacite;

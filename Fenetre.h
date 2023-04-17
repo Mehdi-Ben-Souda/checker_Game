@@ -2,11 +2,6 @@
 #include "common.h"
 
 
-/*typedef struct
-{
-	int X;//Postition sur l'axe des abscices
-	int Y;//Postition sur l'axe des ordonnées
-}coordonees;*/
 
 	//Enumeration sur les types de fenetres
 	//Possible
@@ -139,6 +134,9 @@ Fenetre* Allouer_Fenetre(WindowType type, int largeur,
 Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 {
 	GdkPixbuf* icone1;
+    GtkWidget *titlebar;
+    titlebar = gtk_header_bar_new();
+
 	int static nb_fenetr=0;
 
 	char buffer[1024];
@@ -166,9 +164,13 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 
 		//Mettre un titre a la fenetre
 	if (strcmp("vide", mafenetre->Titre))
-		//Seulement si le titre n'est pas NULL    
-		gtk_window_set_title(GTK_WINDOW(mafenetre->ma_fenetre),
-			mafenetre->Titre);
+		//Seulement si le titre n'est pas NULL
+    {
+        gtk_header_bar_set_title(GTK_HEADER_BAR(titlebar), mafenetre->Titre);
+        gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(titlebar), TRUE);
+        gtk_window_set_titlebar(GTK_WINDOW(mafenetre->ma_fenetre), titlebar);
+    }
+	//	gtk_window_set_title(GTK_WINDOW(mafenetre->ma_fenetre),mafenetre->Titre);
 
 
 		//Mettre une icone 
@@ -182,13 +184,14 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 			Image est une chaine de caractere contenant 
 				le nom du fichier
 		*/
-		icone1 = gdk_pixbuf_new_from_file(
-				mafenetre->chemin_icone, NULL);
+        image *fenetre_icon= creer_image("E:\\chabab_GTK\\icons\\home.png",30,30,0,0);
+        gtk_header_bar_pack_start(GTK_HEADER_BAR(titlebar),fenetre_icon->img);
 		/*
 			pour utiliser gtk_window_set_icon on lui passe GdkPixbuf
-		*/
+
 		gtk_window_set_icon(GTK_WINDOW(mafenetre->ma_fenetre),
-			icone1);
+			icone1);*/
+
 	}
 
 	//Positionner la fenetre

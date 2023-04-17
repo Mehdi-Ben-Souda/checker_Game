@@ -42,11 +42,12 @@ Dialog* Creer_Dialog(Dialog* ledialog)
         ledialog->mon_dialog = gtk_dialog_new_with_buttons("Ma boîte de dialogue",
                                              NULL,
                                              GTK_DIALOG_MODAL,
-                                             "OK",
+                                             "oui",
                                              GTK_RESPONSE_ACCEPT,
-                                             "Annuler",
+                                             "non",
                                              GTK_RESPONSE_REJECT,
-                                             NULL);
+                                             "Annuler",
+                                             GTK_RESPONSE_REJECT,NULL);
 
         content_area = gtk_dialog_get_content_area(GTK_DIALOG(ledialog->mon_dialog));
 
@@ -71,8 +72,6 @@ void Afficher_dialogue(Dialog *mondialogue)
         exit(-1);
     }
     gtk_widget_show_all(mondialogue->mon_dialog );
-
     gtk_dialog_run(GTK_DIALOG(mondialogue->mon_dialog ));
-
     gtk_widget_destroy(mondialogue->mon_dialog );
 }

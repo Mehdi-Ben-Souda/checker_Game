@@ -5,7 +5,7 @@ typedef struct
     char name[maxcarac];//identifiant
     char tooltip[maxcarac];//le tooltip
     GtkWidget *img;//l'image
-    Taille size;//la taille du bouton
+    coordonne size;//la taille du bouton
     coordonne pos;//la position du bouton
     char couleur[8];//Couleur de fond en HEX
     int relief;
@@ -15,7 +15,7 @@ typedef struct
  * entrées : -> le label du bouton
              -> le tooltip
              ->l'image
-             ->la taille (largeur ,longueur)
+             ->la taille (Y ,X)
              ->la position (X,Y)
              ->
  * sorties : ->Bouton initialisé
@@ -23,7 +23,7 @@ typedef struct
 Bouton * Initialiser_boutton(char label[maxcarac],
                              char tooltip[maxcarac],
                              char image[maxcarac],
-                             int largeur,int longueur,
+                             int Y,int X,
                              int rlf,int x, int y, char* couleur)
 {
     Bouton *maboutton;//déclaration de variable
@@ -38,16 +38,16 @@ Bouton * Initialiser_boutton(char label[maxcarac],
     maboutton->Mabouton= Initialiser_Boutons(label);
     maboutton->pos.X=x;
     maboutton->pos.Y=y;
-    maboutton->size.longueur = longueur;
-    maboutton->size.largeur = largeur;
+    maboutton->size.X = X;
+    maboutton->size.Y = Y;
     maboutton->relief = rlf;
     strcpy(maboutton->tooltip,tooltip);
     if (strcmp(image,"vide")!=0)//s'il y a une immage on l'ajout
     {
         GdkPixbuf* pixt;
         //création de l'image
-        pixt= gdk_pixbuf_new_from_file_at_size(image,maboutton->size.largeur,
-                                               maboutton->size.longueur,
+        pixt= gdk_pixbuf_new_from_file_at_size(image,maboutton->size.Y,
+                                               maboutton->size.X,
                                                NULL);
         maboutton->img = gtk_image_new_from_pixbuf(pixt);
     }
@@ -82,8 +82,8 @@ Bouton* Creer_SimpleBoutton(Bouton* maboutton)
         maboutton->Mabouton->button = gtk_button_new();
     //mettre la taille du boutton
     gtk_widget_set_size_request(maboutton->Mabouton->button,
-                                maboutton->size.largeur,
-                                maboutton->size.longueur);
+                                maboutton->size.Y,
+                                maboutton->size.X);
     //si le bouton a un relief on le met
     if (maboutton->relief)
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
@@ -124,8 +124,8 @@ Bouton * Creer_ToggleBoutton(Bouton* maboutton)
     else //sinon on le crée sans label
         maboutton->Mabouton->button = gtk_toggle_button_new();
     gtk_widget_set_size_request(maboutton->Mabouton->button,
-                                maboutton->size.largeur,
-                                maboutton->size.longueur);
+                                maboutton->size.Y,
+                                maboutton->size.X);
     if (maboutton->relief)//si le bouton a un relief on le met
         gtk_button_set_relief(GTK_BUTTON(maboutton->Mabouton->button),
                               GTK_RELIEF_NORMAL);

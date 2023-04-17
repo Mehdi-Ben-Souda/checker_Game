@@ -4,11 +4,6 @@
 /*-----------------------------------------------------------------------------------------------------------------*/
 typedef struct
 {
-    int largeur;//largeur du bouton
-    int longueur;//longueur du bouton
-}Taille;
-typedef struct
-{
     GtkWidget *button;//pointeur sur un bouton
     char label[maxcarac];//le nom du bouton
 }Boutons;//structure commun entre tous les boutons
