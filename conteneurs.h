@@ -12,12 +12,6 @@ typedef enum
     BoxPositionInsertion_Fin//1 ---> pour l'insertion a la fin
 }BoxPositionInsertion;
 
-typedef enum
-{
-    ORIENTATION_HORIZONTAL,
-    ORIENTATION_VERTICAL
-}Orientation;
-
 typedef struct
 {
     GtkWidget* mon_box;//le pointeur sur le conteneur box
@@ -26,7 +20,7 @@ typedef struct
         ORIENTATION_HORIZONTAL
         ORIENTATION_VERTICAL
     */
-    Orientation orientation;
+    int orientation;//0 pour horizontal et 1 pour vertical
     int espacement;//l'espacement entre les elements
 
 }Box;//Struture du widget BOX
@@ -44,7 +38,7 @@ typedef struct
 	Description :On fait une allocation d'une structure de
 					Type Box avec les paramatres passes
 */
-Box* Allouer_Box(Orientation orientation, int espacement)
+Box* Allouer_Box(int orientation, int espacement)
 {
     Box* boite = (Box*)malloc(sizeof(Box));
 
@@ -92,8 +86,7 @@ void Creer_Box(Box* boite, GtkWidget* parent)
                 les enfants.
 
     */
-    boite->mon_box = gtk_box_new(boite->orientation,
-                                 boite->espacement);
+    boite->mon_box = gtk_box_new(boite->orientation,boite->espacement);
 
     if (parent)
     {
@@ -284,22 +277,12 @@ Fixed* Deplacer_Fixed(GtkWidget* fils, int new_x, int new_y,
 /*-----------------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------	  Scrolled window     -----------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------*/
-
-enum police_asscenceur
-{
-    POLICY_ALWAYS,
-    POLICY_AUTOMATIC,
-    POLICY_NEVER,
-    POLICY_EXTERNAL
-};
-
 typedef struct
 {
-    GtkWidget* assc;
-    char name[20];
-    enum police_asscenceur assenceur_vertical;
-    enum police_asscenceur assenceur_horizontal;
-
+    GtkWidget* assc;          //  GTK_POLICY_ALWAYS     : 0
+    char name[20];            //   GTK_POLICY_AUTOMATIC  : 1
+    int assenceur_vertical;   // GTK_POLICY_NEVER,     : 2
+    int assenceur_horizontal; //GTK_POLICY_EXTERNAL   : 3
 }Assenceur;
 
 
@@ -317,9 +300,7 @@ typedef struct
             _On alloue 
 
 */
-Assenceur* Allouer_Assenceur(char name[20],
-                    enum police_asscenceur vertical_policy,
-                    enum police_asscenceur horizontal_policy)
+Assenceur* Allouer_Assenceur(char name[20],int vertical_policy,int  horizontal_policy)
 {
     Assenceur* ptr = (Assenceur*)malloc(sizeof(Assenceur));
     if (!ptr)
@@ -328,17 +309,15 @@ Assenceur* Allouer_Assenceur(char name[20],
 
         return (Assenceur*)ptr;
     }
-
     ptr->assc = gtk_scrolled_window_new(NULL, NULL);
-    ptr->assenceur_horizontal = horizontal_policy;
+        ptr->assenceur_horizontal = horizontal_policy;
     ptr->assenceur_vertical = vertical_policy;
-
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(ptr->assc), 
-            ptr->assenceur_horizontal, ptr->assenceur_vertical);
+    strcpy(ptr->name,name);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(ptr->assc),ptr->assenceur_horizontal, ptr->assenceur_vertical);
+    gtk_widget_set_name(ptr->assc,ptr->name);
 
     return (Assenceur*)ptr;
 }
-
 
 /*
     Nom Fonction : Ajouter_Assenceur
@@ -360,44 +339,7 @@ Assenceur* Ajouter_Assenceur(GtkWidget* fils, Assenceur* lassenceur)
     if (fils && lassenceur)
     {
         //On ajoute le widget au fixed
-
         gtk_container_add(GTK_CONTAINER(lassenceur->assc), fils);
     }
     return (Assenceur*)lassenceur;
-}//Frame
-typedef struct frm
-{
-    GtkFrame* frame;
-    char label[NB_Cara_titre];
-    char name[NB_Cara_titre];
-}Frame;
-
-Frame* creer_Frame(char label[NB_Cara_titre], char name[NB_Cara_titre])
-{
-    Frame* frame = (Frame*)malloc(sizeof(Frame));
-    if (!frame)
-    {
-        printf("!!!\nErreur dans l'Allocation de l'assenceur!!\n");
-
-        return (Frame*)frame;
-    }
-
-    if (!label)
-    {
-        frame->frame = gtk_frame_new(NULL);
-        strcpy(frame->label, "vide");
-    }
-    else
-    {
-        frame->frame = gtk_frame_new(label);
-        strcpy(frame->label, label);
-    }
-
-    if (!name)
-        strcpy(frame->name, "vide");
-    else {
-        strcpy(frame->name, name);
-        gtk_widget_set_name(frame->frame, name);
-    }
-    return (Assenceur*)frame;
 }
