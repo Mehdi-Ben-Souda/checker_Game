@@ -209,7 +209,7 @@ Menu *Creer_Menu(CelluleMenu *Liste_Menu,int x,int y,
     NE->pos.Y=y;
     NE->liste_menu=Liste_Menu;//initialisation de nouvel menu
     NE->main_menu=gtk_menu_bar_new();//creation du menu
-    gtk_menu_bar_set_pack_direction ( NE->main_menu,orientation);
+    gtk_menu_bar_set_pack_direction (GTK_MENU_BAR(NE->main_menu),orientation);
     ptc=Liste_Menu;
     while (ptc)//tant qu'il y a des éléments dans la liste des sous-menus, on les ajoute à notre menu principal
     {

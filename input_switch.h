@@ -161,7 +161,7 @@ Entree*Creer_Entree(Entree*mon_entre)
             mon_entre->cache);
     }
     //si on veut un texte saisi par défaut dans la zone de texte
-    if(strcmp(mon_entre->text,"vide"))
+    if(strcmp(mon_entre->text,"vide")!=0)
         gtk_entry_set_placeholder_text(GTK_ENTRY(mon_entre->entry),mon_entre->text);
     //si on veut ajouter un icon
     if(mon_entre->icon)

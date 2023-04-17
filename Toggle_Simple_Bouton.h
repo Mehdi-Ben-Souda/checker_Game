@@ -103,7 +103,7 @@ Bouton* Creer_SimpleBoutton(Bouton* maboutton)
         gtk_button_set_always_show_image(GTK_BUTTON(maboutton->Mabouton->button),
                                          TRUE);
     }
-    if (strcmp("vide", maboutton->couleur))//Si la couleur existe
+    if (strcmp("vide", maboutton->couleur)!=0)//Si la couleur existe
     {
 
         add_bgcolor(maboutton->Mabouton->button, maboutton->couleur, 0.5);

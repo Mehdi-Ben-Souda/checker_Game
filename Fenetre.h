@@ -5,12 +5,6 @@
 
 	//Enumeration sur les types de fenetres
 	//Possible
-typedef enum
-{
-	WINDOW_TOPLEVEL,
-	WINDOW_POPUP
-
-}WindowType;
 
 
 /*-----------------------------------------------------------------------------------------------------------------*/
@@ -20,7 +14,7 @@ typedef struct
 {
 	GtkWidget* ma_fenetre;//pointeur sur une fenetre
 
-	WindowType type;//entier indiquant le type du fenetre
+	int type;//entier indiquant le type du fenetre
 	int Largeur;//largeur du fenetre
 	int Hauteur;//hauteur du fenetre
 	char Titre[NB_Cara_titre];//le titre du fenetre
@@ -53,7 +47,7 @@ typedef struct
 		de la fenetre qu'on desire creer ,instancie un element de type
 		Fenetre et l'initialise aux paramatres qu'on a passee
 */
-Fenetre* Allouer_Fenetre(WindowType type, int largeur, 
+Fenetre* Allouer_Fenetre(int type, int largeur,
 		int hauteur, char* titre,char* chemin_icone, int x,
 			int y, char couleur[8],char name[20],int visible)
 {
@@ -153,8 +147,7 @@ Fenetre* Creer_Fenetre(Fenetre* mafenetre)
 	}
 
 		//Creation de la fenetre
-	mafenetre->ma_fenetre = gtk_window_new(
-			(GtkWindowType)mafenetre->type);
+	mafenetre->ma_fenetre = gtk_window_new(mafenetre->type);
 
 		//ajustement de la taille de la fenetre
 	if (mafenetre->Hauteur && mafenetre->Largeur)

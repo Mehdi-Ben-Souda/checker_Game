@@ -31,16 +31,12 @@ comboBox* creer_combo_Box(int entry,int X,int Y,char *name)
     comboB->idElem = 0;
 
     //tester si combo box sera sans entree
-    if (!entry){
+    if (!entry)
         //creation de combo box sans entree
         comboB->combo_box = gtk_combo_box_text_new();
-        printf("\n ComboBox creer\n");
-    }
-    else{
+    else
         //creation de combo box avec entree
         comboB->combo_box = gtk_combo_box_text_new_with_entry();
-        printf("\n ComboBox creer\n");
-       }
     if (!name)
         strcpy(comboB->name, "vide");
     else {

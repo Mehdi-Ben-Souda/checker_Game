@@ -51,7 +51,7 @@ Dialog* Creer_Dialog(Dialog* ledialog)
 
         content_area = gtk_dialog_get_content_area(GTK_DIALOG(ledialog->mon_dialog));
 
-        hbox = gtk_hbox_new(FALSE, 5);
+        hbox = gtk_box_new(0, 5);
         image = gtk_image_new_from_file(ledialog->image);
         label = gtk_label_new(ledialog->texte);
 
