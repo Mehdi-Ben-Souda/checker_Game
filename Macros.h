@@ -24,6 +24,8 @@
 #include "Dialog.h"
 #include "fonction_XML.h"
 
+#include "CalculCout.h"
+
 
 
 
