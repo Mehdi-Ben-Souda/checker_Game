@@ -74,21 +74,20 @@ void Initialiser_Damier(int dameier[8][8])
     {
         for (j = 0; j <8 ;j++)
         {
-            if(k==4)
-            {
-                k--;
-                break;
-            }
+
             dameier[k][j++]=-2;
-            dameier[k][j]=a++;
+            if(k==4)
+                dameier[k][j]=-1;
+            else
+                dameier[k][j]=a++;
         }
         k++;
         for (j = 0; j <8 ;j++)
         {
-            if(k<3 || k>5)
-                dameier[k][j++]=a++;
-            else
+            if(k==3)
                 dameier[k][j++]=-1;
+            else
+                dameier[k][j++]=a++;
 
             dameier[k][j]=-2;
         }
