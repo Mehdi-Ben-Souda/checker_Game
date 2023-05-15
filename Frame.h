@@ -16,7 +16,8 @@ frame* Init_frame( char label[maxcarac],char name[maxcarac],int border_size,int 
     frame *F;
     // Allocation de mémoire pour la structure frame
     F = (frame *) malloc(sizeof(frame));
-    if (!F) {
+    if (!F)
+    {
         printf("\nErreur d'allocation [frame]");
         exit(0);
     }

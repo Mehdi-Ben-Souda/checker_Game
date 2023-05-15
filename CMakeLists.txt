@@ -28,7 +28,7 @@ link_libraries(${LIBXML2_LIBRARIES})
 #endif (UNIX)
 
 # Ajoute un éxecutable à partir du main.c
-add_executable(chabab_GTK main.c)
+add_executable(chabab_GTK mainPrin.h interface.h newMain.c)
 
 # Lie à l'éxecutable la librairie GTK+
 TARGET_LINK_LIBRARIES(chabab_GTK ${GTK3_LIBRARIES})
