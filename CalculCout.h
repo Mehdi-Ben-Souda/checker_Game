@@ -1,6 +1,5 @@
 typedef struct {
     int etat;
-    int idjoueur;
     int x;
     int y;
 }pion;
@@ -27,7 +26,13 @@ typedef struct mvt
     struct mvt *svt;
 }mouvement;
 
-
+typedef struct A
+{
+    mouvement *listemvt;
+    int cout ;
+    struct A *FG;
+    struct A *Frere;
+}Noeud;
 pion *creer_pion()
 {
     pion *NE=(pion*)malloc(sizeof (pion));
@@ -60,3 +65,74 @@ historique *creer_cellule_historique(match M)
     NE->match_svt=NULL;
     return ((historique *)NE);
 }
+
+void Initialiser_Damier(int dameier[8][8])
+{
+    int a=0,k=0;
+    int j;
+    while(k<8)
+    {
+        for (j = 0; j <8 ;j++)
+        {
+
+            dameier[k][j++]=-2;
+            if(k==4)
+                dameier[k][j]=-1;
+            else
+                dameier[k][j]=a++;
+        }
+        k++;
+        for (j = 0; j <8 ;j++)
+        {
+            if(k==3)
+                dameier[k][j++]=-1;
+            else
+                dameier[k][j++]=a++;
+
+            dameier[k][j]=-2;
+        }
+        k++;
+    }
+}
+void Afficher_Damier(int damier[8][8]) {
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            printf("%d  ", damier[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void Initialiser_Tab_Pion(pion Tab[24])
+{
+    int j=1,k=0;
+    for(int i=0;i<24;i++)
+    {
+        Tab[i].etat=1;
+        Tab[i].x=k;
+        Tab[i].y=j;
+        j+=2;
+        if(j>7)
+        {
+            if(k==2)
+                k=5;
+            else
+                k++;
+            if((k%2 ==0))
+                j=1;
+            else
+                j=0;
+        }
+    }
+}
+void Afficher_pion(pion P)
+{
+    printf("\nx :%d       y:%d",P.x,P.y);
+}
+void Afficher_Tab_Pion(pion Tab[24])
+{
+    for(int i=0;i<24;i++)
+        Afficher_pion(Tab[i]);
+}
+
+
