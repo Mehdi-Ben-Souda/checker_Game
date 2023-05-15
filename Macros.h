@@ -6,7 +6,7 @@
 #include "conteneurs.h"
 #include "image.h"
 #include "Fenetre.h"
-//#include "FileChooser.h"
+// #include "FileChooser.h"
 #include "Boutons.h"
 #include "Menu.h"
 #include "ToolBar.h"
@@ -22,10 +22,6 @@
 #include "Frame.h"
 
 #include "Dialog.h"
-#include "fonction_XML.h"
+// #include "fonction_XML.h"
 
 #include "CalculCout.h"
-
-
-
-

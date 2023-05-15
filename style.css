@@ -1,0 +1,44 @@
+#my-button_black {
+  background-color: rgb(91, 67, 6);
+    /* background-image:url('background_black_damier.jpg');
+    background-repeat: no-repeat;
+    background-size: cover; */
+    border: black solid 2px;
+  }
+  #my-button_gold {
+    background-color: rgb(236, 224, 153);
+    /* background-image:url('background_white_damier.jpg');
+    background-repeat: no-repeat;
+    background-size: cover; */
+    border: black solid 2px;
+  }
+
+#window{
+  background-image:url('background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#login_wind{
+  background-image:url('background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#score_Joueur,#score_Machine
+{
+  font-size: 45px;
+  color: #ffffff;
+  font-family: fantasy;
+  border: #ffffff 5px solid;
+  padding: 8px;
+  border-radius: 20px;
+}
+#framePr
+{
+  font-size: 45px;
+  color: #ffffff;
+  font-family: fantasy;
+  border: #fbfbfb 5px solid;
+  padding: 8px;
+  border-radius: 20px;
+}

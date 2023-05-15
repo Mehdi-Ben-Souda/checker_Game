@@ -1,34 +1,37 @@
 #pragma once
 
-typedef struct {
-	GtkWidget* leLabel;
-	char text[250];//Le texte que continet le label
-	char name[NB_Cara_titre];
-	coordonne X_Y;//Ses cordonnees
-}Label;
+typedef struct
+{
+    GtkWidget* leLabel;
+    char text[250]; // Le texte que continet le label
+    char name[NB_Cara_titre];
+    coordonne X_Y; // Ses cordonnees
+} Label;
 
 Label* Init_label(char text[250], char name[NB_Cara_titre], int X, int Y)
 {
-	Label* ptr = (Label*)malloc(sizeof(Label));
+    Label* ptr = (Label*)malloc(sizeof(Label));
 
-	if (!ptr)
-	{
-		printf("Erreur lors de l'Allocattion de label \n\n");
-		return (Label*)ptr;
-	}
+    if (!ptr)
+    {
+        printf("Erreur lors de l'Allocattion de label \n\n");
+        return (Label*)ptr;
+    }
 
-	//Copie du texte
-	strcpy(ptr->text,text);
-	//Copie du nom
-	strcpy(ptr->name, name);
+    // Copie du texte
+    strcpy(ptr->text, text);
+    // Copie du nom
+    strcpy(ptr->name, name);
 
-	//Copie des cordonée
+    // Copie des cordonée
 
-	ptr->X_Y.X = X;
-	ptr->X_Y.Y = Y;
+    ptr->X_Y.X = X;
+    ptr->X_Y.Y = Y;
 
-	//Creation du widget label
-	ptr->leLabel= gtk_label_new(text);
-	return (Label*)ptr;
+    // Creation du widget label
+    ptr->leLabel = gtk_label_new(text);
+    if (name)
+        gtk_widget_set_name(ptr->leLabel, name);
+
+    return (Label*)ptr;
 }
-
