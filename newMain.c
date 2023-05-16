@@ -44,8 +44,15 @@ char image2[NB_Cara_chemin] = "C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_
 
 void on_button_clicked1(GtkWidget* widget, Fenetre* new)
 {
+    GtkCssProvider* cssProvider = gtk_css_provider_new();
 
-    afficher_fenetre(new->ma_fenetre);
+    gtk_css_provider_load_from_path(cssProvider, "C:\\Users\\HP FOLIO 9470m\\OneDrive\\Bureau\\chabab_GTK\\chabab_GTK\\style.css", NULL);
+
+    // Apply the CSS provider to the button widget
+    GtkStyleContext* styleContext = gtk_widget_get_style_context(wdgt);
+    gtk_style_context_add_provider(styleContext,
+                                   GTK_STYLE_PROVIDER(cssProvider),
+                                   GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 void on_bouton_clicked(GtkWidget* widget, Dialog* MonDialogue)
 {
@@ -99,6 +106,7 @@ int main(int argc, char* argv[])
 
     Bouton* re = Initialiser_boutton("", NULL, "", "C:\\Users\\HP FOLIO 9470m\\OneDrive\\Bureau\\trash\\chabab_GTK\\chabab_GTK\\icons\\qutter_exporter.png", 80, 20, 1, 1500, 400, "vide", 30);
     re = Creer_SimpleBoutton(re);
+    //appliquer un dialog sur ce boutton
     Creer_Dialog(mondialog);
     dialogue_action(re->Mabouton->button, mondialog);
     // Afficher_dialogue(mondialog);
@@ -111,6 +119,16 @@ int main(int argc, char* argv[])
 
     Bouton* btn3 = Initialiser_boutton("", NULL, "", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\play.png", 80, 20, 1, 1500, 400, "vide", 80);
     btn3 = Creer_SimpleBoutton(btn3);
+    B1 = Allouer_Box(1, 5);
+    Creer_Box(B1, frame1->monframe);
+    B2 = Allouer_Box(0, 5);
+    Creer_Box(B2, B1->mon_box);
+    B3 = Allouer_Box(0, 5);
+    Creer_Box(B3, B1->mon_box);
+    B4 = Allouer_Box(0, 5);
+    Creer_Box(B4, B1->mon_box);
+    B5 = Allouer_Box(0, 5);
+    Creer_Box(B5, B1->mon_box);
 
     B1 = Allouer_Box(1, 5);
     Creer_Box(B1, frame1->monframe);
@@ -127,7 +145,6 @@ int main(int argc, char* argv[])
     Ajouter_Box(B2, btn1->Mabouton->button, 0, TRUE, TRUE, 5);
     Ajouter_Box(B2, btn2->Mabouton->button, 0, TRUE, TRUE, 5);
     Ajouter_Box(B2, btn3->Mabouton->button, 0, TRUE, TRUE, 5);
-
     b1 = Allouer_Box(1, 5);
     b2 = Allouer_Box(0, 5);
     Creer_Box(b2, b1->mon_box);
@@ -146,8 +163,8 @@ int main(int argc, char* argv[])
     label = gtk_label_new("choisis ton mode de jeu !");
 
     Fenetre* nouvfen;
-    // Fixed* fixed = Allouer_fixed("fixed");
     Label* label1;
+    label = gtk_label_new("choisis ton mode de jeu !");
     nouvfen = Allouer_Fenetre(0, 500, 500, "choix", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\home.png", 200, 0, NULL, "titre1", 1);
     nouvfen = Creer_Fenetre(nouvfen);
     Fixed* fixed1 = Allouer_fixed("fixed");
@@ -226,7 +243,6 @@ int main(int argc, char* argv[])
                     }
                 }
             }
-
             if (i >= 5)
             {
                 if (i % 2 == 0)
