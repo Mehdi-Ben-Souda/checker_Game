@@ -1,15 +1,15 @@
 #my-button_black {
-  background-color: rgb(91, 67, 6);
-    /* background-image:url('background_black_damier.jpg');
+  /* background-color: rgb(91, 67, 6); */
+    background-image:url('background_black_damier.jpg');
     background-repeat: no-repeat;
-    background-size: cover; */
+    background-size: cover;
     border: black solid 2px;
   }
   #my-button_gold {
-    background-color: rgb(236, 224, 153);
-    /* background-image:url('background_white_damier.jpg');
+    /* background-color: rgb(236, 224, 153); */
+    background-image:url('background_white_damier.jpg');
     background-repeat: no-repeat;
-    background-size: cover; */
+    background-size: cover;
     border: black solid 2px;
   }
 
