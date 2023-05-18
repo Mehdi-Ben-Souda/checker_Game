@@ -1,6 +1,7 @@
 #pragma once
 
 #define NB_PIONS 24
+#define NB_CASES 8
 
 
 typedef struct noeud
@@ -165,22 +166,27 @@ void deplacerJeton(mouvement lemvt,
 		//On sauvgarde la position du jeton du joueur
 	int x_init_joueur = lesjetons[idJetonJoueur].x;
 	int y_init_joueur = lesjetons[idJetonJoueur].y;
-		
+	if (idJetonAdversaire > 0)
+	{
 		//On sauvgarde la position du jeton de l'adversaire
-	int x_adversaire = lesjetons[idJetonAdversaire].x;
-	int y_adversaire = lesjetons[idJetonAdversaire].y;
+		int x_adversaire = lesjetons[idJetonAdversaire].x;
+		int y_adversaire = lesjetons[idJetonAdversaire].y;
+		//On capture le jeton adverse
+		Damier[y_adversaire][x_adversaire] = -1;
+		//On reinitialise les donnee dans la table des jettons 
+		lesjetons[idJetonAdversaire].etat = 0;
 
+	}
+		
 
 		//On enleve le jeton du joeur de sa position initiale
 	Damier[y_init_joueur][x_init_joueur] = -1;
 		//On le deplace vers la nouvelle position
 	Damier[lemvt.y][lemvt.x] = idJetonJoueur;
 
-		//On capture le jeton adverse
-	Damier[y_adversaire][x_adversaire] = -1;
+		
 
 		//On reinitialise les donnee dans la table des jettons 
-	lesjetons[idJetonAdversaire].etat = 0;
 	lesjetons[idJetonJoueur].x = lemvt.x;
 	lesjetons[idJetonJoueur].y = lemvt.y;
 
@@ -298,6 +304,16 @@ typeJeton determiner_typeJeton(int idJeton, int numeroJoueur)
 /*____________________________________________________________*/
 
 
+/*
+	Nom Fonction : MettreAjour_tab_pion
+
+	Entree : _tableau de pions
+			 _variable de type match
+
+	Sortie : _rien
+
+	Description : regarde le jeu qui est dans la 
+*/
 void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 {
 	int i, j, id;
@@ -332,32 +348,34 @@ void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 }
 
 /*
-	Nom Fonction : mouvementsPossibleSelonSens
+	Nom Fonction : Mouvements_possible
 
-	Entree : _entier x et y qui sont les coordonee de la case
+	Entree : _entier qui est l'id au quel nous devons determiner
+				les mouvements
 			 _une matrice de type entier
+			 _un tableau de jetton
 
-	Sortie : _enumeration de type etatCase
+	Sortie : _la liste des mouvements possibles
 
-	Description : permet de determiner le type de la case passe
-			en parametre
+	Description : la fonction permet de determiner tous 
+					les mouvements possible pour un jeton
+
 */
 noeud* Mouvements_possible(int id,
-		int damier[NB_CASES][NB_CASES], pion lespions[NB_PIONS])
+		int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], noeud* mouvements)
 {
 
-	noeud* mouvements = NULL;
-	int x = lespions[id].x;
-	int y = lespions[id].y;
+	//noeud* mouvements = NULL;
+	int x = lesJetons[id].x;
+	int y = lesJetons[id].y;
 	int nature;
 	int joueur;
 	int sens_mouvement_vertical;
 
 	mouvements = creeNoeud();
 
-	//TODO verifier d'abord est ce que je peut chke7
-
-	if (lespions[id].etat == 1)//Si c'est un pion
+	printf("\netat pion%d\n", lesJetons[id].etat);
+	if (lesJetons[id].etat == 1)//Si c'est un pion
 	{
 		if (id < 12)
 		{
@@ -381,15 +399,20 @@ noeud* Mouvements_possible(int id,
 				Nous testons si la case sur la diagonale 
 				droite existe
 			*/
+		printf("y=%d   x=%d\n", y, x);
 		if ( ( 0 < y && y < NB_CASES - 1) && x < NB_CASES - 1)
 		{
 
-
+			printf("\nJe suis rentré test1\n");
 			nature = damier[y + sens_mouvement_vertical][x + 1];
+			printf("\nLa case %d\n", determiner_typeJeton(nature, joueur));
 
-
-			if (nature == -1)//Case libre
+			/*Case libre et que nous n'avaons pas fait un mouvement 
+			* avant
+			*/
+			if (nature == -1 && !mouvements->lejeu)
 			{
+				printf("\nJe suis rentré test2\n");
 				mouvements->lejeu = insererListeMouvement(
 						mouvements->lejeu, x + 1, 
 						y + sens_mouvement_vertical, id, -1);
@@ -407,6 +430,7 @@ noeud* Mouvements_possible(int id,
 			else if (determiner_typeJeton(nature, joueur)
 												== ADVERSAIRE)
 			{
+				printf("\nJe suis rentré test3\n");
 				/*
 				* Il faut voir la case qui est juste apres
 				* sur la diagonale si elle est vide ou pas
@@ -424,11 +448,13 @@ noeud* Mouvements_possible(int id,
 				if (x < NB_CASES - 2 
 						&& ( 1 < y && y < NB_CASES - 2 ))
 				{
+					printf("\nJe suis rentré test4\n");
 					//Si la 2 eme case sur la diagonale est vide 
 					if (determiner_etatCase(x + 2, 
 						y + sens_mouvement_vertical*2, damier)
 														== VIDE)
 					{
+						printf("\nJe suis rentré test5\n");
 						/*
 						Alors on insere le mouvement dans la
 						liste des mouvements et on fait un appel
@@ -450,8 +476,23 @@ noeud* Mouvements_possible(int id,
 								y + sens_mouvement_vertical * 2,
 								id, pionAdversaire);
 
-						//On verifie si nous pouvons pas faire un autre mouvement
+						/*
+						On verifie si nous pouvons pas faire un autre mouvement
+						*/
+						int copy_damier[NB_CASES][NB_CASES];
+						pion copy_lesjetons[NB_PIONS];
+						copierLesJetons(copy_lesjetons, lesJetons);
+						copierDamier(copy_damier, damier);
 
+						mouvement * tmp=creer_mouvement(x + 2,
+							y + sens_mouvement_vertical * 2,
+							id, pionAdversaire);
+						deplacerJeton(*tmp, copy_damier, copy_lesjetons);
+
+						Afficher_Damier(copy_damier); printf("\n\n");
+						Afficher_Tab_Pion(copy_lesjetons); printf("\n\n");
+						printf("\n\n x= %d  y= %d", tmp->x, tmp->y);
+						mouvements = Mouvements_possible(id, copierDamier, copierLesJetons, mouvements);
 					}
 				}
 
@@ -459,8 +500,7 @@ noeud* Mouvements_possible(int id,
 
 
 		}
-		/*if (x > 0 && y < 7)//Traitement du mouvement gauche
-			sens_mouvement_horizontal = -1;*/
+
 
 
 		
@@ -468,20 +508,104 @@ noeud* Mouvements_possible(int id,
 
 
 	}
-	/*else if (lespions[id].etat == 2)//Si c'est une damme
-	{
 
-	}*/
 
 	return (noeud*)mouvements;
 
 }
 
 
+//if ((0 < y && y < NB_CASES - 1) && x > 0)//Traitement du mouvement gauche
+//{
 
 
+//	nature = damier[y + sens_mouvement_vertical][x - 1];
 
 
+//	if (nature == -1)//Case libre
+//	{
+//		mouvements->lejeu = insererListeMouvement(
+//			mouvements->lejeu, x - 1,
+//			y + sens_mouvement_vertical, id, -1);
+//	}
+
+//	/*Si la case contient un jetton Allier
+//	* Alors nous sommes blocke
+//	*/
+
+//	/*Si la case contient un jetton Adversaire
+//	* Alors nous pouvons le bouffer
+//	* a condition que la case d'apres ce jetton
+//	* sois vide
+//	*/
+//	else if (determiner_typeJeton(nature, joueur)
+//		== ADVERSAIRE)
+//	{
+//		/*
+//		* Il faut voir la case qui est juste apres
+//		* sur la diagonale si elle est vide ou pas
+//		*
+//		*	SI elle est vide il faut voir si il
+//		*	y a pas une autre serie de mouvements
+//		*	a faire dans les quels je mange
+//		*/
+
+
+//		/*Si la deuxieme case sur la diagonale
+//		*	droite existe
+//		*/
+
+//		if (x < NB_CASES - 2
+//			&& (1 < y && y < NB_CASES - 2))
+//		{
+//			//Si la 2 eme case sur la diagonale est vide 
+//			if (determiner_etatCase(x + 2,
+//				y + sens_mouvement_vertical * 2, damier)
+//				== VIDE)
+//			{
+//				/*
+//				Alors on insere le mouvement dans la
+//				liste des mouvements et on fait un appel
+//				recursive pour voir si il y a un
+//				enchainement d'autres mouvements
+//				*/
+
+//				/*On recupere l'id du pion adversaire que
+//					nous allons capturer
+//				*/
+//				int pionAdversaire =
+//					damier[y + sens_mouvement_vertical]
+//					[x + 1];
+
+//				//On insere le mouvement
+//				mouvements->lejeu =
+//					insererListeMouvement(
+//						mouvements->lejeu, x + 2,
+//						y + sens_mouvement_vertical * 2,
+//						id, pionAdversaire);
+
+//				//On verifie si nous pouvons pas faire un autre mouvement
+
+//			}
+//		}
+
+//	}
+
+
+//}
+
+
+	/*else if (lespions[id].etat == 2)//Si c'est une damme
+	{
+
+	}*/
+
+
+void tousLesMouvementsJetton(int id,
+	int damier[NB_CASES][NB_CASES], pion lespions[NB_PIONS])
+{
+
+}
 
 
 
