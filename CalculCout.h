@@ -109,8 +109,8 @@ void Initialiser_Tab_Pion(pion Tab[24])
     for(int i=0;i<24;i++)
     {
         Tab[i].etat=1;
-        Tab[i].x=k;
-        Tab[i].y=j;
+        Tab[i].y=k;
+        Tab[i].x=j;
         j+=2;
         if(j>7)
         {
@@ -134,5 +134,6 @@ void Afficher_Tab_Pion(pion Tab[24])
     for(int i=0;i<24;i++)
         Afficher_pion(Tab[i]);
 }
+
 
 
