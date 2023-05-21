@@ -26,3 +26,4 @@
 
 #include "CalculCout.h"
 #include "game.h"
+#include "Calcule.h"
