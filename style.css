@@ -1,13 +1,13 @@
 #my-button_black {
   /* background-color: rgb(91, 67, 6); */
-    background-image:url('background_black_damier.jpg');
+    background-image:url('background_black_damier.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     border: black solid 2px;
   }
   #my-button_gold {
     /* background-color: rgb(236, 224, 153); */
-    background-image:url('background_white_damier.jpg');
+    background-image:url('background_white_damier.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     border: black solid 2px;
@@ -41,4 +41,31 @@
   border: #fbfbfb 5px solid;
   padding: 8px;
   border-radius: 20px;
+}
+
+#BoxMode{
+  background-color: rgba(0, 0, 0, 0.479);
+  padding: 50px;
+  border: #00000067 2px solid;
+}
+#btn_mode_quitter,#btn_mode2,#btn_mode1
+{
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+#fenetre_mode{
+  background-image: url("background_mode.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+#title_mode{
+  color: white;
+  font-size: 50px;
+  font-family:fantasy;
+  font-weight: bolder;
 }
