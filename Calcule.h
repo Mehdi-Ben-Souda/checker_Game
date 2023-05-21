@@ -1,46 +1,39 @@
-+int Min_Pliste(noeud *Maliste)
+int selectioner_cout(noeud *N,enum maxmin E)
 {
-    int min;
+    int Val;
     noeud *ptc;
-    ptc = Maliste;
+    ptc = N;
     ptc = ptc->svt;
-    min = Maliste->cout;
-    while (ptc)
+    Val = N->score;
+    if (E == 1)
     {
-        if (ptc->cout < min)
-            min = ptc->cout;
-        ptc = ptc->svt;
+        while (ptc)
+        {
+            if (ptc->score < Val)
+                Val = ptc->score;
+            ptc = ptc->svt;
+        }
     }
-    return ((int)min);
-}
-int Max_Pliste(noeud *Maliste)
-{
-    int max;
-    noeud *ptc;
-    ptc = Maliste;
-    ptc = ptc->svt;
-    max = Maliste->cout;
-    while (ptc)
+    else
     {
-        if (ptc->cout > max)
-            max = ptc->cout;
-        ptc = ptc->svt;
+        while (ptc)
+        {
+            if (ptc->score > Val)
+                Val = ptc->score;
+            ptc = ptc->svt;
+        }
     }
-    return ((int)max);
-}
-int selectioner_cout(noeud *N)
-{
-
+    return ((int)Val);
 }
 noeud *calcuer_cout(noeud *N)
 {
     mouvement *ptc;
     ptc=N->lejeu;
-    N->cout=0;
+    N->score=0;
     while(ptc)
     {
         if(ptc->IDa >0)
-            N->cout++;
+            N->score++;
         ptc=ptc->svt;
     }
     return ((noeud*)N);
