@@ -1,3 +1,5 @@
+#include "Macros.h"
+#include "libxml2/libxml/parser.h"
 
 Bouton* damier[8][8];
 
@@ -56,7 +58,7 @@ void dialogue_action(GtkWidget* widget, Dialog* MonDialogue)
 	g_signal_connect(widget, "clicked", G_CALLBACK(on_bouton_clicked), MonDialogue);
 }
 
-void page_damier() {
+void page_damier(int mode) {
 	Fenetre* wind;
 
 	wind = Allouer_Fenetre(0, 1600, 900, "Jeu Damier", NULL, 200, 0, "#FF5733", "window", 1);
@@ -124,9 +126,14 @@ void page_damier() {
 	b1 = Allouer_Box(1, 5);
 	b2 = Allouer_Box(0, 5);
 	Creer_Box(b2, b1->mon_box);
-	mylabel = Init_label("Machine Vs Joueur", "framePr", 1330, 200);
+	if (mode == 1)
+		mylabel = Init_label("Machine Vs Joueur", "framePr", 1330, 200);
+	else
+		mylabel = Init_label("Joueur Vs Joueur", "framePr", 1330, 200);
+
 	Ajouter_Fixed(mylabel->leLabel, mylabel->X_Y.X, mylabel->X_Y.Y, GTK_FIXED(fixed));
 	CSS(mylabel->leLabel);
+
 	/*-----------------------------------image----------------------------------------------*/
 	/*
 	GtkWidget* image1 = gtk_image_new_from_file("C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\chessboard.png");
@@ -269,6 +276,20 @@ void page_damier() {
 	afficher_fenetre(wind->ma_fenetre);
 
 }
+void jeu_commence(mode)
+{
+	page_damier(mode);
+}
+void what_btn(GtkWidget* widget, Fenetre* fen) {
+	int type_btn = 0;
+	char* label = gtk_widget_get_name(GTK_BUTTON(widget));
+	if (!strcmp(label, "btn_mode1"))type_btn = 1;
+	else type_btn = 2;
+
+	fenetre_destroy(fen->ma_fenetre);
+	jeu_commence(type_btn);
+
+}
 void Mode_page()
 {
 	Fenetre* fenetre_mode;
@@ -279,9 +300,7 @@ void Mode_page()
 
 	Fixed* fixed = Allouer_fixed("fixed");
 	frame* frame1;
-	Box* B1, * B2, * B3, * B4, * B5, * b1, * b2, * b3, * b4;
-
-
+	Box* B1;
 
 
 	// Afficher_dialogue(mondialog);
@@ -293,14 +312,20 @@ void Mode_page()
 	Bouton* btn1 = Initialiser_boutton("Joueur   VS   Machine", "btn_mode1", "", "", 380, 106, 1, 1500, 400, "vide", 80);
 	btn1 = Creer_SimpleBoutton(btn1);
 	CSS(btn1->Mabouton->button);
+	g_signal_connect(btn1->Mabouton->button, "clicked", G_CALLBACK(what_btn), fenetre_mode);
+
+
 
 	Bouton* btn2 = Initialiser_boutton("Joueur   VS   Joueur", "btn_mode2", "", "", 380, 106, 1, 1500, 400, "vide", 80);
 	btn2 = Creer_SimpleBoutton(btn2);
 	CSS(btn2->Mabouton->button);
+	g_signal_connect(btn2->Mabouton->button, "clicked", G_CALLBACK(what_btn), fenetre_mode);
 
 	Bouton* btn3 = Initialiser_boutton("Quitter", "btn_mode_quitter", "", "", 380, 106, 1, 1500, 400, "vide", 80);
 	btn3 = Creer_SimpleBoutton(btn3);
 	CSS(btn3->Mabouton->button);
+	g_signal_connect(btn3->Mabouton->button, "clicked", G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
+
 
 	B1 = Allouer_Box(1, 20);
 	Creer_Box(B1, NULL);
@@ -319,4 +344,16 @@ void Mode_page()
 	Ajouter_Fixed(B1->mon_box, 400, 200, fixed);
 	Ajouter_fenetre(fenetre_mode, fixed->mon_fixed);
 	afficher_fenetre(fenetre_mode->ma_fenetre);
+}
+
+int main(int argc, char* argv[])
+{
+	//-------------------------------------     Initialisation de GTK     --------------------------------------------------
+
+	gtk_init(&argc, &argv);
+
+	Mode_page();
+	boucle_gtk();
+
+	return 0;
 }
