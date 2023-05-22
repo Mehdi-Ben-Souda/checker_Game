@@ -127,12 +127,17 @@ void Initialiser_Tab_Pion(pion Tab[24])
 }
 void Afficher_pion(pion P)
 {
-    printf("\nx :%d       y:%d",P.x,P.y);
+    printf("\tx :%d\ty:%d",P.x,P.y);
 }
 void Afficher_Tab_Pion(pion Tab[24])
 {
-    for(int i=0;i<24;i++)
+    for (int i = 0; i < 24; i++)
+    {
+        printf("\nPion %d:", i);
         Afficher_pion(Tab[i]);
+        
+    }
+        
 }
 
 

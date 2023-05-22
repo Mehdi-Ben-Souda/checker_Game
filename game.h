@@ -174,7 +174,7 @@ void deplacerJeton(mouvement lemvt,
 		//On sauvgarde la position du jeton du joueur
 	int x_init_joueur = lesjetons[idJetonJoueur].x;
 	int y_init_joueur = lesjetons[idJetonJoueur].y;
-	if (idJetonAdversaire != 0)
+	if (idJetonAdversaire >= 0)
 	{
 		printf("__________Rani dhklt________");
 		//On sauvgarde la position du jeton de l'adversaire
@@ -382,7 +382,7 @@ noeud* Mouvements_possible(int id,
 	int joueur;
 	int sens_mouvement_vertical;
 
-	mouvements = creeNoeud();
+	//mouvements = creeNoeud();
 
 	//printf("\netat pion%d\n", lesJetons[id].etat);
 	if (lesJetons[id].etat == 1)//Si c'est un pion
@@ -409,8 +409,8 @@ noeud* Mouvements_possible(int id,
 				Nous testons si la case sur la diagonale 
 				droite existe
 			*/
-		printf("y=%d   x=%d\n", y, x);
-		if ( ( 0 < y && y < NB_CASES - 1) && x < NB_CASES - 1)
+				//printf("y=%d   x=%d\n", y, x);
+		if ( ( 0 <= (y + sens_mouvement_vertical) && (y + sens_mouvement_vertical) < NB_CASES) && (x < NB_CASES - 1))//A revoir
 		{
 
 					//printf("\nJe suis rentré test1\n");
@@ -420,6 +420,7 @@ noeud* Mouvements_possible(int id,
 			/*Case libre et que nous n'avaons pas fait un mouvement 
 			* avant
 			*/
+			//Afficher_Damier(damier); printf("\n\n");
 			if (nature == -1 && !mouvements->lejeu)
 			{
 						//printf("\nJe suis rentré test2\n");
@@ -456,7 +457,7 @@ noeud* Mouvements_possible(int id,
 				*/
 				
 				if (x < NB_CASES - 2 
-						&& ( 1 < y && y < NB_CASES - 2 ))
+						&& 0<=(y + sens_mouvement_vertical * 2) &&(y + sens_mouvement_vertical * 2)<NB_CASES)
 				{
 							//printf("\nJe suis rentré test4\n");
 					//Si la 2 eme case sur la diagonale est vide 
@@ -489,20 +490,17 @@ noeud* Mouvements_possible(int id,
 						/*
 						On verifie si nous pouvons pas faire un autre mouvement
 						*/
-						int copy_damier[NB_CASES][NB_CASES];
-						pion copy_lesjetons[NB_PIONS];
-						copierLesJetons(copy_lesjetons, lesJetons);
-						copierDamier(copy_damier, damier);
+						
 
 						mouvement * tmp=creer_mouvement(x + 2,
 							y + sens_mouvement_vertical * 2,
 							id, pionAdversaire);
-						deplacerJeton(*tmp, copy_damier, copy_lesjetons);
+						deplacerJeton(*tmp, damier, lesJetons);
 
-						Afficher_Damier(copy_damier); printf("\n\n");
-						Afficher_Tab_Pion(copy_lesjetons); printf("\n\n");
+						Afficher_Damier(damier); printf("\n\n");
+						//Afficher_Tab_Pion(copy_lesjetons); printf("\n\n");
 						printf("\n\n x= %d  y= %d", tmp->x, tmp->y);
-						mouvements = Mouvements_possible(id, copierDamier, copierLesJetons, mouvements);
+						mouvements = Mouvements_possible(id, damier, lesJetons, mouvements);
 					}
 				}
 
@@ -612,9 +610,12 @@ noeud* Mouvements_possible(int id,
 
 
 void tousLesMouvementsJetton(int id,
-	int damier[NB_CASES][NB_CASES], pion lespions[NB_PIONS])
+	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS])
 {
-
+	int copy_damier[NB_CASES][NB_CASES];
+	pion copy_lesjetons[NB_PIONS];
+	copierLesJetons(copy_lesjetons, lesJetons);
+	copierDamier(copy_damier, damier);
 }
 
 
