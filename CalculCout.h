@@ -97,7 +97,7 @@ void Initialiser_Damier(int dameier[8][8])
 void Afficher_Damier(int damier[8][8]) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            printf("%d  ", damier[i][j]);
+            printf("%d\t", damier[i][j]);
         }
         printf("\n");
     }
