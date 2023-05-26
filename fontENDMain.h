@@ -4,6 +4,8 @@
 Bouton* damier[8][8];
 pion lespions[NB_PIONS];
 match lematch;
+int tour = 1;
+
 /*
 typedef struct infoA
 {
@@ -41,8 +43,10 @@ void CSS(GtkWidget* wdgt)
 
 void show_mouve(GtkWidget* widget, int id)
 {
-	//GdkPixbuf* pixt;
+	GdkPixbuf* pixt;
+	GtkWidget* img;
 	// création de l'image
+	/*
 	noeud* nd = creeNoeud();
 	nd = Mouvements_possible(id, lematch.damier, lespions, nd);
 
@@ -64,7 +68,7 @@ void show_mouve(GtkWidget* widget, int id)
 		gtk_widget_set_name(damier[nd->lejeu->y][nd->lejeu->x]->Mabouton->button, "mvt_possible");
 		CSS(damier[nd->lejeu->y][nd->lejeu->x]->Mabouton->button);
 	}
-
+	*/
 
 	//nd = nd->svt;
 	//printf("%d \t %d \t", nd->lejeu->x, nd->lejeu->x);
@@ -75,16 +79,37 @@ void show_mouve(GtkWidget* widget, int id)
 	//CSS(damier[3][4]);
 	//}
 
-	//pixt = gdk_pixbuf_new_from_file_at_size("white_pion.png", 40, 40, NULL);
-	//GtkWidget* img = gtk_image_new_from_pixbuf(pixt);
 
-	//gtk_button_set_image(GTK_BUTTON(widget), NULL);
 
-	//gtk_button_set_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button), img);
+	switch (tour)
+	{
+	case -1:	pixt = gdk_pixbuf_new_from_file_at_size("black_pion.png", 40, 40, NULL);
+		img = gtk_image_new_from_pixbuf(pixt);
+		gtk_button_set_image(GTK_BUTTON(widget), NULL);
 
-	//gtk_button_set_always_show_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button),
-	//	TRUE);
-	//printf("done");
+		gtk_button_set_image(GTK_BUTTON(damier[lespions[id].y + 1][lespions[id].x + 1]->Mabouton->button), img);
+
+		gtk_button_set_always_show_image(GTK_BUTTON(damier[lespions[id].y + 1][lespions[id].x + 1]->Mabouton->button),
+			TRUE);
+		printf("done");
+		tour = tour * (-1);
+		break;
+	case 1:
+		pixt = gdk_pixbuf_new_from_file_at_size("white_pion.png", 40, 40, NULL);
+		img = gtk_image_new_from_pixbuf(pixt);
+		gtk_button_set_image(GTK_BUTTON(widget), NULL);
+
+		gtk_button_set_image(GTK_BUTTON(damier[lespions[id].y - 1][lespions[id].x - 1]->Mabouton->button), img);
+
+		gtk_button_set_always_show_image(GTK_BUTTON(damier[lespions[id].y - 1][lespions[id].x - 1]->Mabouton->button),
+			TRUE);
+		printf("done");
+		tour = tour * (-1);
+		break;
+	default:return;
+		break;
+	}
+
 }
 
 char image1[NB_Cara_chemin] = "C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\icone.png";
@@ -405,13 +430,27 @@ void Mode_page()
 }
 
 
+
+
+
+
+void best_mouve(noeud* N, int nv) {
+
+}
+
+
+
+
+
+
 int main(int argc, char* argv[])
 {
 	//-------------------------------------     Initialisation de GTK     --------------------------------------------------
 
 	gtk_init(&argc, &argv);
 
-	Mode_page();
+	//Mode_page();
+	jeu_commence();
 	boucle_gtk();
 
 	return 0;
