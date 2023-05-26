@@ -1,16 +1,26 @@
-#my-button_black {
+#my-button_black, #my_pion {
   /* background-color: rgb(91, 67, 6); */
     background-image:url('background_black_damier.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     border:2px solid black;
   }
-  #my-button_gold {
+  #my-button_gold{
     /* background-color: rgb(236, 224, 153); */
     background-image:url('background_white_damier.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     border:2px solid black;
+  }
+  #mvt_possible{
+    background-image:url('background_black_damier.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border:2px solid gold;
+  }
+  #my_pion:hover{
+    border: 5px solid goldenrod;
+    border-radius: 7px;
   }
 
 #window{
@@ -46,7 +56,7 @@
 #BoxMode{
   background-color: rgba(0, 0, 0, 0.479);
   padding: 50px;
-  border:2px solid #00000067 ;
+  border:2px solid #00000067;
 }
 #btn_mode_quitter,#btn_mode2,#btn_mode1
 {

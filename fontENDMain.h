@@ -1,8 +1,29 @@
 #include "Macros.h"
-#include "libxml2/libxml/parser.h"
+
 
 Bouton* damier[8][8];
+pion lespions[NB_PIONS];
+match lematch;
+/*
+typedef struct infoA
+{
+	pion lespions[NB_PIONS];
 
+	match lematch;
+}All_info;
+
+All_info* cree_All_info()
+{
+	All_info* elem = (All_info*)malloc(sizeof(All_info));
+	if (!elem)
+	{
+		printf("\nErreur d'allocation !!");
+		exit(0);
+	}
+	Initialiser_Damier(&elem->lematch.damier);
+	Initialiser_Tab_Pion(elem->lespions);
+	return((elem*)elem);
+}*/
 
 void CSS(GtkWidget* wdgt)
 {
@@ -18,27 +39,52 @@ void CSS(GtkWidget* wdgt)
 }
 
 
-typedef struct
+void show_mouve(GtkWidget* widget, int id)
 {
-	coordonne pion;
-	coordonne new_emplacement;
-} mouve;
-
-void make_mouve(GtkWidget* widget, mouve* mvt)
-{
-	GdkPixbuf* pixt;
+	//GdkPixbuf* pixt;
 	// création de l'image
+	noeud* nd = creeNoeud();
+	nd = Mouvements_possible(id, lematch.damier, lespions, nd);
 
-	pixt = gdk_pixbuf_new_from_file_at_size("black_pion.png", 40, 40, NULL);
-	GtkWidget* img = gtk_image_new_from_pixbuf(pixt);
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
 
-	gtk_button_set_image(GTK_BUTTON(widget), NULL);
+			char* name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
+			if (!strcmp(name, "mvt_possible"))
+			{
+				gtk_widget_set_name(damier[i][j]->Mabouton->button, "my_pion");
+				CSS(damier[i][j]->Mabouton->button);
+			}
+		}
+	}
+	if (nd->lejeu)
+	{
+		gtk_widget_set_name(damier[nd->lejeu->y][nd->lejeu->x]->Mabouton->button, "mvt_possible");
+		CSS(damier[nd->lejeu->y][nd->lejeu->x]->Mabouton->button);
+	}
 
-	gtk_button_set_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button), img);
 
-	gtk_button_set_always_show_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button),
-		TRUE);
-	printf("done");
+	//nd = nd->svt;
+	//printf("%d \t %d \t", nd->lejeu->x, nd->lejeu->x);
+	//while (nd)
+	//{
+	//char* name = gtk_widget_get_name(damier[3][4]);
+	//gtk_widget_set_name(damier[3][4], "mvt_possible");
+	//CSS(damier[3][4]);
+	//}
+
+	//pixt = gdk_pixbuf_new_from_file_at_size("white_pion.png", 40, 40, NULL);
+	//GtkWidget* img = gtk_image_new_from_pixbuf(pixt);
+
+	//gtk_button_set_image(GTK_BUTTON(widget), NULL);
+
+	//gtk_button_set_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button), img);
+
+	//gtk_button_set_always_show_image(GTK_BUTTON(damier[mvt->new_emplacement.X][mvt->new_emplacement.Y]->Mabouton->button),
+	//	TRUE);
+	//printf("done");
 }
 
 char image1[NB_Cara_chemin] = "C:\\Users\\MSB\\Desktop\\Semestre 2\\GTK\\chabab_GTK\\icons\\icone.png";
@@ -169,13 +215,9 @@ void page_damier(int mode) {
 */
 // ++++++++++++++++++++++damier++++++++++++++++++++++
 
-	int ligne = 400, colonne = 700, sizeBTN = 80, size_icon = 40;
+	int ligne = 400, colonne = 140, sizeBTN = 80, size_icon = 40;
 	char icon_pion[NB_Cara_titre], name[NB_Cara_titre];
 
-	mouve* mvt = NULL;
-	mvt = (mouvement*)malloc(sizeof(mouvement));
-	mvt->new_emplacement.X = 3;
-	mvt->new_emplacement.Y = 1;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -196,16 +238,18 @@ void page_damier(int mode) {
 			if ((i % 2) == 0)
 			{
 				if ((j % 2) == 0)
-					strcpy(name, "my-button_black");
-				else
 					strcpy(name, "my-button_gold");
+				else
+					strcpy(name, "my-button_black");
+
 			}
 			else
 			{
 				if ((j % 2) == 0)
-					strcpy(name, "my-button_gold");
-				else
 					strcpy(name, "my-button_black");
+				else
+					strcpy(name, "my-button_gold");
+
 			}
 
 			strcpy(icon_pion, "vide");
@@ -214,14 +258,14 @@ void page_damier(int mode) {
 			{
 				if ((i % 2) == 0)
 				{
-					if ((j % 2) == 0)
+					if ((j % 2) != 0)
 					{
 						strcpy(icon_pion, "black_pion.png");
 					}
 				}
 				else
 				{
-					if ((j % 2) == 1)
+					if ((j % 2) == 0)
 					{
 						strcpy(icon_pion, "black_pion.png");
 					}
@@ -231,14 +275,14 @@ void page_damier(int mode) {
 			{
 				if (i % 2 == 0)
 				{
-					if (j % 2 == 0)
+					if (j % 2 != 0)
 					{
 						strcpy(icon_pion, "white_pion.png");
 					}
 				}
 				else
 				{
-					if (j % 2 != 0)
+					if (j % 2 == 0)
 					{
 						strcpy(icon_pion, "white_pion.png");
 					}
@@ -248,17 +292,12 @@ void page_damier(int mode) {
 			damier[i][j] = Creer_SimpleBoutton(damier[i][j]);
 
 			// add_bgcolor(GTK_WIDGET(damier[i][j]->Mabouton->button), "#bb8141", 1);
-
-			mvt->pion.X = i;
-			mvt->pion.Y = j;
 			//++++++ CSS++++++
 			CSS(damier[i][j]->Mabouton->button);
-
-			g_signal_connect(damier[i][j]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), mvt);
 			Ajouter_Fixed(damier[i][j]->Mabouton->button, damier[i][j]->pos.X, damier[i][j]->pos.Y, GTK_FIXED(fixed));
 			ligne = ligne + sizeBTN;
 		}
-		colonne = colonne - sizeBTN;
+		colonne = colonne + sizeBTN;
 	}
 
 	//++++++++++++++++++++++++++++++score++++++++++++++++++
@@ -278,7 +317,26 @@ void page_damier(int mode) {
 }
 void jeu_commence(mode)
 {
-	page_damier(mode);
+
+	Initialiser_Damier(&lematch.damier);
+	Initialiser_Tab_Pion(lespions);
+
+	page_damier(1);
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (lematch.damier[i][j] > 11)
+			{
+				gtk_widget_set_name(damier[i][j]->Mabouton->button, "my_pion");
+				g_signal_connect(damier[i][j]->Mabouton->button, "clicked", G_CALLBACK(show_mouve), lematch.damier[i][j]);
+				CSS(damier[i][j]->Mabouton->button);
+			}
+		}
+	}
+
+
+
 }
 void what_btn(GtkWidget* widget, Fenetre* fen) {
 	int type_btn = 0;
@@ -345,6 +403,7 @@ void Mode_page()
 	Ajouter_fenetre(fenetre_mode, fixed->mon_fixed);
 	afficher_fenetre(fenetre_mode->ma_fenetre);
 }
+
 
 int main(int argc, char* argv[])
 {
