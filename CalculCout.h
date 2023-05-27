@@ -23,7 +23,8 @@ typedef struct mvt
     int y;
     int IDj;
     int IDa;
-    struct mvt *svt;
+    struct mvt *gch;
+    struct mvt *drt;
 }mouvement;
 
 typedef struct A

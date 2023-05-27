@@ -66,7 +66,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
 	NE->y = y;
 	NE->IDj = IDj;
 	NE->IDa = IDa;
-	NE->svt = NULL;
+	NE->gch=NE->drt = NULL;
 	return (mouvement*)NE;
 
 }
@@ -86,7 +86,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
 */
 
 mouvement* insererListeMouvement(mouvement* liste, int x, int y
-	, int IDj, int IDa)
+	, int IDj, int IDa,int dir)
 {
 
 	mouvement* NE = creer_mouvement(x, y, IDj, IDa);
@@ -97,11 +97,12 @@ mouvement* insererListeMouvement(mouvement* liste, int x, int y
 
 
 	ptr = liste;
-
-	while (ptr->svt)
-		ptr = ptr->svt;
-
-	ptr->svt = NE;
+    if(dir ==1) {
+        while (ptr->drt)
+            ptr = ptr->drt;
+        ptr->drt = NE;
+    }
+    else
 
 	return (mouvement*)liste;
 
@@ -521,7 +522,7 @@ noeud* Mouvements_possible(int id,
 															ptrmvt1->y, ptrmvt1->IDj, ptrmvt1->IDa);
 						
 
-							ptrmvt1 = ptrmvt1->svt;
+							ptrmvt1 = ptrmvt1->gch;
 							
 						}
 
