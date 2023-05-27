@@ -152,6 +152,43 @@ void copierLesJetons(pion tabDst[NB_PIONS],
 	}
 
 }
+/*____________________________________________________________*/
+
+
+/*
+	Nom Fonction : MettreAjour_tab_pion
+
+	Entree : _tableau de pions
+			 _variable de type match
+
+	Sortie : _rien
+
+	Description : regarde le jeu qui est dans la
+*/
+void MettreAjour_tab_pion(pion lespions[NB_PIONS],int Damier[NB_CASES][NB_CASES])
+{
+    int i, j, id;
+    /*On change l'etat de capture a pas encore capture
+    * pour tous les pions que nous allons trouver encore sur
+    * le damier
+    */
+    for (i = 0; i < NB_CASES; i++)
+    {
+        for (j = 0; j < NB_CASES; j++)
+        {
+            //On recupere le pion qui est a la position acctuel
+            id = Damier[i][j];
+            //Si un pion existe sur la position actuel
+            if (id >= 0)
+            {
+                //On change aussi sa position
+                lespions[id].x = j;
+                lespions[id].y = i;
+            }
+        }
+    }
+
+}
 
 /*____________________________________________________________*/
 
@@ -197,6 +234,7 @@ void deplacerJeton(mouvement lemvt,
         if(lesjetons[lemvt.IDj].y==0)
             lesjetons[lemvt.IDj].etat=2;
     }
+    MettreAjour_tab_pion(lesjetons, Damier);
 }
 /*____________________________________________________________*/
 
@@ -299,43 +337,6 @@ typeJeton determiner_typeJeton(int idJeton, int numeroJoueur)
 
 	printf("\n!!!!Erreur , paramatre invalid dans la fonction"
 		"determiner_typeJeton!!!! Joueur%d IDJett%d\n", numeroJoueur, idJeton);
-}
-/*____________________________________________________________*/
-
-
-/*
-	Nom Fonction : MettreAjour_tab_pion
-
-	Entree : _tableau de pions
-			 _variable de type match
-
-	Sortie : _rien
-
-	Description : regarde le jeu qui est dans la
-*/
-void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
-{
-	int i, j, id;
-	/*On change l'etat de capture a pas encore capture
-	* pour tous les pions que nous allons trouver encore sur
-	* le damier
-	*/
-	for (i = 0; i < NB_CASES; i++)
-	{
-		for (j = 0; j < NB_CASES; j++)
-		{
-			//On recupere le pion qui est a la position acctuel
-			id = lematch.damier[i][j];
-			//Si un pion existe sur la position actuel
-			if (id >= 0)
-			{
-				//On change aussi sa position
-				lespions[id].x = j;
-				lespions[id].y = i;
-			}
-		}
-	}
-
 }
 
 /*
