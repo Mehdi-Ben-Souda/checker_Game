@@ -172,41 +172,31 @@ void copierLesJetons(pion tabDst[NB_PIONS],
 void deplacerJeton(mouvement lemvt,
 	int Damier[NB_CASES][NB_CASES], pion lesjetons[NB_PIONS])
 {
-	//On sauvgarde les id des jettons
-	int idJetonJoueur = lemvt.IDj;
-	int idJetonAdversaire = lemvt.IDa;
-
-	printf("\nId Adversaire %d", idJetonAdversaire);
-
-	//On sauvgarde la position du jeton du joueur
-	int x_init_joueur = lesjetons[idJetonJoueur].x;
-	int y_init_joueur = lesjetons[idJetonJoueur].y;
-	if (idJetonAdversaire >= 0)
+	if (lemvt.IDa >= 0)
 	{
-		//printf("__________Rani dhklt________");
+        lesjetons[lemvt.IDa].etat = 0;
 		//On sauvgarde la position du jeton de l'adversaire
-		int x_adversaire = lesjetons[idJetonAdversaire].x;
-		int y_adversaire = lesjetons[idJetonAdversaire].y;
-		//printf("\n x adv %d , y adv %d",x_adversaire, y_adversaire);
-//On capture le jeton adverse
-		Damier[y_adversaire][x_adversaire] = -1;
-		//On reinitialise les donnee dans la table des jettons 
-		lesjetons[idJetonAdversaire].etat = 0;
+		Damier[lesjetons[lemvt.IDa].y][lesjetons[lemvt.IDa].x] = -1;
+		//On reinitialise les donnee dans la table des jettons
 
 	}
-
-
 	//On enleve le jeton du joeur de sa position initiale
-	Damier[y_init_joueur][x_init_joueur] = -1;
+	Damier[lesjetons[lemvt.IDj].y][lesjetons[lemvt.IDj].x] = -1;
 	//On le deplace vers la nouvelle position
-	Damier[lemvt.y][lemvt.x] = idJetonJoueur;
-
-
-
+	Damier[lemvt.y][lemvt.x] = lemvt.IDj;
 	//On reinitialise les donnee dans la table des jettons 
-	lesjetons[idJetonJoueur].x = lemvt.x;
-	lesjetons[idJetonJoueur].y = lemvt.y;
-
+	lesjetons[lemvt.IDj].x = lemvt.x;
+	lesjetons[lemvt.IDj].y = lemvt.y;
+    if(lemvt.IDj < 12)
+    {
+        if(lesjetons[lemvt.IDj].y == 7)
+            lesjetons[lemvt.IDj].etat=2;
+    }
+    else
+    {
+        if(lesjetons[lemvt.IDj].y==0)
+            lesjetons[lemvt.IDj].etat=2;
+    }
 }
 /*____________________________________________________________*/
 
@@ -259,20 +249,12 @@ etatCase determiner_etatCase(int x, int y,
 {
 	switch (damier[y][x])
 	{
-	case -2:
-		//Si case non jouable
-		return (etatCase)NONJOUABLE;
-		break;
-
-	case -1:
-		//Si case vide
-		return (etatCase)VIDE;
-		break;
-
+	case -2:    return (etatCase)NONJOUABLE;//Si case non jouable
+	case -1:    return (etatCase)VIDE;
 	default:
 		//Si il d'agit d'un jeton du joueur 1
 		if (0 <= damier[y][x] && damier[y][x] <= 11)
-			return (etatCase)JETON1;
+            return (etatCase)JETON1;
 		//Si il d'agit d'un jeton du joueur 2
 		else if (12 <= damier[y][x] && damier[y][x] <= 23)
 			return (etatCase)JETON2;
@@ -334,11 +316,6 @@ typeJeton determiner_typeJeton(int idJeton, int numeroJoueur)
 void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 {
 	int i, j, id;
-
-	//On suppose que tous les pions sont capture
-	for (i = 0; i < NB_PIONS; lespions[i++].etat = 0);
-
-
 	/*On change l'etat de capture a pas encore capture
 	* pour tous les pions que nous allons trouver encore sur
 	* le damier
@@ -349,12 +326,9 @@ void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 		{
 			//On recupere le pion qui est a la position acctuel
 			id = lematch.damier[i][j];
-
 			//Si un pion existe sur la position actuel
 			if (id >= 0)
 			{
-				//Alors on change sont etat
-				lespions[id].etat = 1;
 				//On change aussi sa position
 				lespions[id].x = j;
 				lespions[id].y = i;
