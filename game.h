@@ -378,8 +378,8 @@ void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 					les mouvements possible pour un jeton
 
 */
-noeud* Mouvements_possible(int id,
-	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], noeud* mouvements, int sens_mouvement_horizontal, typeMouvement typeMvt)
+mouvement* Mouvements_possible(int id,
+	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], mouvement* mouvements, int sens_mouvement_horizontal, typeMouvement typeMvt)
 {
 
 	int x = lesJetons[id].x;
@@ -427,9 +427,14 @@ noeud* Mouvements_possible(int id,
 			*/
 			if (nature == -1 && typeMvt == SIMPLE)
 			{
-				mouvements->lejeu = insererListeMouvement(
-					mouvements->lejeu, x + sens_mouvement_horizontal,
+
+			
+				mouvements = creer_mouvement(x + sens_mouvement_horizontal,
 					y + sens_mouvement_vertical, id, -1);
+					
+					/*insererListeMouvement(
+					mouvements->lejeu, x + sens_mouvement_horizontal,
+					y + sens_mouvement_vertical, id, -1);*/
 			}
 
 			/*Si la case contient un jetton Allier
@@ -484,11 +489,15 @@ noeud* Mouvements_possible(int id,
 							[x + sens_mouvement_horizontal];
 
 						//On insere le mouvement
-						mouvements->lejeu =
+						if(!mouvements)
+								mouvements = creer_mouvement(x + sens_mouvement_horizontal * 2,
+									y + sens_mouvement_vertical * 2,
+									id, pionAdversaire);
+						/*mouvements->lejeu =
 							insererListeMouvement(
 								mouvements->lejeu, x + sens_mouvement_horizontal * 2,
 								y + sens_mouvement_vertical * 2,
-								id, pionAdversaire);
+								id, pionAdversaire);*/
 
 						/*
 						On verifie si nous pouvons pas faire un autre mouvement
@@ -509,10 +518,9 @@ noeud* Mouvements_possible(int id,
 						deplacerJeton(*tmp, copy_damier, copy_lesjetons);
 						deplacerJeton(*tmp, copy_damier2, copy_lesjetons2);
 
-
-
-
-						noeud* mouvementgauche = creeNoeud(), * mouvementdroit = creeNoeud(),*ptrnoeud=NULL, * ptrnoeud2 = NULL;
+						mouvements->drt = Mouvements_possible(id, copy_damier, copy_lesjetons, mouvements->drt, 1, COMPLEXE);
+						mouvements->gch = Mouvements_possible(id, copy_damier, copy_lesjetons, mouvements->gch, -1, COMPLEXE);
+						/*noeud* mouvementgauche = creeNoeud(), * mouvementdroit = creeNoeud(),*ptrnoeud=NULL, * ptrnoeud2 = NULL;
 						mouvement* ptrmvt1 = NULL;
 						
 						ptrmvt1 = mouvements->lejeu;
@@ -524,22 +532,24 @@ noeud* Mouvements_possible(int id,
 
 							ptrmvt1 = ptrmvt1->gch;
 							
-						}
+						}*/
 
-						mouvements = Mouvements_possible(id, copy_damier, copy_lesjetons, mouvements, 1, COMPLEXE);
+						
 
 						
 						//mouvements = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvements,-1,COMPLEXE);
 						
-						mouvementgauche = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvementgauche, -1, COMPLEXE);
+						/*mouvementgauche = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvementgauche, -1, COMPLEXE);
 						ptrnoeud = mouvements;
 						while (ptrnoeud->svt)
 							ptrnoeud = ptrnoeud->svt;
-						if(mouvementgauche->lejeu)  ptrnoeud->svt = mouvementgauche;
+						if(mouvementgauche->lejeu)  ptrnoeud->svt = mouvementgauche;*/
 					}
 				}
 
 			}
+			else
+				return (mouvement*)NULL;
 
 
 		}
@@ -547,8 +557,8 @@ noeud* Mouvements_possible(int id,
 
 	}
 
-	if (!mouvements->lejeu)return (noeud*)NULL;
-	return (noeud*)mouvements;
+
+	return (mouvement*)mouvements;
 
 }
 
@@ -568,10 +578,11 @@ noeud* tousLesMouvementsJetton(int id,
 	noeud* tmp = creeNoeud();
 
 
-	tmp = Mouvements_possible(id, copy_damier, copy_lesjetons, tmp, 1, typeMvt);
+	tmp->lejeu = Mouvements_possible(id, copy_damier, copy_lesjetons, tmp->lejeu, 1, typeMvt);
+
 	tmp->svt = creeNoeud();
 
-	tmp->svt = Mouvements_possible(id, copy_damier2, copy_lesjetons2, tmp->svt, -1, typeMvt);
+	tmp->svt->lejeu = Mouvements_possible(id, copy_damier2, copy_lesjetons2, tmp->svt->lejeu, -1, typeMvt);
 
 
 	return (noeud*)tmp;
