@@ -58,7 +58,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
 	if (!NE)
 	{
 		printf("\n\t\t__________Erreur d'allocation de la "
-					"structure mouvement__________\n\n");
+			"structure mouvement__________\n\n");
 		return (mouvement*)NE;
 	}
 
@@ -75,7 +75,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
 /*
 	Nom Fonction : insererListeMouvement
 
-	Entree : _la liste de mouvements 
+	Entree : _la liste de mouvements
 			 _entiers x et y qui sont les coordonees
 			 _entiers IDj et IDa qui sont les id des jetons
 
@@ -120,13 +120,13 @@ mouvement* insererListeMouvement(mouvement* liste, int x, int y
 
 	Description : Copie une matrice d'entier dans un autre
 */
-void copierDamier(int DamierDst[NB_CASES][NB_CASES], 
-						int DamierSrc[NB_CASES][NB_CASES])
+void copierDamier(int DamierDst[NB_CASES][NB_CASES],
+	int DamierSrc[NB_CASES][NB_CASES])
 {
-	for (int i = 0; i < NB_CASES; i++) 
-		for (int j = 0; j < NB_CASES; j++) 
+	for (int i = 0; i < NB_CASES; i++)
+		for (int j = 0; j < NB_CASES; j++)
 			DamierDst[i][j] = DamierSrc[i][j];
-		
+
 }
 /*____________________________________________________________*/
 
@@ -140,8 +140,8 @@ void copierDamier(int DamierDst[NB_CASES][NB_CASES],
 
 	Description : Copie une matrice de pion dans un autre
 */
-void copierLesJetons(pion tabDst[NB_PIONS], 
-										pion tabSrc[NB_CASES])
+void copierLesJetons(pion tabDst[NB_PIONS],
+	pion tabSrc[NB_CASES])
 {
 	for (int i = 0; i < NB_PIONS; i++)
 	{
@@ -149,7 +149,7 @@ void copierLesJetons(pion tabDst[NB_PIONS],
 		tabDst[i].x = tabSrc[i].x;
 		tabDst[i].y = tabSrc[i].y;
 	}
-		
+
 }
 
 /*____________________________________________________________*/
@@ -164,20 +164,20 @@ void copierLesJetons(pion tabDst[NB_PIONS],
 	Sortie : _Rien
 
 	Description : L'utilite de cette fct c'est qu'elle applique
-			un mouvement sur le damier en mettant a jour la 
+			un mouvement sur le damier en mettant a jour la
 			table des jetons
 */
 
-void deplacerJeton(mouvement lemvt, 
-		int Damier[NB_CASES][NB_CASES], pion lesjetons[NB_PIONS])
+void deplacerJeton(mouvement lemvt,
+	int Damier[NB_CASES][NB_CASES], pion lesjetons[NB_PIONS])
 {
-		//On sauvgarde les id des jettons
+	//On sauvgarde les id des jettons
 	int idJetonJoueur = lemvt.IDj;
 	int idJetonAdversaire = lemvt.IDa;
 
 	printf("\nId Adversaire %d", idJetonAdversaire);
 
-		//On sauvgarde la position du jeton du joueur
+	//On sauvgarde la position du jeton du joueur
 	int x_init_joueur = lesjetons[idJetonJoueur].x;
 	int y_init_joueur = lesjetons[idJetonJoueur].y;
 	if (idJetonAdversaire >= 0)
@@ -186,23 +186,23 @@ void deplacerJeton(mouvement lemvt,
 		//On sauvgarde la position du jeton de l'adversaire
 		int x_adversaire = lesjetons[idJetonAdversaire].x;
 		int y_adversaire = lesjetons[idJetonAdversaire].y;
-				//printf("\n x adv %d , y adv %d",x_adversaire, y_adversaire);
-		//On capture le jeton adverse
+		//printf("\n x adv %d , y adv %d",x_adversaire, y_adversaire);
+//On capture le jeton adverse
 		Damier[y_adversaire][x_adversaire] = -1;
 		//On reinitialise les donnee dans la table des jettons 
 		lesjetons[idJetonAdversaire].etat = 0;
 
 	}
-		
 
-		//On enleve le jeton du joeur de sa position initiale
+
+	//On enleve le jeton du joeur de sa position initiale
 	Damier[y_init_joueur][x_init_joueur] = -1;
-		//On le deplace vers la nouvelle position
+	//On le deplace vers la nouvelle position
 	Damier[lemvt.y][lemvt.x] = idJetonJoueur;
 
-		
 
-		//On reinitialise les donnee dans la table des jettons 
+
+	//On reinitialise les donnee dans la table des jettons 
 	lesjetons[idJetonJoueur].x = lemvt.x;
 	lesjetons[idJetonJoueur].y = lemvt.y;
 
@@ -246,38 +246,38 @@ noeud* creeNoeud(void)
 	Nom Fonction : determiner_etatCase
 
 	Entree : _entier x et y qui sont les coordonee de la case
-			 _une matrice de type entier 
+			 _une matrice de type entier
 
 	Sortie : _enumeration de type etatCase
 
 	Description : permet de determiner le type de la case passe
 			en parametre
 */
-etatCase determiner_etatCase(int x, int y, 
-				int damier[NB_CASES][NB_CASES])
+etatCase determiner_etatCase(int x, int y,
+	int damier[NB_CASES][NB_CASES])
 {
 	switch (damier[y][x])
 	{
 	case -2:
-			//Si case non jouable
+		//Si case non jouable
 		return (etatCase)NONJOUABLE;
 		break;
 
 	case -1:
-			//Si case vide
+		//Si case vide
 		return (etatCase)VIDE;
 		break;
 
 	default:
-			//Si il d'agit d'un jeton du joueur 1
+		//Si il d'agit d'un jeton du joueur 1
 		if (0 <= damier[y][x] && damier[y][x] <= 11)
 			return (etatCase)JETON1;
-			//Si il d'agit d'un jeton du joueur 2
+		//Si il d'agit d'un jeton du joueur 2
 		else if (12 <= damier[y][x] && damier[y][x] <= 23)
 			return (etatCase)JETON2;
 
 		printf("\nErreur: La case a determiner contient "
-										"une valeur inconnu");
+			"une valeur inconnu");
 		break;
 	}
 }
@@ -288,7 +288,7 @@ etatCase determiner_etatCase(int x, int y,
 /*
 	Nom Fonction : determiner_typeJeton
 
-	Entree : _l'id du jeton 
+	Entree : _l'id du jeton
 			 _une matrice de type entier
 
 	Sortie : _enumeration de type etatCase
@@ -305,17 +305,17 @@ typeJeton determiner_typeJeton(int idJeton, int numeroJoueur)
 		else if (12 <= idJeton && idJeton <= 23)
 			return (typeJeton)ADVERSAIRE;
 	}
-	else if(numeroJoueur==2)
+	else if (numeroJoueur == 2)
 	{
 		if (0 <= idJeton && idJeton <= 11)
-		
+
 			return (typeJeton)ADVERSAIRE;
-		else if(12 <= idJeton && idJeton <= 23)
+		else if (12 <= idJeton && idJeton <= 23)
 			return (typeJeton)ALLIER;
 	}
 
 	printf("\n!!!!Erreur , paramatre invalid dans la fonction"
-		"determiner_typeJeton!!!! Joueur%d IDJett%d\n",numeroJoueur,idJeton);
+		"determiner_typeJeton!!!! Joueur%d IDJett%d\n", numeroJoueur, idJeton);
 }
 /*____________________________________________________________*/
 
@@ -328,7 +328,7 @@ typeJeton determiner_typeJeton(int idJeton, int numeroJoueur)
 
 	Sortie : _rien
 
-	Description : regarde le jeu qui est dans la 
+	Description : regarde le jeu qui est dans la
 */
 void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 {
@@ -350,7 +350,7 @@ void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 			id = lematch.damier[i][j];
 
 			//Si un pion existe sur la position actuel
-			if (id>=0)
+			if (id >= 0)
 			{
 				//Alors on change sont etat
 				lespions[id].etat = 1;
@@ -373,12 +373,12 @@ void MettreAjour_tab_pion(pion lespions[NB_PIONS], match lematch)
 
 	Sortie : _la liste des mouvements possibles
 
-	Description : la fonction permet de determiner tous 
+	Description : la fonction permet de determiner tous
 					les mouvements possible pour un jeton
 
 */
 noeud* Mouvements_possible(int id,
-		int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], noeud* mouvements,int sens_mouvement_horizontal, typeMouvement typeMvt)
+	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], noeud* mouvements, int sens_mouvement_horizontal, typeMouvement typeMvt)
 {
 
 	int x = lesJetons[id].x;
@@ -388,32 +388,32 @@ noeud* Mouvements_possible(int id,
 	int sens_mouvement_vertical;
 
 
-	
+
 	if (lesJetons[id].etat == 1)//Si c'est un pion
 	{
 		if (id < 12)
 		{
-				//On va faire un mouvement vers le bas
+			//On va faire un mouvement vers le bas
 			sens_mouvement_vertical = 1;
 			joueur = 1;
 		}
 		else
 		{
-				//On va faire un mouvement vers le haut
+			//On va faire un mouvement vers le haut
 			sens_mouvement_vertical = -1;
 			joueur = 2;
 		}
-		
+
 
 
 
 		//Traitement du mouvement droit
 
 			/*
-				Nous testons si la case sur la diagonale 
+				Nous testons si la case sur la diagonale
 				droite existe
 			*/
-		if ( ( 0 <= (y + sens_mouvement_vertical) && (y + sens_mouvement_vertical) < NB_CASES) 
+		if ((0 <= (y + sens_mouvement_vertical) && (y + sens_mouvement_vertical) < NB_CASES)
 			&& (0 <= (x + sens_mouvement_horizontal) && (x + sens_mouvement_horizontal) < NB_CASES))//A revoir
 		{
 
@@ -421,69 +421,69 @@ noeud* Mouvements_possible(int id,
 			nature = damier[y + sens_mouvement_vertical][x + sens_mouvement_horizontal];
 
 			/*
-			* Case libre et que nous n'avaons pas fait un mouvement 
+			* Case libre et que nous n'avaons pas fait un mouvement
 			* avant
 			*/
-			if (nature == -1 && typeMvt==SIMPLE)
+			if (nature == -1 && typeMvt == SIMPLE)
 			{
 				mouvements->lejeu = insererListeMouvement(
-						mouvements->lejeu, x + sens_mouvement_horizontal,
-						y + sens_mouvement_vertical, id, -1);
+					mouvements->lejeu, x + sens_mouvement_horizontal,
+					y + sens_mouvement_vertical, id, -1);
 			}
 
-				/*Si la case contient un jetton Allier
-				* Alors nous sommes blocke
-				*/
-			
-				/*Si la case contient un jetton Adversaire
-				* Alors nous pouvons le bouffer 
-				* a condition que la case d'apres ce jetton 
-				* sois vide
-				*/
+			/*Si la case contient un jetton Allier
+			* Alors nous sommes blocke
+			*/
+
+			/*Si la case contient un jetton Adversaire
+			* Alors nous pouvons le bouffer
+			* a condition que la case d'apres ce jetton
+			* sois vide
+			*/
 			else if (determiner_typeJeton(nature, joueur)
-												== ADVERSAIRE)
+				== ADVERSAIRE)
 			{
 
 				/*
 				* Il faut voir la case qui est juste apres
 				* sur la diagonale si elle est vide ou pas
-				* 
-				*	SI elle est vide il faut voir si il 
-				*	y a pas une autre serie de mouvements 
+				*
+				*	SI elle est vide il faut voir si il
+				*	y a pas une autre serie de mouvements
 				*	a faire dans les quels je mange
 				*/
-					
-				
+
+
 				/*Si la deuxieme case sur la diagonale
 				*	droite existe
 				*/
-				
+
 				if (0 <= (x + sens_mouvement_horizontal * 2) && (x + sens_mouvement_horizontal * 2) < NB_CASES
-						&& 0<=(y + sens_mouvement_vertical * 2) &&(y + sens_mouvement_vertical * 2)<NB_CASES)
+					&& 0 <= (y + sens_mouvement_vertical * 2) && (y + sens_mouvement_vertical * 2) < NB_CASES)
 				{
 
 					//Si la 2 eme case sur la diagonale est vide 
 					if (determiner_etatCase(x + sens_mouvement_horizontal * 2,
 						y + sens_mouvement_vertical * 2, damier)
-														== VIDE)
+						== VIDE)
 					{
 
 						/*
 						Alors on insere le mouvement dans la
 						liste des mouvements et on fait un appel
-						recursive pour voir si il y a un 
+						recursive pour voir si il y a un
 						enchainement d'autres mouvements
 						*/
 
 						/*	On recupere l'id du pion adversaire que
 							nous allons capturer
 						*/
-						int pionAdversaire = 
+						int pionAdversaire =
 							damier[y + sens_mouvement_vertical]
-													[x + sens_mouvement_horizontal];
+							[x + sens_mouvement_horizontal];
 
 						//On insere le mouvement
-						mouvements->lejeu = 
+						mouvements->lejeu =
 							insererListeMouvement(
 								mouvements->lejeu, x + sens_mouvement_horizontal * 2,
 								y + sens_mouvement_vertical * 2,
@@ -492,7 +492,7 @@ noeud* Mouvements_possible(int id,
 						/*
 						On verifie si nous pouvons pas faire un autre mouvement
 						*/
-						
+
 						int copy_damier[NB_CASES][NB_CASES], copy_damier2[NB_CASES][NB_CASES];
 						pion copy_lesjetons[NB_PIONS], copy_lesjetons2[NB_PIONS];
 						copierLesJetons(copy_lesjetons, lesJetons);
@@ -501,39 +501,40 @@ noeud* Mouvements_possible(int id,
 						copierLesJetons(copy_lesjetons2, lesJetons);
 						copierDamier(copy_damier2, damier);
 
-						mouvement * tmp=creer_mouvement(x + sens_mouvement_horizontal * 2,
+						mouvement* tmp = creer_mouvement(x + sens_mouvement_horizontal * 2,
 							y + sens_mouvement_vertical * 2,
 							id, pionAdversaire);
 
 						deplacerJeton(*tmp, copy_damier, copy_lesjetons);
 						deplacerJeton(*tmp, copy_damier2, copy_lesjetons2);
 
+
+
+
+						noeud* mouvementgauche = creeNoeud(), * mouvementdroit = creeNoeud(),*ptrnoeud=NULL, * ptrnoeud2 = NULL;
+						mouvement* ptrmvt1 = NULL;
 						
-						
-
-						
-
-						//Afficher_Damier(damier); printf("\n\n");
-						//printf("\n\n x= %d  y= %d", tmp->x, tmp->y);
-						mouvements = Mouvements_possible(id, copy_damier, copy_lesjetons, mouvements,1,COMPLEXE);
-
-						noeud* mouvementgauche = creeNoeud();
-						//mouvements = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvements,-1,COMPLEXE);
-						mouvementgauche = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvementgauche, -1, COMPLEXE);
-
-						if (mouvementgauche->lejeu)
+						ptrmvt1 = mouvements->lejeu;
+						while (ptrmvt1)
 						{
-							tmp = creer_mouvement(x + sens_mouvement_horizontal * 2,
-								y + sens_mouvement_vertical * 2,
-								id, pionAdversaire);
-							printf("hello world");
-							tmp->svt = mouvementgauche->lejeu;
-							mouvementgauche->lejeu = tmp;
-							
+							mouvementgauche->lejeu = insererListeMouvement(mouvementgauche->lejeu, ptrmvt1->x,
+															ptrmvt1->y, ptrmvt1->IDj, ptrmvt1->IDa);
+						
 
-							mouvements->svt = mouvementgauche;
+							ptrmvt1 = ptrmvt1->svt;
+							
 						}
 
+						mouvements = Mouvements_possible(id, copy_damier, copy_lesjetons, mouvements, 1, COMPLEXE);
+
+						
+						//mouvements = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvements,-1,COMPLEXE);
+						
+						mouvementgauche = Mouvements_possible(id, copy_damier2, copy_lesjetons2, mouvementgauche, -1, COMPLEXE);
+						ptrnoeud = mouvements;
+						while (ptrnoeud->svt)
+							ptrnoeud = ptrnoeud->svt;
+						if(mouvementgauche->lejeu)  ptrnoeud->svt = mouvementgauche;
 					}
 				}
 
@@ -543,107 +544,17 @@ noeud* Mouvements_possible(int id,
 		}
 
 
-
-		
-
-
-
 	}
 
-
+	if (!mouvements->lejeu)return (noeud*)NULL;
 	return (noeud*)mouvements;
 
 }
 
 
-//if ((0 < y && y < NB_CASES - 1) && x > 0)//Traitement du mouvement gauche
-//{
-
-
-//	nature = damier[y + sens_mouvement_vertical][x - 1];
-
-
-//	if (nature == -1)//Case libre
-//	{
-//		mouvements->lejeu = insererListeMouvement(
-//			mouvements->lejeu, x - 1,
-//			y + sens_mouvement_vertical, id, -1);
-//	}
-
-//	/*Si la case contient un jetton Allier
-//	* Alors nous sommes blocke
-//	*/
-
-//	/*Si la case contient un jetton Adversaire
-//	* Alors nous pouvons le bouffer
-//	* a condition que la case d'apres ce jetton
-//	* sois vide
-//	*/
-//	else if (determiner_typeJeton(nature, joueur)
-//		== ADVERSAIRE)
-//	{
-//		/*
-//		* Il faut voir la case qui est juste apres
-//		* sur la diagonale si elle est vide ou pas
-//		*
-//		*	SI elle est vide il faut voir si il
-//		*	y a pas une autre serie de mouvements
-//		*	a faire dans les quels je mange
-//		*/
-
-
-//		/*Si la deuxieme case sur la diagonale
-//		*	droite existe
-//		*/
-
-//		if (x < NB_CASES - 2
-//			&& (1 < y && y < NB_CASES - 2))
-//		{
-//			//Si la 2 eme case sur la diagonale est vide 
-//			if (determiner_etatCase(x + 2,
-//				y + sens_mouvement_vertical * 2, damier)
-//				== VIDE)
-//			{
-//				/*
-//				Alors on insere le mouvement dans la
-//				liste des mouvements et on fait un appel
-//				recursive pour voir si il y a un
-//				enchainement d'autres mouvements
-//				*/
-
-//				/*On recupere l'id du pion adversaire que
-//					nous allons capturer
-//				*/
-//				int pionAdversaire =
-//					damier[y + sens_mouvement_vertical]
-//					[x + 1];
-
-//				//On insere le mouvement
-//				mouvements->lejeu =
-//					insererListeMouvement(
-//						mouvements->lejeu, x + 2,
-//						y + sens_mouvement_vertical * 2,
-//						id, pionAdversaire);
-
-//				//On verifie si nous pouvons pas faire un autre mouvement
-
-//			}
-//		}
-
-//	}
-
-
-//}
-
-
-	/*else if (lespions[id].etat == 2)//Si c'est une damme
-	{
-
-	}*/
-
 
 noeud* tousLesMouvementsJetton(int id,
-	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS])
+	int damier[NB_CASES][NB_CASES], pion lesJetons[NB_PIONS], typeMouvement typeMvt)
 {
 	int copy_damier[NB_CASES][NB_CASES], copy_damier2[NB_CASES][NB_CASES];
 	pion copy_lesjetons[NB_PIONS], copy_lesjetons2[NB_PIONS];
@@ -652,20 +563,17 @@ noeud* tousLesMouvementsJetton(int id,
 
 	copierLesJetons(copy_lesjetons2, lesJetons);
 	copierDamier(copy_damier2, damier);
-	
+
 	noeud* tmp = creeNoeud();
 
 
-	tmp=Mouvements_possible(id, copy_damier, copy_lesjetons, tmp,1,SIMPLE);
+	tmp = Mouvements_possible(id, copy_damier, copy_lesjetons, tmp, 1, typeMvt);
 	tmp->svt = creeNoeud();
 
-	tmp->svt = Mouvements_possible(id, copy_damier2, copy_lesjetons2, tmp->svt,-1,SIMPLE);
+	tmp->svt = Mouvements_possible(id, copy_damier2, copy_lesjetons2, tmp->svt, -1, typeMvt);
 
 
 	return (noeud*)tmp;
 
-	
+
 }
-
-
-
