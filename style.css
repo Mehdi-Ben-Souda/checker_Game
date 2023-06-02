@@ -1,4 +1,4 @@
-#my-button_black, #my_pion {
+#my-button_black, #joueur1,#joueur2 {
   /* background-color: rgb(91, 67, 6); */
     background-image:url('background_black_damier.jpeg');
     background-repeat: no-repeat;
@@ -12,13 +12,26 @@
     background-size: cover;
     border:2px solid black;
   }
+  #autre_mvt_possible{
+    background-image:url('background_black_damier.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border:2px solid rgb(255, 228, 76);
+  }
   #mvt_possible{
     background-image:url('background_black_damier.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
-    border:2px solid gold;
+    border:2px solid rgb(255, 194, 40);
   }
-  #my_pion:hover{
+  #pion_selected{
+    background-image:url('background_black_damier.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 5px solid goldenrod;
+    border-radius: 7px;
+  }
+  #joueur1:hover,#joueur2:hover{
     border: 5px solid goldenrod;
     border-radius: 7px;
   }
@@ -56,7 +69,6 @@
 #BoxMode{
   background-color: rgba(0, 0, 0, 0.479);
   padding: 50px;
-  border:2px solid #00000067;
 }
 #btn_mode_quitter,#btn_mode2,#btn_mode1
 {
