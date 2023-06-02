@@ -23,7 +23,8 @@ typedef struct mvt
     int y;
     int IDj;
     int IDa;
-    struct mvt *svt;
+    struct mvt *gch;
+    struct mvt *drt;
 }mouvement;
 
 typedef struct A
@@ -127,7 +128,7 @@ void Initialiser_Tab_Pion(pion Tab[24])
 }
 void Afficher_pion(pion P)
 {
-    printf("\tx :%d\ty:%d",P.x,P.y);
+    printf("\tx :%d\ty:%d\tetat :%d",P.x,P.y,P.etat);
 }
 void Afficher_Tab_Pion(pion Tab[24])
 {

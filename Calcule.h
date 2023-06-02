@@ -25,17 +25,21 @@ int selectioner_cout(noeud *N,enum maxmin E)
     }
     return ((int)Val);
 }
-noeud *calcuer_cout(noeud *N)
+void calculer_cout_mvt(mouvement *cel ,int *cout)
 {
-    mouvement *ptc;
-    ptc=N->lejeu;
-    N->score=0;
-    while(ptc)
+    if(cel)
     {
-        if(ptc->IDa >0)
-            N->score++;
-        ptc=ptc->svt;
+        if(cel->IDa)
+            *cout++;
+        calculer_cout_mvt(cel->gch,cout);
+        calculer_cout_mvt(cel->drt,cout);
     }
+}
+noeud *calcuer_cout_nd(noeud *N)
+{
+    int cout;
+    calculer_cout_mvt(N->lejeu,&cout);
+    N->score=cout;
     return ((noeud*)N);
 }
 /*
@@ -66,7 +70,7 @@ noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_C
            if(!N)
            {
                N=creeNoeud();
-               N=Mouvements_possible((*i),damier,Tab,N);
+               N=tousLesMouvementsJetton((*i),damier,Tab,0);
                tmp=N;
            }
            else
@@ -75,7 +79,7 @@ noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_C
                while (tmp->svt)
                    tmp=tmp->svt;
                tmp->svt=creeNoeud();
-               tmp->svt=Mouvements_possible((*i),damier,Tab,tmp->svt);
+               tmp->svt=tousLesMouvementsJetton((*i),damier,Tab,0);
                tmp=tmp->svt;
            }
            tmp2=tmp;
@@ -89,7 +93,7 @@ noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_C
                {
                    m=creer_mouvement(ptc->x,ptc->y,ptc->IDj, ptc->IDa);
                    deplacerJeton(*m, copy_damier, copy_lesjetons);
-                   ptc=ptc->svt;
+                  // ptc=ptc->svt;
                }
                (*niveau)++;
                tmp2->sous_jeu=construire_niveau(tmp2->sous_jeu,(idj*(-1)),copy_lesjetons,copy_damier,&k,niveau);
