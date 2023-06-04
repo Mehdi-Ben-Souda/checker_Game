@@ -53,7 +53,7 @@ void Afficher_arbre(noeud *a)
     }
 
 }
-*/
+
 noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_CASES],int *i,int *niveau)
 {
    if( *niveau <=2)
@@ -92,7 +92,7 @@ noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_C
                while (ptc)
                {
                    m=creer_mouvement(ptc->x,ptc->y,ptc->IDj, ptc->IDa);
-                   deplacerJeton(*m, copy_damier, copy_lesjetons);
+                   deplacerJeton(m, copy_damier, copy_lesjetons);
                   // ptc=ptc->svt;
                }
                (*niveau)++;
@@ -107,3 +107,4 @@ noeud *construire_niveau(noeud *N,int idj,pion Tab[24],int damier[NB_CASES][NB_C
     (*niveau)--;
     return ((noeud*)N);
 }
+ */

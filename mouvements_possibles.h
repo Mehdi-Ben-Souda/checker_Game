@@ -1,0 +1,121 @@
+/*
+ * Fonction qui determine tous les mouvements possibles pour un pion ordinaire
+ */
+mouvement *Mouvements(int id,int damier[NB_CASES][NB_CASES],
+                      pion pions[NB_PIONS],mouvement *N,int v,
+                      int h,int typemvt)
+{
+    //déclaration des variables
+    int damier1[NB_CASES][NB_CASES];
+    pion pions1[NB_PIONS];
+    int x=pions[id].x;
+    int y=pions[id].y;
+    if(!N)
+    {
+        if(x+h<8 &&y+v<8 && x+h>=0 &&y+v>=0)
+        {
+            if(damier[y+v][x+h]==-1 &&typemvt ==0)
+                N = creer_mouvement(x + h, y + v, id, -1);
+            else if((damier[y+v][x+h]<12 && damier[y][x]>11)
+                    || (damier[y+v][x+h]>11 && damier[y][x]<12) )
+            {
+                if(damier[y+(v*2)][x+(h*2)]==-1)
+                {
+                    N=creer_mouvement(x+(h*2),y+(v*2),id,
+                                      damier[x+h][y+v]);
+                    copierDamier(damier1,damier);
+                    copierLesJetons(pions1,pions);
+                    deplacerJeton(N,damier1,pions1);
+                    N->gch = Mouvements(id, damier1, pions1, N->gch, v,-1,1);
+                    N->drt = Mouvements(id, damier1, pions1, N->drt, v,1,1);
+                }
+            }
+        }
+    }
+    return ((mouvement*)N);
+}
+/*
+* Fonction qui determine tous les mouvements possibles pour un pion dame
+*/
+mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N,int v,int h,int typemvt){
+    int damier1[NB_CASES][NB_CASES];
+    pion pions1[NB_PIONS];
+    int a,b,c,d;
+    int x=pions[id].x;
+    int y=pions[id].y;
+    mouvement *T,*T2;
+    a=x+h;
+    b=y+v;
+    while(a<8 && b<8 && a>=0 && b>=0)
+    {
+        if(damier[b][a]==-1 &&typemvt ==0)
+        {
+            T= creer_mouvement(a, b, id, -1);
+            N= insererListeMouvement(N,T);
+            a=a+h;
+            b=b+v;
+        }
+        else
+        {
+            if((damier[b][a]<12 && damier[b][a]>=0 && damier[y][x]>11)
+               || (damier[b][a]>11 && damier[y][x]<12 && damier[y][x]>=0) )
+            {
+                c=a;
+                d=b;
+                c=c+h;
+                d=d+v;
+                while(c<8 && d<8&& c>=0 && d>=0)
+                {
+                    if(damier[d][c] ==-1)
+                    {
+                        typemvt=1;
+                        T= creer_mouvement(c,d,id,damier[b][a]);
+                        T2=creer_mouvement(c,d,id,damier[b][a]);
+                        copierDamier(damier1,damier);
+                        copierLesJetons(pions1,pions);
+                        deplacerJeton(T,damier1,pions1);
+                        T->gch= Dame(id,damier1,pions1,T->gch,v,-1,1);
+                        T->drt= Dame(id,damier1,pions1,T->drt,v,1,1);
+                        T2->gch=Dame(id,damier1,pions1,T2->gch,v*(-1),h,1);
+                        N= insererListeMouvement(N,T);
+                        if(T2->gch)
+                            N=insererListeMouvement(N,T2);
+                        c=c+h;
+                        d=d+v;
+                    }
+                    else break;
+                }
+            }
+            a=a+h;
+            b=b+v;
+        }
+    }
+    return ((mouvement*)N);
+}
+/*
+ * Fonction qui determine tous les mouvements possibles pour un pion quelconque
+ */
+mouvement *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N)
+{
+    int v;
+    if(pions[id].etat ==2)//s'il s'agit d'un dame
+    {
+        //on cherche les mouvements possibles dans les 4 directions
+        N= Dame(id,damier,pions,N,1,-1,SIMPLE);// sense verticale = 1 et sens horizontale =-1
+        N= Dame(id,damier,pions,N,1,1,SIMPLE);// sense verticale = 1 et sens horizontale =1
+        N= Dame(id,damier,pions,N,-1,-1,SIMPLE);// sense verticale = -1 et sens horizontale =-1
+        N= Dame(id,damier,pions,N,-1,1,SIMPLE);// sense verticale = -1 et sens horizontale =1
+    }
+    else//sinon
+    {
+        //on determine le sens vertical du joueur
+        if(id<12) v=1;
+        else
+            v=-1;
+        //v :sens vertical pour un joueur, sens horizontale =1
+        N= Mouvements(id,damier,pions,N,v,1,SIMPLE);
+        //v :sense vertical pour un joueur, sens horizontale =-1
+        N->svt=Mouvements(id,damier,pions,N->svt,v,-1,SIMPLE);
+    }
+    return ((mouvement*)N);
+}

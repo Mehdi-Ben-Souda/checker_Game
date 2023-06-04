@@ -25,6 +25,7 @@ typedef struct mvt
     int IDa;
     struct mvt *gch;
     struct mvt *drt;
+    struct mvt *svt;
 }mouvement;
 
 typedef struct A

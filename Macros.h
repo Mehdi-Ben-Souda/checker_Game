@@ -27,3 +27,4 @@
 #include "CalculCout.h"
 #include "game.h"
 #include "Calcule.h"
+#include "mouvements_possibles.h"
