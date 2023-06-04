@@ -10,28 +10,31 @@ mouvement *Mouvements(int id,int damier[NB_CASES][NB_CASES],
     pion pions1[NB_PIONS];
     int x=pions[id].x;
     int y=pions[id].y;
-    if(!N)
-    {
-        if(x+h<8 &&y+v<8 && x+h>=0 &&y+v>=0)
+        if(x+h<8 &&y+v<8 && x+h>=0 &&y+v>=0)//s'il a une case libre pour boujer
         {
             if(damier[y+v][x+h]==-1 &&typemvt ==0)
+                //s'il va faire une mouvement sans capturer un pion adversaire
                 N = creer_mouvement(x + h, y + v, id, -1);
+            //s'il a un pion adversaire à coté
             else if((damier[y+v][x+h]<12 && damier[y][x]>11)
                     || (damier[y+v][x+h]>11 && damier[y][x]<12) )
             {
+                //s'il peut capurer cette pion de l'adversaire
                 if(damier[y+(v*2)][x+(h*2)]==-1)
                 {
-                    N=creer_mouvement(x+(h*2),y+(v*2),id,
-                                      damier[x+h][y+v]);
+                    //on garde cette mouvement
+                    N=creer_mouvement(x+(h*2),y+(v*2),id,damier[x+h][y+v]);
+                    //on fait une copie du damier et on applique cette mouvement
                     copierDamier(damier1,damier);
                     copierLesJetons(pions1,pions);
                     deplacerJeton(N,damier1,pions1);
+                    //on cherche les mouvements complexes à droite et à gauche
                     N->gch = Mouvements(id, damier1, pions1, N->gch, v,-1,1);
                     N->drt = Mouvements(id, damier1, pions1, N->drt, v,1,1);
                 }
             }
         }
-    }
+        //retourner le noeud des mouvements
     return ((mouvement*)N);
 }
 /*
