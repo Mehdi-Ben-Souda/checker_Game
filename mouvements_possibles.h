@@ -23,13 +23,13 @@ void Afficher_Arbre_horizotalement(mouvement *Arbre, int Niv)
     if (Arbre) // Condition d'arret
     {
         // Affichage des fils droits
-        Afficher_Arbre_horizotalement(Arbre->drt, Niv + 1);
+        Afficher_Arbre_horizotalement(Arbre->fils2, Niv + 1);
         printf("\n");
         for (esp = 0; esp < Niv; esp++)
             printf("\t");
         printf("x :%d  y :%d ida :%d ", Arbre->x,Arbre->y,Arbre->IDa);
         // Affichage des fils gauches
-        Afficher_Arbre_horizotalement(Arbre->gch, Niv + 1);
+        Afficher_Arbre_horizotalement(Arbre->fils1, Niv + 1);
     }
 }
 
@@ -89,7 +89,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
     NE->y = y;
     NE->IDj = IDj;
     NE->IDa = IDa;
-    NE->gch=NE->drt =NE->svt= NULL;
+    NE->fils1=NE->fils2 =NE->fils3= NULL;
     return (mouvement*)NE;
 
 }
@@ -115,9 +115,9 @@ mouvement* insererListeMouvement(mouvement* liste, mouvement *NE)
     if (!liste)
         return (mouvement*)NE;
     ptr = liste;
-    while (ptr->svt)
-        ptr = ptr->svt;
-    ptr->svt = NE;
+    while (ptr->fils3)
+        ptr = ptr->fils3;
+    ptr->fils3 = NE;
     return (mouvement*)liste;
 
 }
@@ -283,8 +283,8 @@ mouvement *Mouvements(int id,int damier[NB_CASES][NB_CASES],
                     copierLesJetons(pions1,pions);
                     deplacerJeton(N,damier1,pions1);
                     //on cherche les mouvements complexes à droite et à gauche
-                    N->gch = Mouvements(id, damier1, pions1, N->gch, v,-1,COMPLEXE);
-                    N->drt = Mouvements(id, damier1, pions1, N->drt, v,1,COMPLEXE);
+                    N->fils1 = Mouvements(id, damier1, pions1, N->fils1, v,-1,COMPLEXE);
+                    N->fils2 = Mouvements(id, damier1, pions1, N->fils2, v,1,COMPLEXE);
                 }
             }
         }
@@ -333,11 +333,11 @@ mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouv
                             copierDamier(damier1, damier);
                             copierLesJetons(pions1, pions);
                             deplacerJeton(T, damier1, pions1);
-                            T->gch = Dame(id, damier1, pions1, T->gch, v, -1, COMPLEXE);
-                            T->drt = Dame(id, damier1, pions1, T->drt, v, 1, COMPLEXE);
-                            T2->gch = Dame(id, damier1, pions1, T2->gch, v * (-1), h, COMPLEXE);
+                            T->fils1 = Dame(id, damier1, pions1, T->fils1, v, -1, COMPLEXE);
+                            T->fils2 = Dame(id, damier1, pions1, T->fils2, v, 1, COMPLEXE);
+                            T2->fils1 = Dame(id, damier1, pions1, T2->fils1, v * (-1), h, COMPLEXE);
                             N = insererListeMouvement(N, T);
-                            if (T2->gch)
+                            if (T2->fils1)
                                 N = insererListeMouvement(N, T2);
                             c = c + h;
                             d = d + v;

@@ -23,9 +23,9 @@ typedef struct mvt
     int y;
     int IDj;
     int IDa;
-    struct mvt *gch;
-    struct mvt *drt;
-    struct mvt *svt;
+    struct mvt *fils1;
+    struct mvt *fils2;
+    struct mvt *fils3;
 }mouvement;
 
 typedef struct A
