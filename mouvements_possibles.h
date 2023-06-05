@@ -101,19 +101,28 @@ mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouv
 /*
  * Fonction qui determine tous les mouvements possibles pour un pion quelconque
  */
-noeud *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N)
+noeud *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS])
 {
     int v;
     noeud *A=creeNoeud();
-
+    noeud *tmp;
+    tmp=A;
     if(pions[id].etat ==2)//s'il s'agit d'un dame
     {
         //on cherche les mouvements possibles dans les 4 directions
-        A->lejeu= Dame(id,damier,pions,A->lejeu,1,-1,SIMPLE);// sense verticale = 1 et sens horizontale =-1
-        A->svt=creeNoeud();
-        A->svt->lejeu= Dame(id,damier,pions,A->svt->lejeu,1,1,SIMPLE);// sense verticale = 1 et sens horizontale =1
-        N= Dame(id,damier,pions,N,-1,-1,SIMPLE);// sense verticale = -1 et sens horizontale =-1
-        N= Dame(id,damier,pions,N,-1,1,SIMPLE);// sense verticale = -1 et sens horizontale =1
+        tmp->lejeu= Dame(id,damier,pions,tmp->lejeu,1,-1,SIMPLE);// sense verticale = 1 et sens horizontale =-1
+
+        tmp->svt=creeNoeud();
+        tmp=tmp->svt;
+        tmp->lejeu= Dame(id,damier,pions,tmp->lejeu,1,1,SIMPLE);// sense verticale = 1 et sens horizontale =1
+
+        tmp->svt=creeNoeud();
+        tmp=tmp->svt;
+        tmp->lejeu= Dame(id,damier,pions,tmp->lejeu,-1,-1,SIMPLE);// sense verticale = -1 et sens horizontale =-1
+
+        tmp->svt=creeNoeud();
+        tmp=tmp->svt;
+        tmp->lejeu= Dame(id,damier,pions,tmp->lejeu,-1,1,SIMPLE);// sense verticale = -1 et sens horizontale =1
     }
     else//sinon
     {
@@ -122,9 +131,11 @@ noeud *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB
         else
             v=-1;
         //v :sens vertical pour un joueur, sens horizontale =1
-        N= Mouvements(id,damier,pions,N,v,1,SIMPLE);
+        tmp->lejeu= Mouvements(id,damier,pions, tmp->lejeu,v,1,SIMPLE);
         //v :sense vertical pour un joueur, sens horizontale =-1
-        N->svt=Mouvements(id,damier,pions,N->svt,v,-1,SIMPLE);
+        tmp->svt=creeNoeud();
+        tmp=tmp->svt;
+        tmp->lejeu=Mouvements(id,damier,pions,tmp->lejeu,v,-1,SIMPLE);
     }
-    return ((mouvement*)N);
+    return ((noeud *)A);
 }
