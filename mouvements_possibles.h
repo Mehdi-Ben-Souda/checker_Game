@@ -317,35 +317,44 @@ mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouv
         }
         else
         {
-            if((damier[b][a]<12 && damier[b][a]>=0 && damier[y][x]>11)
-               || (damier[b][a]>11 && damier[y][x]<12 && damier[y][x]>=0) )
+            if ((damier[b][a] < 12 && damier[b][a] >= 0 && damier[y][x] > 11) || (damier[b][a] > 11 && damier[y][x] < 12 && damier[y][x] >= 0))
             {
-                c=a;
-                d=b;
-                c=c+h;
-                d=d+v;
-                while(c<8 && d<8&& c>=0 && d>=0)
-                {
-                    if(damier[d][c] ==-1)
+                    c = a;
+                    d = b;
+                    c = c + h;
+                    d = d + v;
+                    while (c < 8 && d < 8 && c >= 0 && d >= 0)
                     {
-                        typemvt=1;
-                        T= creer_mouvement(c,d,id,damier[b][a]);
-                        T2=creer_mouvement(c,d,id,damier[b][a]);
-                        copierDamier(damier1,damier);
-                        copierLesJetons(pions1,pions);
-                        deplacerJeton(T,damier1,pions1);
-                        T->gch= Dame(id,damier1,pions1,T->gch,v,-1,COMPLEXE);
-                        T->drt= Dame(id,damier1,pions1,T->drt,v,1,COMPLEXE);
-                        T2->gch=Dame(id,damier1,pions1,T2->gch,v*(-1),h,COMPLEXE);
-                        N= insererListeMouvement(N,T);
-                        if(T2->gch)
-                            N=insererListeMouvement(N,T2);
-                        c=c+h;
-                        d=d+v;
+                        if (damier[d][c] == -1)
+                        {
+                            typemvt = 1;
+                            T = creer_mouvement(c, d, id, damier[b][a]);
+                            T2 = creer_mouvement(c, d, id, damier[b][a]);
+                            copierDamier(damier1, damier);
+                            copierLesJetons(pions1, pions);
+                            deplacerJeton(T, damier1, pions1);
+                            T->gch = Dame(id, damier1, pions1, T->gch, v, -1, COMPLEXE);
+                            T->drt = Dame(id, damier1, pions1, T->drt, v, 1, COMPLEXE);
+                            T2->gch = Dame(id, damier1, pions1, T2->gch, v * (-1), h, COMPLEXE);
+                            N = insererListeMouvement(N, T);
+                            if (T2->gch)
+                                N = insererListeMouvement(N, T2);
+                            c = c + h;
+                            d = d + v;
+                        }
+                        else
+                        {
+                            a = 19;
+                            break;
+                        }
+                            
                     }
-                    else break;
-                }
             }
+            else
+            {
+                    break;
+            }
+                    
             a=a+h;
             b=b+v;
         }
