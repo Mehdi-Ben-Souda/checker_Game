@@ -277,7 +277,7 @@ mouvement *Mouvements(int id,int damier[NB_CASES][NB_CASES],
                 if(damier[y+(v*2)][x+(h*2)]==-1)
                 {
                     //on garde cette mouvement
-                    N=creer_mouvement(x+(h*2),y+(v*2),id,damier[x+h][y+v]);
+                    N=creer_mouvement(x+(h*2),y+(v*2),id,damier[y+v][x+h]);
                     //on fait une copie du damier et on applique cette mouvement
                     copierDamier(damier1,damier);
                     copierLesJetons(pions1,pions);
