@@ -40,7 +40,9 @@ mouvement *Mouvements(int id,int damier[NB_CASES][NB_CASES],
 /*
 * Fonction qui determine tous les mouvements possibles pour un pion dame
 */
-mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N,int v,int h,int typemvt){
+mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N,int v,int h,int typemvt)
+{
+    //déclaration des variabes
     int damier1[NB_CASES][NB_CASES];
     pion pions1[NB_PIONS];
     int a,b,c,d;
@@ -49,9 +51,10 @@ mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouv
     mouvement *T,*T2;
     a=x+h;
     b=y+v;
+    //tant qu'il y'a des cases dans le damier
     while(a<8 && b<8 && a>=0 && b>=0)
     {
-        if(damier[b][a]==-1 &&typemvt ==0)
+        if(damier[b][a]==-1 &&typemvt ==0)//si la case est libre
         {
             T= creer_mouvement(a, b, id, -1);
             N= insererListeMouvement(N,T);
@@ -98,14 +101,17 @@ mouvement *Dame(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouv
 /*
  * Fonction qui determine tous les mouvements possibles pour un pion quelconque
  */
-mouvement *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N)
+noeud *Mouvements_Possibles(int id,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],mouvement *N)
 {
     int v;
+    noeud *A=creeNoeud();
+
     if(pions[id].etat ==2)//s'il s'agit d'un dame
     {
         //on cherche les mouvements possibles dans les 4 directions
-        N= Dame(id,damier,pions,N,1,-1,SIMPLE);// sense verticale = 1 et sens horizontale =-1
-        N= Dame(id,damier,pions,N,1,1,SIMPLE);// sense verticale = 1 et sens horizontale =1
+        A->lejeu= Dame(id,damier,pions,A->lejeu,1,-1,SIMPLE);// sense verticale = 1 et sens horizontale =-1
+        A->svt=creeNoeud();
+        A->svt->lejeu= Dame(id,damier,pions,A->svt->lejeu,1,1,SIMPLE);// sense verticale = 1 et sens horizontale =1
         N= Dame(id,damier,pions,N,-1,-1,SIMPLE);// sense verticale = -1 et sens horizontale =-1
         N= Dame(id,damier,pions,N,-1,1,SIMPLE);// sense verticale = -1 et sens horizontale =1
     }
