@@ -302,7 +302,6 @@ mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mo
         else
             break;
     }
-
     while (damier[b][a] == -1 && typemvt == COMPLEXE)
     {
         if (a < 8 && b < 8 && a >= 0 && b >= 0)
