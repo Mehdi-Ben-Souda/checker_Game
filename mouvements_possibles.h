@@ -326,12 +326,22 @@ mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mo
                 copierDamier(damier1, damier);
                 copierLesJetons(pions1, pions);
                 deplacerJeton(T, damier1, pions1);
+                T2->fils1 = Dame(id, damier1, pions1, T2->fils1, v * (-1), h, COMPLEXE);
+
                 T->fils1 = Dame(id, damier1, pions1, T->fils1, v, 1, COMPLEXE);
                 T->fils2 = Dame(id, damier1, pions1, T->fils2, v, -1, COMPLEXE);
-                T2->fils1 = Dame(id, damier1, pions1, T2->fils1, v * (-1), h, COMPLEXE);
-                N = insererListeMouvement(N, T);
                 if (T2->fils1)
+                {
                     N = insererListeMouvement(N, T2);
+                    if(T->fils1 || T->fils2)
+                        N = insererListeMouvement(N, T);
+                }
+                else
+                    N = insererListeMouvement(N, T);
+
+
+
+
                 c = c + h;
                 d = d + v;
             }
