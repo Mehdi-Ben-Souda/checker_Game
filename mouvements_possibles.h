@@ -106,12 +106,8 @@ noeud *inserer_debut_noeud(noeud *N,mouvement*M)
 {
     mouvement *NE;
     noeud *NE2;
-    if(M)
-        NE= creer_mouvement(M->x,M->y,M->IDj,M->IDa);
-    else
-        return ((noeud*)N);
     NE2=creeNoeud();
-    NE2->lejeu=NE;
+    NE2->lejeu=M;
     if(!N)
         return ((noeud*)NE2);
     NE2->svt=N;
@@ -125,6 +121,7 @@ mouvement *inserer_debut_mvt(mouvement *M,mouvement *M2)
 }
 noeud *inverser_lejeu(noeud *N)
 {
+    int i=0;
     if(!N)
         return NULL;
     if(!N->lejeu)
@@ -132,19 +129,61 @@ noeud *inverser_lejeu(noeud *N)
     mouvement *tmp;
     tmp=N->lejeu;
     N->lejeu=NULL;
-    while (tmp->pere)
+    while (tmp)
     {
+
         N->lejeu= inserer_debut_mvt(N->lejeu,tmp);
         tmp=tmp->pere;
     }
-    N->lejeu= inserer_debut_mvt(N->lejeu,tmp);
+    printf("\n");
+    return ((noeud*)N);
 }
 
-noeud *creer_liste(mouvement *M)
+noeud *creer_sous_liste(noeud *N,mouvement *M)
 {
-    noeud  *N=creeNoeud();
+    if(M)
+    {
+        if(M->fils1)
+            N= creer_sous_liste(N,M->fils1);
+        if(M->fils2)
+            N= creer_sous_liste(N,M->fils2);
+        if(!M->fils2 && !M->fils1)
+        {
+            N= inserer_debut_noeud(N,M);
+           // Afficher_Arbre_horizotalement(M,3);
+        }
 
+        return ((noeud*)N);
+    }
+    return ((noeud*)N);
 }
+noeud *creer_liste(noeud *N)
+{
+    int i=0 ;
+    noeud *NE=NULL,*tmp;
+    mouvement *tmp2;
+    mouvement *tmp3;
+    tmp=N;
+    while (tmp)
+    {
+        tmp2=tmp->lejeu;
+        while (tmp2)
+        {
+            tmp2= creer_antiarboraissance(tmp2);
+            NE=creer_sous_liste(NE,tmp2);
+            tmp2=tmp2->fils3;
+        }
+        tmp=tmp->svt;
+    }
+    tmp=NE;
+    while (tmp)
+    {
+        tmp= inverser_lejeu(tmp);
+        tmp=tmp->svt;
+    }
+    return ((noeud*)NE);
+}
+
 
 /*____________________________________________________________*/
 
@@ -389,17 +428,17 @@ mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mo
                 T->fils2 = Dame(id, damier1, pions1, T->fils2, v, -1, COMPLEXE);
                 if (T2->fils1)
                 {
-                    T2->fils1->pere=T2;
+                    //T2->fils1->pere=T2;
                     N = insererListeMouvement(N, T2);
                     if(T->fils1 || T->fils2)
                         N = insererListeMouvement(N, T);
                 }
                 else
                     N = insererListeMouvement(N, T);
-                if (T->fils1)
+                /*if (T->fils1)
                     T->fils1->pere=T;
                 if (T->fils2)
-                    T->fils2->pere=T;
+                    T->fils2->pere=T;*/
                 c = c + h;
                 d = d + v;
             }
