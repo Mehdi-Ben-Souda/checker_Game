@@ -389,7 +389,7 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
         }
 
         afficher_damier();
-        if (mvt->fils1 || mvt->fils2 || mvt->fils3)
+        if (mvt->fils1 || mvt->fils2)
         {
             printf("\n??? encore a jouer \n");
             if (mvt->fils1)
@@ -403,7 +403,8 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    char* name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
+                    char* name=(char*)malloc(sizeof (char));
+                    name= gtk_widget_get_name(damier[i][j]->Mabouton->button);
                     if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
                     {
                         gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
@@ -428,7 +429,8 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    char* name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
+                    char* name =(char*) malloc(sizeof (char));
+                    name= gtk_widget_get_name(damier[i][j]->Mabouton->button);
                     if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
                     {
                         gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
@@ -444,9 +446,7 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
         }
     }
     else
-    {
         printf("\n error : Y %d X %d", mvt->y, mvt->x);
-    }
 }
 
 /*
