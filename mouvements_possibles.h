@@ -31,6 +31,18 @@ void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
         Afficher_Arbre_horizotalement(Arbre->fils1, Niv + 1);
     }
 }
+mouvement *creer_antiarboraissance(mouvement * Arbre)
+{
+    if (Arbre) // Condition d'arret
+    {
+        // Affichage des fils droits
+        if(Arbre->fils2)    Arbre->fils2->pere=Arbre;
+        if(Arbre->fils1)    Arbre->fils1->pere=Arbre;
+        Arbre->fils1=creer_antiarboraissance(Arbre->fils1);
+        Arbre->fils2=creer_antiarboraissance(Arbre->fils2);
+    }
+    return ((mouvement*)Arbre);
+}
 
 /*____________________________________________________________*/
 
@@ -85,7 +97,7 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
     NE->y = y;
     NE->IDj = IDj;
     NE->IDa = IDa;
-    NE->fils1 = NE->fils2 = NE->fils3 = NULL;
+    NE->fils1 = NE->fils2 = NE->fils3 =NE->pere= NULL;
     return (mouvement*)NE;
 }
 /*____________________________________________________________*/

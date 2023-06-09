@@ -26,6 +26,7 @@ typedef struct mvt
     struct mvt *fils1;
     struct mvt *fils2;
     struct mvt *fils3;
+    struct mvt *pere;
 }mouvement;
 
 typedef struct A
