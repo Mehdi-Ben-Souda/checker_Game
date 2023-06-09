@@ -368,6 +368,8 @@ mouvement* Mouvements(int id, int damier[NB_CASES][NB_CASES],
                 N->fils2 = Mouvements(id, damier1, pions1, N->fils2, v, 1, COMPLEXE);
             }
         }
+        else
+            return ((mouvement*)NULL);
     }
     // retourner le noeud des mouvements
     return ((mouvement*)N);
@@ -479,6 +481,8 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
             tmp = tmp->svt;
         }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, -1, 1, SIMPLE); // sense verticale = -1 et sens horizontale =1
+        if(!tmp->lejeu)
+            tmp=NULL;
     }
     else // sinon
     {
@@ -496,8 +500,22 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
             tmp = tmp->svt;
         }
         tmp->lejeu = Mouvements(id, damier, pions, tmp->lejeu, v, -1, SIMPLE);
+        if(!tmp->lejeu)
+            tmp=NULL;
     }
-    if(!tmp->lejeu)
+    if(!A->lejeu)
+    {
         free(A);
+        A=NULL;
+    }
     return ((noeud*)A);
 }
+/*
+
+mouvement *nfikh(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS])
+{
+    int i;
+    if()
+
+}
+*/

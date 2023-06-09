@@ -58,7 +58,7 @@ void show_mouve(GtkWidget* widget, int id)
 {
 
     noeud* nd = NULL;
-    char* name = (char)malloc(sizeof(char*));
+    char* name = (char*)malloc(sizeof(char));
     mouvement* ptr = NULL;
 
     printf(" \n idselectioner %d", id);
@@ -315,7 +315,7 @@ void show_mouve(GtkWidget* widget, int id)
 void make_mouve(GtkWidget* widget, mouvement* mvt)
 {
     printf(" \n %d  --  %d", id_pion_selectioner, mvt->IDj);
-    char* name = (char)malloc(sizeof(char*));
+    char* name = (char*)malloc(sizeof(char));
     name = gtk_widget_get_name(widget);
     GdkPixbuf* pixt = NULL;
     GtkWidget* img = NULL;
@@ -512,11 +512,11 @@ void page_damier()
     //-------------------------------------  Fixed       -------------------------------------------------
 
     //-------------------------------------    Simple boutton     --------------------------------------------------
-    Bouton* rejouer = Initialiser_boutton("Rejouer", NULL, "Voulez vous répéter?", "", 350, 40, 1, 1300, 350, "vide", 0);
+    Bouton* rejouer = Initialiser_boutton("Rejouer", NULL, "Voulez vous rï¿½pï¿½ter?", "", 350, 40, 1, 1300, 350, "vide", 0);
     rejouer = Creer_SimpleBoutton(rejouer);
     Ajouter_Fixed(rejouer->Mabouton->button, rejouer->pos.X, rejouer->pos.Y, fixed);
 
-    Bouton* regle_jeu = Initialiser_boutton("Regles de jeu", NULL, "découvrir les règles de jeu ", "", 350, 40, 1, 1300, 450, "vide", 0);
+    Bouton* regle_jeu = Initialiser_boutton("Regles de jeu", NULL, "dï¿½couvrir les rï¿½gles de jeu ", "", 350, 40, 1, 1300, 450, "vide", 0);
     regle_jeu = Creer_SimpleBoutton(regle_jeu);
     Ajouter_Fixed(regle_jeu->Mabouton->button, regle_jeu->pos.X, regle_jeu->pos.Y, fixed);
 
@@ -599,7 +599,7 @@ void page_damier()
     // Ajouter_Fixed(bouton->Mabouton->button, bouton->pos.X, bouton->pos.Y, fixed);
     // g_signal_connect(bouton->Mabouton->button, "clicked", G_CALLBACK(Signal_afficher_fenetre), nouvfen->ma_fenetre);
     //----------------------------------------------------------------------------------------------------------------------
-    //-------------------------------------     Création de la fenêtre    --------------------------------------------------
+    //-------------------------------------     Crï¿½ation de la fenï¿½tre    --------------------------------------------------
 
     //+++++++++++++++ login page++++++++++++++++++++++
     /* Fenetre* login_wind;
@@ -702,7 +702,7 @@ void page_damier()
     CSS(scoreMachine->leLabel);
 
     Ajouter_fenetre(wind, fixed->mon_fixed);
-    // Affichage de la fenêtre
+    // Affichage de la fenï¿½tre
     afficher_fenetre(wind->ma_fenetre);
 }
 
