@@ -461,17 +461,23 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
     {
         // on cherche les mouvements possibles dans les 4 directions
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, 1, -1, SIMPLE); // sense verticale = 1 et sens horizontale =-1
-
-        tmp->svt = creeNoeud();
-        tmp = tmp->svt;
+        if(tmp->lejeu)
+        {
+            tmp->svt = creeNoeud();
+            tmp = tmp->svt;
+        }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, 1, 1, SIMPLE); // sense verticale = 1 et sens horizontale =1
-
-        tmp->svt = creeNoeud();
-        tmp = tmp->svt;
+        if(tmp->lejeu)
+        {
+            tmp->svt = creeNoeud();
+            tmp = tmp->svt;
+        }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, -1, -1, SIMPLE); // sense verticale = -1 et sens horizontale =-1
-
-        tmp->svt = creeNoeud();
-        tmp = tmp->svt;
+        if(tmp->lejeu)
+        {
+            tmp->svt = creeNoeud();
+            tmp = tmp->svt;
+        }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, -1, 1, SIMPLE); // sense verticale = -1 et sens horizontale =1
     }
     else // sinon
