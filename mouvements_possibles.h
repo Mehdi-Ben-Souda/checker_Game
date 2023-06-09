@@ -490,9 +490,14 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
         // v :sens vertical pour un joueur, sens horizontale =1
         tmp->lejeu = Mouvements(id, damier, pions, tmp->lejeu, v, 1, SIMPLE);
         // v :sense vertical pour un joueur, sens horizontale =-1
-        tmp->svt = creeNoeud();
-        tmp = tmp->svt;
+        if(tmp->lejeu)
+        {
+            tmp->svt = creeNoeud();
+            tmp = tmp->svt;
+        }
         tmp->lejeu = Mouvements(id, damier, pions, tmp->lejeu, v, -1, SIMPLE);
     }
+    if(!tmp->lejeu)
+        free(A);
     return ((noeud*)A);
 }
