@@ -115,6 +115,8 @@ void show_mouve(GtkWidget* widget, int id)
                                     printf("\n id adv %d", ptr->IDa);
                                     gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
                                     CSS(damier[ptr->y][ptr->x]->Mabouton->button);
+                                    g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
+                                                                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
                                     g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
                                     set_name_autre_mvt_possible(ptr->fils1);
                                     set_name_autre_mvt_possible(ptr->fils2);
@@ -163,6 +165,8 @@ void show_mouve(GtkWidget* widget, int id)
                             printf("\n");
                             gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
                             CSS(damier[ptr->y][ptr->x]->Mabouton->button);
+                            g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
+                                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
                             g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
                             set_name_autre_mvt_possible(ptr->fils1);
                             set_name_autre_mvt_possible(ptr->fils2);
@@ -223,6 +227,8 @@ void show_mouve(GtkWidget* widget, int id)
                                     printf("\n id adv %d", ptr->IDa);
                                     gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
                                     CSS(damier[ptr->y][ptr->x]->Mabouton->button);
+                                    g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
+                                                                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
                                     g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
                                     set_name_autre_mvt_possible(ptr->fils1);
                                     set_name_autre_mvt_possible(ptr->fils2);
@@ -271,6 +277,8 @@ void show_mouve(GtkWidget* widget, int id)
                             printf("\n");
                             gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
                             CSS(damier[ptr->y][ptr->x]->Mabouton->button);
+                            g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
+                                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
                             g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
                             set_name_autre_mvt_possible(ptr->fils1);
                             set_name_autre_mvt_possible(ptr->fils2);
@@ -403,8 +411,8 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    char* name=(char*)malloc(sizeof (char));
-                    name= gtk_widget_get_name(damier[i][j]->Mabouton->button);
+                    char* name = (char*)malloc(sizeof(char));
+                    name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
                     if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
                     {
                         gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
@@ -429,8 +437,8 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    char* name =(char*) malloc(sizeof (char));
-                    name= gtk_widget_get_name(damier[i][j]->Mabouton->button);
+                    char* name = (char*)malloc(sizeof(char));
+                    name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
                     if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
                     {
                         gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
@@ -463,10 +471,15 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
 
 void set_name_autre_mvt_possible(mouvement* mvt)
 {
+    char* name = (char*)malloc(sizeof(char));
     if (mvt)
     {
-        gtk_widget_set_name(damier[mvt->y][mvt->x]->Mabouton->button, "autre_mvt_possible");
-        CSS(damier[mvt->y][mvt->x]->Mabouton->button);
+        name = gtk_widget_get_name(damier[mvt->y][mvt->x]->Mabouton->button);
+        if (strcmp(name, "mvt_possible"))
+        {
+            gtk_widget_set_name(damier[mvt->y][mvt->x]->Mabouton->button, "autre_mvt_possible");
+            CSS(damier[mvt->y][mvt->x]->Mabouton->button);
+        }
         if (mvt->fils1)
             set_name_autre_mvt_possible(mvt->fils1);
         if (mvt->fils2)
