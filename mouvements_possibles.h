@@ -6,6 +6,7 @@ typedef struct noeud
     mouvement* lejeu; // La suite du mouvement constituant un jeu
     int score;        // Le score du jeu
     int copy_damier[NB_CASES][NB_CASES];
+    pion copy_pions[NB_PIONS];
     struct noeud* svt;      // pointeur sur les mouvements frere
     struct noeud* sous_jeu; // pointeur sur les mouvements derives
 } noeud;
@@ -16,6 +17,52 @@ typedef enum typeMouv
     COMPLEXE
 } typeMouvement;
 
+noeud *calculer_cout(noeud *N)
+{
+    int score =0;
+    mouvement *ptc=N->lejeu;
+    while (ptc->fils1)
+    {
+        if(ptc->IDa<0)
+            break;
+        else if(N->copy_pions[ptc->IDa].etat==2)
+            score+=6;
+        else
+            score+=3;
+        ptc=ptc->fils1;
+    }
+    if(ptc->IDa>=0 )
+    {
+        if( N->copy_pions[ptc->IDa].etat==2)
+            score+=6;
+        else
+            score+=3;
+    }
+    if(N->copy_pions[ptc->IDj].etat==1)
+    {
+        if((ptc->y == 7 && ptc->IDj<12) || (ptc->y ==0 && ptc->IDj >11))
+            score +=2;
+        if((ptc->y == 6 && ptc->IDj<12) || (ptc->y ==1 && ptc->IDj >11))
+            score ++;
+    }
+    N->score=score;
+    return ((noeud*) N);
+}
+int compter_dame(mouvement *M)
+{
+
+}
+int evaluer(pion pions[NB_PIONS],mouvement *M,int j)
+{
+    int score ;
+    score = calculer_cout(M);
+    score = +compter_dame(M) * 2;
+
+    score = +nombre_proche_dame(M);
+
+}
+
+
 int evaluateState(etat_jeu e, int joueur)
 {
     int score = 0;
@@ -24,7 +71,7 @@ int evaluateState(etat_jeu e, int joueur)
 
     score = +nombre_proche_dame(e, joueur);
 
-    score = +nombre_est_isole(e, joueur);
+    //score = +nombre_est_isole(e, joueur);
     // score=+nombre_au_centre(e,joueur);
     return score;
 }
