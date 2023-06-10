@@ -373,8 +373,6 @@ mouvement* Mouvements(int id, int damier[NB_CASES][NB_CASES],
                 }
             }
         }
-      /* else
-           return ((mouvement*)NULL);*/
     }
     // retourner le noeud des mouvements
     return ((mouvement*)N);
@@ -515,12 +513,29 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
     }
     return ((noeud*)A);
 }
-/*
 
-mouvement *nfikh(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS])
+void nfikh(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],int damier1[NB_CASES][NB_CASES], pion pions1[NB_PIONS])
 {
     int i;
-    if()
+    noeud *N=NULL,*tmp;
 
+    for(i=12;i<24;i++)
+    {
+        if(pions1[i].etat!=0)
+        {
+            N= Mouvements_Possibles(i,damier1,pions1);
+            N= creer_liste(N);
+            tmp=N;
+            while (tmp)
+            {
+                if(tmp->lejeu->IDa >=0)
+                {
+                    damier[pions[i].y][pions[i].x]=-1;
+                    pions[i].etat=0;
+                    return ;
+                }
+                tmp=tmp->svt;
+            }
+        }
+    }
 }
-*/
