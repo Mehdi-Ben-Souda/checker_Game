@@ -16,6 +16,19 @@ typedef enum typeMouv
     COMPLEXE
 } typeMouvement;
 
+int evaluateState(etat_jeu e, int joueur)
+{
+    int score = 0;
+    score = +e.score_player;
+    score = +nombre_dame(e, joueur) * 2;
+
+    score = +nombre_proche_dame(e, joueur);
+
+    score = +nombre_est_isole(e, joueur);
+    // score=+nombre_au_centre(e,joueur);
+    return score;
+}
+
 void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
 {
     int esp;   // Pour l'affichage des espaces
@@ -31,6 +44,7 @@ void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
         Afficher_Arbre_horizotalement(Arbre->fils1, Niv + 1);
     }
 }
+
 mouvement* creer_antiarboraissance(mouvement* Arbre)
 {
     if (Arbre) // Condition d'arret
