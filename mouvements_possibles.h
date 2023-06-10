@@ -31,19 +31,20 @@ void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
         Afficher_Arbre_horizotalement(Arbre->fils1, Niv + 1);
     }
 }
-mouvement *creer_antiarboraissance(mouvement * Arbre)
+mouvement* creer_antiarboraissance(mouvement* Arbre)
 {
     if (Arbre) // Condition d'arret
     {
         // Affichage des fils droits
-        if(Arbre->fils2)    Arbre->fils2->pere=Arbre;
-        if(Arbre->fils1)    Arbre->fils1->pere=Arbre;
-        Arbre->fils1=creer_antiarboraissance(Arbre->fils1);
-        Arbre->fils2=creer_antiarboraissance(Arbre->fils2);
+        if (Arbre->fils2)
+            Arbre->fils2->pere = Arbre;
+        if (Arbre->fils1)
+            Arbre->fils1->pere = Arbre;
+        Arbre->fils1 = creer_antiarboraissance(Arbre->fils1);
+        Arbre->fils2 = creer_antiarboraissance(Arbre->fils2);
     }
     return ((mouvement*)Arbre);
 }
-
 
 /*____________________________________________________________*/
 
@@ -99,91 +100,90 @@ mouvement* creer_mouvement(int x, int y, int IDj, int IDa)
     NE->y = y;
     NE->IDj = IDj;
     NE->IDa = IDa;
-    NE->fils1 = NE->fils2 = NE->fils3 =NE->pere= NULL;
+    NE->fils1 = NE->fils2 = NE->fils3 = NE->pere = NULL;
     return (mouvement*)NE;
 }
-noeud *inserer_debut_noeud(noeud *N,mouvement*M)
+noeud* inserer_debut_noeud(noeud* N, mouvement* M)
 {
-    mouvement *NE;
-    noeud *NE2;
-    NE2=creeNoeud();
-    NE2->lejeu=M;
-    if(!N)
+    mouvement* NE;
+    noeud* NE2;
+    NE2 = creeNoeud();
+    NE2->lejeu = M;
+    if (!N)
         return ((noeud*)NE2);
-    NE2->svt=N;
+    NE2->svt = N;
     return ((noeud*)NE2);
 }
-mouvement *inserer_debut_mvt(mouvement *M,mouvement *M2)
+mouvement* inserer_debut_mvt(mouvement* M, mouvement* M2)
 {
-    mouvement *NE= creer_mouvement(M2->x,M2->y,M2->IDj,M2->IDa);
-        NE->fils1=M;
+    mouvement* NE = creer_mouvement(M2->x, M2->y, M2->IDj, M2->IDa);
+    NE->fils1 = M;
     return ((mouvement*)NE);
 }
-noeud *inverser_lejeu(noeud *N)
+noeud* inverser_lejeu(noeud* N)
 {
-    int i=0;
-    if(!N)
+    int i = 0;
+    if (!N)
         return NULL;
-    if(!N->lejeu)
+    if (!N->lejeu)
         return ((noeud*)N);
-    mouvement *tmp;
-    tmp=N->lejeu;
-    N->lejeu=NULL;
+    mouvement* tmp;
+    tmp = N->lejeu;
+    N->lejeu = NULL;
     while (tmp)
     {
 
-        N->lejeu= inserer_debut_mvt(N->lejeu,tmp);
-        tmp=tmp->pere;
+        N->lejeu = inserer_debut_mvt(N->lejeu, tmp);
+        tmp = tmp->pere;
     }
     printf("\n");
     return ((noeud*)N);
 }
 
-noeud *creer_sous_liste(noeud *N,mouvement *M)
+noeud* creer_sous_liste(noeud* N, mouvement* M)
 {
-    if(M)
+    if (M)
     {
-        if(M->fils1)
-            N= creer_sous_liste(N,M->fils1);
-        if(M->fils2)
-            N= creer_sous_liste(N,M->fils2);
-        if(!M->fils2 && !M->fils1)
+        if (M->fils1)
+            N = creer_sous_liste(N, M->fils1);
+        if (M->fils2)
+            N = creer_sous_liste(N, M->fils2);
+        if (!M->fils2 && !M->fils1)
         {
-            N= inserer_debut_noeud(N,M);
-           // Afficher_Arbre_horizotalement(M,3);
+            N = inserer_debut_noeud(N, M);
+            // Afficher_Arbre_horizotalement(M,3);
         }
 
         return ((noeud*)N);
     }
     return ((noeud*)N);
 }
-noeud *creer_liste(noeud *N)
+noeud* creer_liste(noeud* N)
 {
-    int i=0 ;
-    noeud *NE=NULL,*tmp;
-    mouvement *tmp2;
-    mouvement *tmp3;
-    tmp=N;
+    int i = 0;
+    noeud *NE = NULL, *tmp;
+    mouvement* tmp2;
+    mouvement* tmp3;
+    tmp = N;
     while (tmp)
     {
-        tmp2=tmp->lejeu;
+        tmp2 = tmp->lejeu;
         while (tmp2)
         {
-            tmp2= creer_antiarboraissance(tmp2);
-            NE=creer_sous_liste(NE,tmp2);
-            tmp2=tmp2->fils3;
+            tmp2 = creer_antiarboraissance(tmp2);
+            NE = creer_sous_liste(NE, tmp2);
+            tmp2 = tmp2->fils3;
         }
-        tmp=tmp->svt;
+        tmp = tmp->svt;
     }
-    tmp=NE;
+    tmp = NE;
     while (tmp)
     {
-        tmp= inverser_lejeu(tmp);
-        tmp=tmp->svt;
+        tmp = inverser_lejeu(tmp);
+        tmp = tmp->svt;
     }
     return ((noeud*)NE);
 }
-
 
 /*____________________________________________________________*/
 
@@ -351,7 +351,7 @@ mouvement* Mouvements(int id, int damier[NB_CASES][NB_CASES],
         if (damier[y + v][x + h] == -1 && typemvt == SIMPLE)
             // s'il va faire une mouvement sans capturer un pion adversaire
             N = creer_mouvement(x + h, y + v, id, -1);
-        else if(damier[y + v][x + h] == -1)
+        else if (damier[y + v][x + h] == -1)
             return ((mouvement*)NULL);
         // s'il a un pion adversaire à coté
         else if ((damier[y + v][x + h] < 12 && damier[y][x] > 11) || (damier[y + v][x + h] > 11 && damier[y][x] < 12))
@@ -433,9 +433,9 @@ mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mo
                 T->fils2 = Dame(id, damier1, pions1, T->fils2, v, -1, COMPLEXE);
                 if (T2->fils1)
                 {
-                    //T2->fils1->pere=T2;
+                    // T2->fils1->pere=T2;
                     N = insererListeMouvement(N, T2);
-                    if(T->fils1 || T->fils2)
+                    if (T->fils1 || T->fils2)
                         N = insererListeMouvement(N, T);
                 }
                 else
@@ -466,26 +466,26 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
     {
         // on cherche les mouvements possibles dans les 4 directions
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, 1, -1, SIMPLE); // sense verticale = 1 et sens horizontale =-1
-        if(tmp->lejeu)
+        if (tmp->lejeu)
         {
             tmp->svt = creeNoeud();
             tmp = tmp->svt;
         }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, 1, 1, SIMPLE); // sense verticale = 1 et sens horizontale =1
-        if(tmp->lejeu)
+        if (tmp->lejeu)
         {
             tmp->svt = creeNoeud();
             tmp = tmp->svt;
         }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, -1, -1, SIMPLE); // sense verticale = -1 et sens horizontale =-1
-        if(tmp->lejeu)
+        if (tmp->lejeu)
         {
             tmp->svt = creeNoeud();
             tmp = tmp->svt;
         }
         tmp->lejeu = Dame(id, damier, pions, tmp->lejeu, -1, 1, SIMPLE); // sense verticale = -1 et sens horizontale =1
-        if(!tmp->lejeu)
-            tmp=NULL;
+        if (!tmp->lejeu)
+            tmp = NULL;
     }
     else // sinon
     {
@@ -497,47 +497,52 @@ noeud* Mouvements_Possibles(int id, int damier[NB_CASES][NB_CASES], pion pions[N
         // v :sens vertical pour un joueur, sens horizontale =1
         tmp->lejeu = Mouvements(id, damier, pions, tmp->lejeu, v, 1, SIMPLE);
         // v :sense vertical pour un joueur, sens horizontale =-1
-        if(tmp->lejeu)
+        if (tmp->lejeu)
         {
             tmp->svt = creeNoeud();
             tmp = tmp->svt;
         }
         tmp->lejeu = Mouvements(id, damier, pions, tmp->lejeu, v, -1, SIMPLE);
-        if(!tmp->lejeu)
-            tmp=NULL;
+        if (!tmp->lejeu)
+            tmp = NULL;
     }
-    if(!A->lejeu)
+    if (!A->lejeu)
     {
         free(A);
-        A=NULL;
+        A = NULL;
     }
     return ((noeud*)A);
 }
 
-int nfikh(int j,int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS])
+int fct_nfikh(int j, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS])
 {
     int i;
-    noeud *N=NULL,*tmp;
-    int a,b;
-    if(j<12 ) {
-        a=0;b=12;
-    }else
+    noeud *N = NULL, *tmp;
+    int a, b;
+    if (j < 12)
     {
-        a=12;b=24;
+        a = 0;
+        b = 12;
     }
-    for(i=a;i<b;i++)
+    else
     {
-        if(pions[i].etat!=0)
+        a = 12;
+        b = 24;
+    }
+    for (i = a; i < b; i++)
+    {
+        if (pions[i].etat != 0)
         {
-            N= Mouvements_Possibles(i,damier,pions);
-            N= creer_liste(N);
-            tmp=N;
+            N = Mouvements_Possibles(i, damier, pions);
+            N = creer_liste(N);
+            tmp = N;
             while (tmp)
             {
-                if(tmp->lejeu->IDa >=0)
-                    return((int)i);
-                tmp=tmp->svt;
+                if (tmp->lejeu->IDa >= 0)
+                    return ((int)i);
+                tmp = tmp->svt;
             }
         }
     }
+    return ((int)-1);
 }
