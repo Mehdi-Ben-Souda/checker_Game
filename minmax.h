@@ -98,12 +98,12 @@ typedef enum maxmin
 noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],int joueur)
 {
 	noeud * lesmouvements=NULL,*ptr=NULL;
-    int damierCPY[NB_CASES][NB_CASES];
-    pion pionsCPY[NB_PIONS];
+    /*int damierCPY[NB_CASES][NB_CASES];
+    pion pionsCPY[NB_PIONS];*/
 
 	int deb, fin,ind;
 
-	if (joueur == 1)
+	if (joueur == 2)
 	{
         deb = 0;
         fin = 11;
@@ -118,8 +118,8 @@ noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],in
     {
         if (pions[ind].etat != 0)
         {
-            copierDamier(damierCPY, damier);
-            copierLesJetons(pionsCPY, pions);
+            /* copierDamier(damierCPY, damier);
+            copierLesJetons(pionsCPY, pions);*/
 
             ptr=lesmouvements;
             if (ptr!=NULL)
@@ -127,11 +127,11 @@ noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],in
                 while (ptr->svt)
                     ptr = ptr->svt;
 
-                ptr->svt = Mouvements_Possibles(ind, damierCPY, pionsCPY);
+                ptr->svt = Mouvements_Possibles(ind, damier, pions);
             }
             else
             {
-                lesmouvements = Mouvements_Possibles(ind, damierCPY, pionsCPY);
+                lesmouvements = Mouvements_Possibles(ind, damier, pions);
             }
             
 
@@ -185,6 +185,10 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
         ptc = N;
         ptc = ptc->svt;
         Val = N->score;
+
+        if (racine!=NULL)
+            racine->lejeu = N->lejeu;
+
         if (E == MINIMUM)
         {
             while (ptc)
@@ -196,6 +200,7 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
                 {
                     racine->lejeu=ptc->lejeu;
                 }
+                
                 ptc = ptc->svt;
             }
         }
@@ -246,7 +251,7 @@ noeud* creerArbre_MiniMax(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], 
 
        //setCoutNoeud(tmp);//On applique un score 
 
-       tmp->sous_jeu = listeDesMouvements(tmp->copy_damier, tmp->copy_pions, /* (-1 * joueur) + 3*/2);
+       tmp->sous_jeu = listeDesMouvements(tmp->copy_damier, tmp->copy_pions,(-1 * joueur) + 3);
 
 
        //On veut calculer les score pouer ce sous jeu
@@ -263,7 +268,6 @@ noeud* creerArbre_MiniMax(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], 
                 ptr = ptr->fils1;
             }
             
-            //setCoutNoeud(tmp2);
             calculer_cout(tmp2);
             
             

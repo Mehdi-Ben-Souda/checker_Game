@@ -21,6 +21,8 @@ noeud *calculer_cout(noeud *N)
 {
     int score =0;
     mouvement *ptc=N->lejeu;
+    int nbJettonsJ1 = 0, nbJettonsJ2 = 0,ind;
+
     while (ptc->fils1)
     {
         if(ptc->IDa<0)
@@ -45,6 +47,29 @@ noeud *calculer_cout(noeud *N)
         if((ptc->y == 6 && ptc->IDj<12) || (ptc->y ==1 && ptc->IDj >11))
             score ++;
     }
+
+
+
+    for (ind = 0; ind < 12; ind++)
+    {
+        if (N->copy_pions[ind].etat == 1)
+            nbJettonsJ2++;
+        else if (N->copy_pions[ind].etat == 2)
+            nbJettonsJ2 += 2;
+    }
+    for (ind = 12; ind < 24; ind++)
+    {
+        if (N->copy_pions[ind].etat == 1)
+            nbJettonsJ1++;
+        else if (N->copy_pions[ind].etat == 2)
+            nbJettonsJ1 += 2;
+    }
+
+    if (0 <= N->lejeu->IDj && N->lejeu->IDj < 12)
+        score += nbJettonsJ2 - nbJettonsJ1;
+    else
+        score += nbJettonsJ1 - nbJettonsJ2;
+
     N->score=score;
     return ((noeud*) N);
 }
