@@ -193,21 +193,12 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
         {
             while (ptc)
             {
-                if (ptc->score < Val)
-                {
+                if (ptc->score < Val && racine==NULL)
                     Val = ptc->score;
-                    if (racine != NULL)
-                    {
-                        racine->lejeu = ptc->lejeu;
-                    }
-                }
-                else if (ptc->score == Val && rand() % 2 == 0)
+                else if
+                    (ptc->score < Val && racine)
                 {
-                    Val = ptc->score;
-                    if (racine != NULL)
-                    {
-                        racine->lejeu = ptc->lejeu;
-                    }
+                    racine->lejeu=ptc->lejeu;
                 }
                 
                 ptc = ptc->svt;
@@ -217,25 +208,12 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
         {
             while (ptc)
             {
-
-                if (ptc->score > Val)
-                {
+                if (ptc->score > Val && racine == NULL)
                     Val = ptc->score;
-                    if (racine != NULL)
-                    {
-                        racine->lejeu = ptc->lejeu;
-                    }
-                }
-                else if (ptc->score == Val && rand() % 2 == 0)
+                else if (ptc->score > Val && racine)
                 {
-                    Val = ptc->score;
-                    if (racine != NULL)
-                    {
-                        racine->lejeu = ptc->lejeu;
-                    }
+                    racine->lejeu = ptc->lejeu;
                 }
-
-                
                 ptc = ptc->svt;
             }
         }
