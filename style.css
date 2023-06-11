@@ -5,6 +5,15 @@
     background-size: cover;
     border:2px solid black;
   }
+
+  #my-button_black_nfikh{
+    /* background-color: rgb(91, 67, 6); */
+      background-image:url('background_black_damier_nfikh.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      border:2px solid black;
+    }
+
   #my-button_gold{
     /* background-color: rgb(236, 224, 153); */
     background-image:url('background_white_damier.jpeg');
@@ -47,7 +56,7 @@
   background-size: cover;
 }
 
-#score_Joueur,#score_Machine
+#score
 {
   font-size: 45px;
   color: #ffffff;
@@ -70,7 +79,7 @@
   background-color: rgba(0, 0, 0, 0.479);
   padding: 50px;
 }
-#btn_mode_quitter,#btn_mode2,#btn_mode1
+#btn_mode_quitter
 {
   margin: 20px 10px;
   font-size: 30px;
@@ -78,6 +87,82 @@
   font-weight: bolder;
   border-radius: 10px;
 }
+
+#btn_mode2_On
+{
+  border: 4px solid black;
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+#btn_mode2_Off
+{
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+
+#black_color_Off{
+  background-image:url('blackimg.jpeg');
+  color: rgb(255, 255, 255);
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+#black_color_On{
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+
+#white_color_Off{
+  background-image:url('blackimg.jpeg');
+  color: rgb(255, 255, 255);
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+#white_color_On{
+  background-color: rgb(252, 252, 252);
+  color: rgb(0, 0, 0);
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+
+
+#btn_mode1_On
+{
+  border: 4px solid black;
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+#btn_mode1_Off
+{
+  margin: 20px 10px;
+  font-size: 30px;
+  font-family: fantasy;
+  font-weight: bolder;
+  border-radius: 10px;
+}
+
 #fenetre_mode{
   background-image: url("background_mode.jpg");
   background-repeat: no-repeat;

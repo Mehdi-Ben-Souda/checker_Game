@@ -148,5 +148,6 @@ Bouton* Creer_ToggleBoutton(Bouton* maboutton)
         gtk_button_set_always_show_image(GTK_BUTTON(maboutton->Mabouton->button),
                                          TRUE);
     }
+    gtk_widget_set_name(maboutton->Mabouton->button, maboutton->name);
     return ((Bouton*)maboutton);
 }
