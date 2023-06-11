@@ -1,9 +1,8 @@
 #pragma once
 #include "FrontEndDefintion.h"
 #include "minmax.h"
-
+//Déclaration des variables
 Bouton* damier[8][8];
-
 pion lespions[NB_PIONS];
 match lematch;
 int tour = 1, mode = 1, id_pion_selectioner = -1, jeu_complexe_idJ = -1,
@@ -12,13 +11,28 @@ int tour = 1, mode = 1, id_pion_selectioner = -1, jeu_complexe_idJ = -1,
 int nfikh = 0, colorJeton = 1;
 Label *scoreJoueur1, *scoreJoueur2;
 
+/*
+    Nom Fonction : clr_choisis
+
+    Entree : _ un entier
+
+    Sortie : _un pointeur de type char
+
+    Description : retourne une chaîne de caractères correspondant
+    au nom du fichier image pour le jeton d'une case donnée, en fonction
+    de la couleur du jeton (colorJeton).
+*/
 char* clr_choisis(int i)
 {
-
-    printf("\n i : %d ______ colorJeton : %d \n", i, colorJeton);
+    //tour du joueur 2
     if (colorJeton == 1)
     {
-        // joueur2
+        /*
+         Si i est égal à 0, cela signifie que le jeton est un pion noir.
+        Si i est égal à 1, cela signifie que le jeton est un pion blanc.
+        Si i est égal à 2, cela signifie que le jeton est une dame blanche.
+        Si i est égal à 3, cela signifie que le jeton est une dame noire.
+         */
         if (i == 0)
             return "black_pion.png";
         // joueur1
@@ -29,11 +43,16 @@ char* clr_choisis(int i)
         if (i == 3)
             return "black_pionDame.png";
     }
-    else
+    else //tour du joueur 1
     {
+        /*
+        Si i est égal à 0, cela signifie que le jeton est un pion blanc.
+       Si i est égal à 1, cela signifie que le jeton est un pion noire.
+       Si i est égal à 2, cela signifie que le jeton est une dame noire.
+       Si i est égal à 3, cela signifie que le jeton est une dame blanc.
+        */
         if (i == 0)
             return "white_pion.png";
-        // joueur1
         if (i == 1)
             return "black_pion.png";
         if (i == 2)
@@ -44,51 +63,66 @@ char* clr_choisis(int i)
     return NULL;
 }
 
+/*
+    Nom Fonction : MiseAJourScore
+
+    Entree : _ deux entiers
+    Sortie : Void
+
+    Description :La fonction MiseAJourScore met à jour le score du joueur
+    en fonction de l'identifiant (id) et de la valeur du score à ajouter (s).
+*/
 void MiseAJourScore(int id, int s)
 {
+    //Déclaration des variables
     const char* texteScore;
     long scoreActuel;
     char nouveauScore[25];
-    if (id > 11)
+    if (id > 11)//s'il s'agit du joueur 2
     {
+        //récuperer le label
         texteScore = gtk_label_get_text(GTK_LABEL(scoreJoueur2->leLabel));
+        //convertir le texte récupérer
         scoreActuel = strtol(texteScore, NULL, 10);
+        //ajouter à la valeur actuel du score la nouvelle valeur
         scoreActuel += s;
         sprintf(nouveauScore, " %04ld ", scoreActuel);
         gtk_label_set_text(GTK_LABEL(scoreJoueur2->leLabel), nouveauScore);
     }
-    else
+    else //s'il s'agit du joueur 1
     {
+        //récuperer le label
         texteScore = gtk_label_get_text(GTK_LABEL(scoreJoueur1->leLabel));
+        //convertir le texte récupérer
         scoreActuel = strtol(texteScore, NULL, 10);
+        //ajouter à la valeur actuel du score la nouvelle valeur
         scoreActuel += s;
         sprintf(nouveauScore, " %04ld ", scoreActuel);
         gtk_label_set_text(GTK_LABEL(scoreJoueur1->leLabel), nouveauScore);
     }
 }
 
+/*
+    Nom Fonction : on_rejouer_clicked
+
+    Entree : _ deux Widget
+    Sortie : Void
+
+    Description :La fonction détruit la fenêtre passée en paramètre (fen)
+    et réinitialise différentes variables utilisées dans le jeu.
+*/
 void on_rejouer_clicked(GtkWidget* widget, GtkWidget* fen)
 {
+    //Détruire la fenetre
     gtk_widget_destroy(fen);
-
+    //Initialisation des variables
     tour = 1;
     id_pion_selectioner = -1;
     jeu_complexe_idJ = -1;
     dernierePosY = -1;
     dernierePosX = -1;
     nfikh = 0;
-
-    // printf("\n JJJJJJ \n");
-    // gtk_widget_destroy(scoreJoueur1->leLabel);
-    // gtk_widget_destroy(scoreJoueur2->leLabel);
-    // printf("\n JJJJJJ \n");
-    // for (int i = 0; i < 8; i++)
-    //{
-    //     for (int j = 0; j < 8; j++)
-    //     {
-    //         gtk_widget_destroy(damier[i][j]->Mabouton->button);
-    //     }
-    // }
+    //Appel à la fonction jeu_commence
     jeu_commence(NULL, NULL);
 }
 /*
@@ -110,27 +144,47 @@ void on_regle_jeu_clicked(GtkWidget* widget, gpointer data)
     Ajouter_Box(B1, label, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn3->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Fixed(B1->mon_box, 400, 200, fixed);
-    // Ajouter_fenetre(fen, fixed->mon_fixed);
     afficher_fenetre(fen->ma_fenetre);
 }
 */
+/*
+    Nom Fonction : tour_de_machine
+
+    Entree : _ Void
+    Sortie : Void
+
+    Description :La fonction tour_de_machine représente le tour
+    de jeu de l'ordinateur. Elle effectue une série d'opérations
+    pour afficher les mouvements possibles de l'ordinateur
+    et mettre à jour le damier, les jetons et le score en conséquence.
+*/
 void tour_de_machine()
 {
+    //Déclaration des variables
     GdkPixbuf* pixt = NULL;
     GtkWidget* img = NULL;
     char* name = (char*)malloc(sizeof(char));
+    if(!name)
+    {
+        printf("Erreur d'allocation"); exit(0);
+    }
+    //Création de l'arbre de Minmax
     noeud* nd = creerArbre_MiniMax(lematch.damier, lespions, 2);
+    //Initialisation des variables etatJoueur à -1 et id_nfikh à -1.
     int etatJoueur = -1, id_nfikh = -1;
-    printf(" \n>>>>> tour de machine <<<<< \n");
     mouvement* ptr = NULL;
     ptr = nd->lejeu;
+    //Déclaration d'un tableau damierCpy de taille NB_CASES x NB_CASES.
     int damierCpy[NB_CASES][NB_CASES];
+    //Déclaration d'un tableau pionCpy de taille NB_PIONS.
     pion pionCpy[NB_PIONS];
-    if (ptr)
+    if (ptr)//Si ptr n'est pas NULL, cela signifie que l'arbre contient des mouvements valides
     {
+        //Sauvegarde de l'état actuel du damier et des pions dans les tableaux de copie damierCpy et pionCpy.
         copierDamier(damierCpy, lematch.damier);
         copierLesJetons(pionCpy, lespions);
-        // system("pause");
+        /*Parcours du damier avec une boucle for imbriquée pour
+         réinitialiser les noms et les styles des boutons des cases du damier*/
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
@@ -142,7 +196,7 @@ void tour_de_machine()
                     CSS(damier[i][j]->Mabouton->button);
                 }
             }
-        }
+        }//Sauvegarde de l'état du joueur actuel dans etatJoueur
         etatJoueur = lespions[ptr->IDj].etat;
         while (ptr)
         {
@@ -212,7 +266,6 @@ void tour_de_machine()
     }
 
     tour = tour * (-1);
-    printf(" \n>>>>> fin tour de machine <<<<< \n");
 }
 
 int direction_Interdit(int X_myPos, int Y_myPos, int X_dest, int Y_dest)
@@ -911,8 +964,8 @@ void dialogue_action(GtkWidget* widget, Dialog* MonDialogue)
 /*
     Nom Fonction : page_damier
 
-    Entree : _ Rien
-    Sortie : _ Rien
+    Entree : _ void
+    Sortie : _ void
 
     Description : cette fonction sert a construire une page de damier
 
@@ -920,118 +973,66 @@ void dialogue_action(GtkWidget* widget, Dialog* MonDialogue)
 
 void page_damier()
 {
-    Fenetre* wind;
-
+   // Déclaration d'un pointeur vers une structure Fenetre nommée wind.
+   Fenetre* wind;
+/* Allocation de mémoire pour la structure Fenetre et assignation
+ à wind en utilisant la fonction Allouer_Fenetre().Création de la fenêtre
+ en appelant la fonction Creer_Fenetre() avec wind comme argument.*/
     wind = Allouer_Fenetre(0, 1600, 900, "Jeu Damier", NULL, 200, 0, "#FF5733", "window", 1);
     wind = Creer_Fenetre(wind);
+    //Application d'une feuille de style CSS à la fenêtre
     CSS(wind->ma_fenetre);
+    /* Déclaration d'un pointeur vers une structure Fixed et allocation
+    de mémoire pour cette structure en utilisant la fonction Allouer_fixed().*/
     Fixed* fixed = Allouer_fixed("fixed");
+    //Déclaration de plusieurs pointeurs vers les structures frame,Box,Label et Bouton
     frame *frame1, *profil, *addimg;
     Box *B1, *B2, *B3, *B4, *B5, *b1, *b2, *b3, *b4;
     Label* mylabel;
-
-    //-------------------------------------  Fixed       -------------------------------------------------
-
-    //-------------------------------------    Simple boutton     --------------------------------------------------
+    Label *score1, *score2;
+    //Initialisation d'un Boutton simple
     Bouton* rejouer = Initialiser_boutton("Rejouer", NULL, "Voulez vous r�p�ter?", "", 350, 40, 1, 1300, 350, "vide", 0);
+    //creation d'un boutton simple
     rejouer = Creer_SimpleBoutton(rejouer);
+    //Connexion du signal "clicked" du bouton "Rejouer" à la fonction on_rejouer_clicked()
     g_signal_connect(rejouer->Mabouton->button, "clicked", G_CALLBACK(on_rejouer_clicked), wind->ma_fenetre);
-
+    //Ajout du bouton "Rejouer" au conteneur fixed en appelant la fonction Ajouter_Fixed()
     Ajouter_Fixed(rejouer->Mabouton->button, rejouer->pos.X, rejouer->pos.Y, fixed);
 
+     //Initialisation d'un Boutton simple
     Bouton* regle_jeu = Initialiser_boutton("Regles de jeu", NULL, "d�couvrir les r�gles de jeu ", "", 350, 40, 1, 1300, 450, "vide", 0);
+    //creation d'un boutton simple
     regle_jeu = Creer_SimpleBoutton(regle_jeu);
+    //Ajout du bouton "regle_jeu" au conteneur fixed en appelant la fonction Ajouter_Fixed()
     Ajouter_Fixed(regle_jeu->Mabouton->button, regle_jeu->pos.X, regle_jeu->pos.Y, fixed);
+    //Connexion du signal "clicked" du bouton "regle_jeu" à la fonction on_regle_jeu_clicked()
+    //   g_signal_connect(regle_jeu->Mabouton->button, "clicked", G_CALLBACK(on_regle_jeu_clicked), wind->ma_fenetre);
 
-    Bouton* help = Initialiser_boutton("Help", NULL, "", "", 350, 40, 1, 1300, 550, "vide", 0);
-    help = Creer_SimpleBoutton(help);
-    Ajouter_Fixed(help->Mabouton->button, help->pos.X, help->pos.Y, fixed);
-    //-------------------------------------    Le dialogue     --------------------------------------------------
-    Dialog* mondialog = Init_Dialog("zrferg", "Do you want to leave this match ? ", "E:\\chabab_GTK\\icons\\accepter.png");
-
-    /*---------------------ajouter boutons simples dans une frame-----------------*/
-
-    frame1 = Init_frame("", "name", 20, 1280, 670, 50, 70);
-    Creation_frame(frame1);
-    Ajouter_Fixed(frame1->monframe, frame1->pos.X, frame1->pos.Y, fixed);
-
+    //Initialisation et création d'un dialogue avec des boutons et des actions associées.
+    Dialog* mondialog = Init_Dialog("dialog", "Do you want to leave this match ? ", "E:\\chabab_GTK\\icons\\accepter.png");
     Bouton* re = Initialiser_boutton("", NULL, "", "C:\\Users\\HP FOLIO 9470m\\OneDrive\\Bureau\\trash\\chabab_GTK\\chabab_GTK\\icons\\qutter_exporter.png", 80, 20, 1, 1500, 400, "vide", 30);
     re = Creer_SimpleBoutton(re);
     Creer_Dialog(mondialog);
     dialogue_action(re->Mabouton->button, mondialog);
-    // Afficher_dialogue(mondialog);
 
-    Bouton* btn1 = Initialiser_boutton("", NULL, "", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\reload.png", 80, 20, 1, 1500, 400, "vide", 80);
-    btn1 = Creer_SimpleBoutton(btn1);
-
-    Bouton* btn2 = Initialiser_boutton("", NULL, "", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\pause.png", 80, 20, 1, 1500, 400, "vide", 80);
-    btn2 = Creer_SimpleBoutton(btn2);
-
-    Bouton* btn3 = Initialiser_boutton("", NULL, "", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\play.png", 80, 20, 1, 1500, 400, "vide", 80);
-    btn3 = Creer_SimpleBoutton(btn3);
 
     B1 = Allouer_Box(1, 5);
     Creer_Box(B1, frame1->monframe);
     B2 = Allouer_Box(0, 5);
     Creer_Box(B2, B1->mon_box);
-    B3 = Allouer_Box(0, 5);
-    Creer_Box(B3, B1->mon_box);
-    B4 = Allouer_Box(0, 5);
-    Creer_Box(B4, B1->mon_box);
-    B5 = Allouer_Box(0, 5);
-    Creer_Box(B5, B1->mon_box);
-
     Ajouter_Box(B2, re->Mabouton->button, 0, TRUE, TRUE, 5);
-    Ajouter_Box(B2, btn1->Mabouton->button, 0, TRUE, TRUE, 5);
-    Ajouter_Box(B2, btn2->Mabouton->button, 0, TRUE, TRUE, 5);
-    Ajouter_Box(B2, btn3->Mabouton->button, 0, TRUE, TRUE, 5);
 
     b1 = Allouer_Box(1, 5);
     b2 = Allouer_Box(0, 5);
     Creer_Box(b2, b1->mon_box);
-    if (mode == 1)
+    if (mode == 1)//correspond à Machine Vs Joueur
         mylabel = Init_label("Machine Vs Joueur", "framePr", 1330, 200);
-    else
+    else//correspond à Joueur Vs Joueur
         mylabel = Init_label("Joueur Vs Joueur", "framePr", 1330, 200);
-
     Ajouter_Fixed(mylabel->leLabel, mylabel->X_Y.X, mylabel->X_Y.Y, GTK_FIXED(fixed));
     CSS(mylabel->leLabel);
-
-    /*-----------------------------------image----------------------------------------------*/
-    /*
-    GtkWidget* image1 = gtk_image_new_from_file("C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\chessboard.png");
-    Ajouter_Fixed(image1, 1430, 130, fixed);
-    GtkWidget* image2 = gtk_image_new_from_file("C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\chessboard.png");
-    Ajouter_Fixed(image2, 1650, 130, fixed);*/
-    /*-------------------------------------nouvelle fenetre---------------------------*/
-    GtkWidget* label;
-
-    label = gtk_label_new("choisis ton mode de jeu !");
-
-    Fenetre* nouvfen;
-    // Fixed* fixed = Allouer_fixed("fixed");
-    Label* label1;
-    nouvfen = Allouer_Fenetre(0, 500, 500, "choix", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\home.png", 200, 0, NULL, "titre1", 1);
-    nouvfen = Creer_Fenetre(nouvfen);
-    Fixed* fixed1 = Allouer_fixed("fixed");
-    label1 = Init_label("coisis ton mode", "label", 500, 100);
-    Ajouter_Fixed(label1->leLabel, label1->X_Y.X, label1->X_Y.Y, fixed1);
-    Ajouter_fenetre(nouvfen, fixed1->mon_fixed);
-    // Bouton* bouton = Initialiser_boutton("choix", NULL, "", "C:\\Users\\lenovoi\\CLionProjects\\chabab_GTK\\icons\\qutter_exporter.png", 80, 20, 1, 1500, 50, "vide", 15);
-    // bouton = Creer_SimpleBoutton(bouton);
-    // Ajouter_Fixed(bouton->Mabouton->button, bouton->pos.X, bouton->pos.Y, fixed);
-    // g_signal_connect(bouton->Mabouton->button, "clicked", G_CALLBACK(Signal_afficher_fenetre), nouvfen->ma_fenetre);
-    //----------------------------------------------------------------------------------------------------------------------
-    //-------------------------------------     Cr�ation de la fen�tre    --------------------------------------------------
-
-    //+++++++++++++++ login page++++++++++++++++++++++
-    /* Fenetre* login_wind;
-
-    login_wind = Allouer_Fenetre(0, 1600, 900, "Jeu Damier", NULL, 200, 0, "#FF5733", "login_window", 0);
-    login_wind = Creer_Fenetre(login_wind);
-*/
-    // ++++++++++++++++++++++damier++++++++++++++++++++++
-
+   /*Définition des variables ligne, colonne, sizeBTN et size_icon
+   pour contrôler la taille et la position des boutons du damier.*/
     int ligne = 400, colonne = 140, sizeBTN = 80, size_icon = 50;
     char icon_pion[NB_Cara_titre], name[NB_Cara_titre];
 
@@ -1039,10 +1040,11 @@ void page_damier()
     {
         for (int j = 0; j < 8; j++)
         {
+            // Initialisation du tableau damier avec NULL.
             damier[i][j] = NULL;
         }
     }
-
+// créer les boutons du damier en fonction des coordonnées et des couleurs.
     for (int i = 0; i < 8; i++)
     {
         ligne = 400;
@@ -1053,21 +1055,23 @@ void page_damier()
 
             if ((i % 2) == 0)
             {
-                if ((j % 2) == 0)
+                if ((j % 2) == 0)//si i et j sont pairs
                     strcpy(name, "my-button_gold");
                 else
                     strcpy(name, "my-button_black");
             }
             else
             {
-                if ((j % 2) == 0)
+                if ((j % 2) == 0)//si j est pair et i impair
                     strcpy(name, "my-button_black");
                 else
                     strcpy(name, "my-button_gold");
             }
-
+            // copie la chaîne de caractères "vide" dans la variable icon_pion
             strcpy(icon_pion, "vide");
-
+            /*vérifient les positions (i, j) dans le damier
+             et attribuent une couleur à la variable icon_pion
+             en utilisant la fonction clr_choisis().*/
             if (i <= 2)
             {
                 if ((i % 2) == 0)
@@ -1102,35 +1106,39 @@ void page_damier()
                     }
                 }
             }
+            /*crée un nouveau bouton avec les paramètres spécifiés,
+            y compris la couleur icon_pion. Le bouton est ensuite assigné
+             à l'élément correspondant dans le tableau damier à l'indice [i][j]*/
             damier[i][j] = Initialiser_boutton("", name, "", icon_pion, sizeBTN, sizeBTN, 0, ligne, colonne, NULL, size_icon);
             damier[i][j] = Creer_SimpleBoutton(damier[i][j]);
-
-            // add_bgcolor(GTK_WIDGET(damier[i][j]->Mabouton->button), "#bb8141", 1);
-            //++++++ CSS++++++
+           //On applique la fonction CSS
             CSS(damier[i][j]->Mabouton->button);
+            //ajoute le bouton au conteneur fixed à la position spécifiée
             Ajouter_Fixed(damier[i][j]->Mabouton->button, damier[i][j]->pos.X, damier[i][j]->pos.Y, GTK_FIXED(fixed));
+            //ajuster la position verticale des boutons dans le damier.
             ligne = ligne + sizeBTN;
         }
+        //colonne est mise à jour pour la prochaine itération de la boucle extérieure.
         colonne = colonne + sizeBTN;
     }
-
-    //++++++++++++++++++++++++++++++score++++++++++++++++++
-    Label *score1, *score2;
+    //Initialisation de la structure Label
     score1 = Init_label(" Score ", "score", 400, 50);
     score2 = Init_label(" Score ", "score", 400, 800);
     scoreJoueur1 = Init_label(" 0000 ", "score", 550, 50);
     scoreJoueur2 = Init_label(" 0000 ", "score", 550, 800);
+    //ajoute le bouton au conteneur fixed à la position spécifiée
     Ajouter_Fixed(scoreJoueur1->leLabel, scoreJoueur1->X_Y.X, scoreJoueur1->X_Y.Y, GTK_FIXED(fixed));
     Ajouter_Fixed(scoreJoueur2->leLabel, scoreJoueur2->X_Y.X, scoreJoueur2->X_Y.Y, GTK_FIXED(fixed));
     Ajouter_Fixed(score1->leLabel, score1->X_Y.X, score1->X_Y.Y, GTK_FIXED(fixed));
     Ajouter_Fixed(score2->leLabel, score2->X_Y.X, score2->X_Y.Y, GTK_FIXED(fixed));
+    //On applique une feuille de style CSS au bouton en utilisant la fonction CSS().
     CSS(score1->leLabel);
     CSS(score2->leLabel);
     CSS(scoreJoueur1->leLabel);
     CSS(scoreJoueur2->leLabel);
-
+    //Ajout du fixed à la fenetre
     Ajouter_fenetre(wind, fixed->mon_fixed);
-    // Affichage de la fen�tre
+    //Affichage de la fenetre
     afficher_fenetre(wind->ma_fenetre);
 }
 
