@@ -48,33 +48,7 @@ noeud *calculer_cout(noeud *N)
     N->score=score;
     return ((noeud*) N);
 }
-int compter_dame(mouvement *M)
-{
 
-}
-int evaluer(pion pions[NB_PIONS],mouvement *M,int j)
-{
-    int score ;
-    score = calculer_cout(M);
-    score = +compter_dame(M) * 2;
-
-    score = +nombre_proche_dame(M);
-
-}
-
-
-int evaluateState(etat_jeu e, int joueur)
-{
-    int score = 0;
-    score = +e.score_player;
-    score = +nombre_dame(e, joueur) * 2;
-
-    score = +nombre_proche_dame(e, joueur);
-
-    //score = +nombre_est_isole(e, joueur);
-    // score=+nombre_au_centre(e,joueur);
-    return score;
-}
 
 void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
 {

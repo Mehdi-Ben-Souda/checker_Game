@@ -175,7 +175,7 @@ void setCoutNoeud(noeud* nd)
     }
 }
 
-int selectioner_cout(noeud* N, maxmin E)
+int selectioner_cout(noeud* N, maxmin E,noeud * racine)
 {
     int Val;
     noeud* ptc;
@@ -189,8 +189,13 @@ int selectioner_cout(noeud* N, maxmin E)
         {
             while (ptc)
             {
-                if (ptc->score < Val)
+                if (ptc->score < Val && racine==NULL)
                     Val = ptc->score;
+                else if
+                    (ptc->score < Val && racine)
+                {
+                    racine->lejeu=ptc->lejeu;
+                }
                 ptc = ptc->svt;
             }
         }
@@ -198,8 +203,12 @@ int selectioner_cout(noeud* N, maxmin E)
         {
             while (ptc)
             {
-                if (ptc->score > Val)
+                if (ptc->score > Val && racine == NULL)
                     Val = ptc->score;
+                else if (ptc->score > Val && racine)
+                {
+                    racine->lejeu = ptc->lejeu;
+                }
                 ptc = ptc->svt;
             }
         }
@@ -254,21 +263,27 @@ noeud* creerArbre_MiniMax(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], 
                 ptr = ptr->fils1;
             }
             
-            setCoutNoeud(tmp2);
+            //setCoutNoeud(tmp2);
+            calculer_cout(tmp2);
             
             
            tmp2 = tmp2->svt;
        }
-       tmp->score = selectioner_cout(tmp->sous_jeu, MINIMUM);
+       tmp->score = selectioner_cout(tmp->sous_jeu, MAXIMUM,NULL);
 
 
        tmp = tmp->svt;
     }
 
+    selectioner_cout(nd->sous_jeu, MINIMUM,nd);
 
+    
     return (noeud*)nd;
 
 }
+
+
+
 
 void affciherArbre_MiniMax(noeud * arb)
 {
