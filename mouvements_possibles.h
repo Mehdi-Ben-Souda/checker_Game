@@ -58,57 +58,68 @@ void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
         Afficher_Arbre_horizotalement(Arbre->fils1, Niv + 1);
     }
 }
-
+/*
+ * fonction qui nous permet d'initialiser les positions des pions dans le damier
+ *Entré:une matrice des entier
+ *Sortie:matrice initialisée
+ */
 
 void Initialiser_Damier(int dameier[8][8])
 {
-    int a=0,k=0;
-    int j;
-    while(k<8)
+    //déclaration des variables
+    int a=0,k=0,j;
+    while(k<8)//parcourir le damier
     {
         for (j = 0; j <8 ;j++)
         {
-
+            //mettre les cases non jouable
             dameier[k][j++]=-2;
             if(k==4)
-                dameier[k][j]=-1;
+                dameier[k][j]=-1;  //mettre les cases vide
             else
+                //mettre les pions du machine dans ses positions initiales
                 dameier[k][j]=a++;
         }
         k++;
         for (j = 0; j <8 ;j++)
         {
             if(k==3)
-                dameier[k][j++]=-1;
+                dameier[k][j++]=-1;//mettre les cases vide
             else
+                //mettre les pions du machine dans ses positions initiales
                 dameier[k][j++]=a++;
-
-            dameier[k][j]=-2;
+            dameier[k][j]=-2;//mettre les cases non jouable
         }
         k++;
     }
 }
-
-
+/*
+ * fonction qui nous permet d'initialiser les information des pions
+   dans la table des pions
+ *Entré:un arbre de type mouvement
+ *Sortie: un arbre de type mouvement
+ */
 void Initialiser_Tab_Pion(pion Tab[24])
 {
+    //déclartion des variables
     int j=1,k=0;
     for(int i=0;i<24;i++)
     {
-        Tab[i].etat=1;
-        Tab[i].y=k;
-        Tab[i].x=j;
-        j+=2;
-        if(j>7)
+        Tab[i].etat=1;//initialiser l'etat du pion
+        Tab[i].y=k;//initialiser coordoné verticale
+        Tab[i].x=j;//initialiser coordoné horizontal
+        j+=2;//passer à la ligne suivante
+        if(j>7)//si on a arriver à la fin du ligne horizontal
         {
-            if(k==2)
+            if(k==2)//si on a terminer les pions du machines
+                //sautter les deux lignes vides(qui sépare le deux familles des pions
                 k=5;
             else
-                k++;
-            if((k%2 ==0))
+                k++; //passer à a ligne suivante
+            if((k%2 ==0))//si la ligne est paire
                 j=1;
             else
-                j=0;
+                j=0;//si la ligne est impaire
         }
     }
 }
@@ -509,7 +520,8 @@ mouvement* Mouvements(int id, int damier[NB_CASES][NB_CASES],
 * Sortie : pointeur de type mouvement contenant tous les mouvements
  *         possible dans une direction
  */
-mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mouvement* N, int v, int h, int typemvt)
+mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],
+                mouvement* N, int v, int h, int typemvt)
 {
     // déclaration des variabes
     int damier1[NB_CASES][NB_CASES];
@@ -612,7 +624,8 @@ mouvement* Dame(int id, int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], mo
 }
 
 /*
- * Fonction qui determine tous les mouvements possibles pour un pion quelconque dans tous les directions
+ * Fonction qui determine tous les mouvements possibles pour
+   un pion quelconque dans tous les directions
   * Entré : - un id d'un pion
               - le damier
               - le tableau des pions
