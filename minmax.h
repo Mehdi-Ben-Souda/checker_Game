@@ -1,20 +1,20 @@
 #pragma once
 
-//typedef struct souslst
+// typedef struct souslst
 //{
-//    int x;
-//    int y;
-//    int IDj;
-//    int IDa;
-//    struct souslst* svt;
-//}sousListeMouvement;
+//     int x;
+//     int y;
+//     int IDj;
+//     int IDa;
+//     struct souslst* svt;
+// }sousListeMouvement;
 //
-//typedef struct lst
+// typedef struct lst
 //{
-//    sousListeMouvement* lejeu;
+//     sousListeMouvement* lejeu;
 //
-//    struct lst* svt;
-//}listeMouvement;
+//     struct lst* svt;
+// }listeMouvement;
 //
 ///*
 //    Nom Fonction : creer_sousListeMouvement
@@ -27,7 +27,7 @@
 //    Description : Cree et retourne un element de type sousListeMouvement
 //*/
 //
-//sousListeMouvement* creer_sousListeMouvement(int x, int y, int IDj, int IDa)
+// sousListeMouvement* creer_sousListeMouvement(int x, int y, int IDj, int IDa)
 //{
 //    sousListeMouvement* NE = malloc(sizeof(sousListeMouvement));
 //
@@ -58,7 +58,7 @@
 //    Description : Cree et retourne un element de type sousListeMouvement
 //*/
 //
-//listeMouvement* creer_sousListeMouvement(void)
+// listeMouvement* creer_sousListeMouvement(void)
 //{
 //    listeMouvement* NE = (listeMouvement*)malloc(sizeof(listeMouvement));
 //
@@ -69,14 +69,14 @@
 //        return (listeMouvement*)NE;
 //    }
 //
-//    
+//
 //    NE->svt = NE->lejeu= NULL;
 //    return (listeMouvement*)NE;
 //}
 //
 //
 //
-//listeMouvement* transfert_mouvement_TO_listeMouvement(mouvement* arb, listeMouvement*liste )
+// listeMouvement* transfert_mouvement_TO_listeMouvement(mouvement* arb, listeMouvement*liste )
 //{
 //    sousListeMouvement* NE = creer_sousListeMouvement(arb->x, arb->y, arb->IDj, arb->IDa);
 //    //Si il s'agit d'une feuille
@@ -95,19 +95,19 @@ typedef enum maxmin
     MINIMUM
 } maxmin;
 
-noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],int joueur)
+noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], int joueur)
 {
-	noeud * lesmouvements=NULL,*ptr=NULL;
+    noeud *lesmouvements = NULL, *ptr = NULL;
     /*int damierCPY[NB_CASES][NB_CASES];
     pion pionsCPY[NB_PIONS];*/
 
-	int deb, fin,ind;
+    int deb, fin, ind;
 
-	if (joueur == 2)
-	{
+    if (joueur == 2)
+    {
         deb = 0;
         fin = 11;
-	}
+    }
     else
     {
         deb = 12;
@@ -121,8 +121,8 @@ noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],in
             /* copierDamier(damierCPY, damier);
             copierLesJetons(pionsCPY, pions);*/
 
-            ptr=lesmouvements;
-            if (ptr!=NULL)
+            ptr = lesmouvements;
+            if (ptr != NULL)
             {
                 while (ptr->svt)
                     ptr = ptr->svt;
@@ -133,34 +133,26 @@ noeud* tousLesmouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS],in
             {
                 lesmouvements = Mouvements_Possibles(ind, damier, pions);
             }
-            
-
         }
     }
 
     return (noeud*)lesmouvements;
-	
-
 }
-
-
-
 
 noeud* listeDesMouvements(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], int joueur)
 {
-    noeud* ptr1=NULL,*resultat=NULL;
-    ptr1=tousLesmouvements(damier, pions, joueur);
+    noeud *ptr1 = NULL, *resultat = NULL;
+    ptr1 = tousLesmouvements(damier, pions, joueur);
 
     if (ptr1)
-       resultat=creer_liste(ptr1);
+        resultat = creer_liste(ptr1);
 
     return (noeud*)resultat;
-
 }
 
 void setCoutNoeud(noeud* nd)
 {
-    int nb1=0, nb2=0,i;
+    int nb1 = 0, nb2 = 0, i;
     if (nd)
     {
         for (i = 0; i < 12; i++)
@@ -169,13 +161,13 @@ void setCoutNoeud(noeud* nd)
         for (i = 12; i < 24; i++)
             if (nd->copy_pions[i].etat != 0)
                 nb2++;
-        
+
         nd->score = nb1 - nb2;
-        printf("le cout %d\n",nd->score);
+        printf("le cout %d\n", nd->score);
     }
 }
 
-int selectioner_cout(noeud* N, maxmin E,noeud * racine)
+int selectioner_cout(noeud* N, maxmin E, noeud* racine)
 {
     int Val;
     noeud* ptc;
@@ -186,21 +178,20 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
         ptc = ptc->svt;
         Val = N->score;
 
-        if (racine!=NULL)
+        if (racine != NULL)
             racine->lejeu = N->lejeu;
 
         if (E == MINIMUM)
         {
             while (ptc)
             {
-                if (ptc->score < Val && racine==NULL)
+                if (ptc->score < Val && racine == NULL)
                     Val = ptc->score;
-                else if
-                    (ptc->score < Val && racine)
+                else if (ptc->score < Val && racine)
                 {
-                    racine->lejeu=ptc->lejeu;
+                    racine->lejeu = ptc->lejeu;
                 }
-                
+
                 ptc = ptc->svt;
             }
         }
@@ -223,43 +214,40 @@ int selectioner_cout(noeud* N, maxmin E,noeud * racine)
     return (int)-32000;
 }
 
-
 noeud* creerArbre_MiniMax(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], int joueur)
 {
 
-    noeud* nd = creeNoeud(),*tmp=NULL,*tmp2=NULL;
-   
-    mouvement * ptr;
+    noeud *nd = creeNoeud(), *tmp = NULL, *tmp2 = NULL;
 
-    nd->sous_jeu = listeDesMouvements(damier,pions,joueur);
+    mouvement* ptr;
+
+    nd->sous_jeu = listeDesMouvements(damier, pions, joueur);
 
     tmp = nd->sous_jeu;
 
     while (tmp)
     {
-       copierDamier(tmp->copy_damier, damier);
-       copierLesJetons(tmp->copy_pions, pions);
+        copierDamier(tmp->copy_damier, damier);
+        copierLesJetons(tmp->copy_pions, pions);
 
-       ptr = tmp->lejeu;
+        ptr = tmp->lejeu;
 
-
-       while (ptr)
-       {
-            deplacerJeton(ptr,tmp->copy_damier,tmp->copy_pions);
+        while (ptr)
+        {
+            deplacerJeton(ptr, tmp->copy_damier, tmp->copy_pions);
             ptr = ptr->fils1;
-       }
+        }
 
-       //setCoutNoeud(tmp);//On applique un score 
+        // setCoutNoeud(tmp);//On applique un score
 
-       tmp->sous_jeu = listeDesMouvements(tmp->copy_damier, tmp->copy_pions,(-1 * joueur));
+        tmp->sous_jeu = listeDesMouvements(tmp->copy_damier, tmp->copy_pions, (-1 * joueur));
 
-
-       //On veut calculer les score pouer ce sous jeu
-       tmp2 = tmp->sous_jeu;
-       while (tmp2)
-       {
+        // On veut calculer les score pouer ce sous jeu
+        tmp2 = tmp->sous_jeu;
+        while (tmp2)
+        {
             copierDamier(tmp2->copy_damier, tmp->copy_damier);
-            copierLesJetons(tmp2->copy_pions,tmp->copy_pions);
+            copierLesJetons(tmp2->copy_pions, tmp->copy_pions);
 
             ptr = tmp2->lejeu;
             while (ptr)
@@ -267,31 +255,24 @@ noeud* creerArbre_MiniMax(int damier[NB_CASES][NB_CASES], pion pions[NB_PIONS], 
                 deplacerJeton(ptr, tmp2->copy_damier, tmp2->copy_pions);
                 ptr = ptr->fils1;
             }
-            
+
             calculer_cout(tmp2);
-            
-            
-           tmp2 = tmp2->svt;
-       }
-       tmp->score = selectioner_cout(tmp->sous_jeu, MINIMUM,NULL);
 
+            tmp2 = tmp2->svt;
+        }
+        tmp->score = selectioner_cout(tmp->sous_jeu, MAXIMUM, NULL);
 
-       tmp = tmp->svt;
+        tmp = tmp->svt;
     }
 
-    selectioner_cout(nd->sous_jeu, MAXIMUM,nd);
+    selectioner_cout(nd->sous_jeu, MINIMUM, nd);
 
-    
     return (noeud*)nd;
-
 }
 
-
-
-
-void affciherArbre_MiniMax(noeud * arb)
+void affciherArbre_MiniMax(noeud* arb)
 {
-    mouvement* ptc=NULL;
+    mouvement* ptc = NULL;
     if (arb)
     {
         noeud* tmp = arb;
@@ -308,22 +289,6 @@ void affciherArbre_MiniMax(noeud * arb)
             affciherArbre_MiniMax(tmp->sous_jeu);
 
             tmp = tmp->svt;
-
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

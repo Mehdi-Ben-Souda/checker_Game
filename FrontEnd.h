@@ -12,6 +12,28 @@ int tour = 1, mode = 1, id_pion_selectioner = -1, jeu_complexe_idJ = -1,
 int nfikh = 0, colorJeton = 1;
 Label *scoreJoueur1, *scoreJoueur2;
 
+char* clr_choisis(int i)
+{
+    if (colorJeton == 1)
+    {
+        // joueur2
+        if (i == 0)
+            return "black_pion.png";
+        // joueur1
+        if (i == 1)
+            return "white_pion.png";
+    }
+    else
+    {
+        if (i == 0)
+            return "white_pion.png";
+        // joueur1
+        if (i == 1)
+            return "black_pion.png";
+    }
+    return NULL;
+}
+
 void MiseAJourScore(int id, int s)
 {
     const char* texteScore;
@@ -57,7 +79,7 @@ void on_rejouer_clicked(GtkWidget* widget, GtkWidget* fen)
     //         gtk_widget_destroy(damier[i][j]->Mabouton->button);
     //     }
     // }
-    jeu_commence();
+    jeu_commence(NULL, NULL);
 }
 /*
 void on_regle_jeu_clicked(GtkWidget* widget, gpointer data)
@@ -986,14 +1008,14 @@ void page_damier()
                 {
                     if ((j % 2) != 0)
                     {
-                        strcpy(icon_pion, "black_pion.png");
+                        strcpy(icon_pion, clr_choisis(0));
                     }
                 }
                 else
                 {
                     if ((j % 2) == 0)
                     {
-                        strcpy(icon_pion, "black_pion.png");
+                        strcpy(icon_pion, clr_choisis(0));
                     }
                 }
             }
@@ -1003,14 +1025,14 @@ void page_damier()
                 {
                     if (j % 2 != 0)
                     {
-                        strcpy(icon_pion, "white_pion.png");
+                        strcpy(icon_pion, clr_choisis(1));
                     }
                 }
                 else
                 {
                     if (j % 2 == 0)
                     {
-                        strcpy(icon_pion, "white_pion.png");
+                        strcpy(icon_pion, clr_choisis(1));
                     }
                 }
             }
@@ -1056,8 +1078,10 @@ void page_damier()
     Description : cette fonction sert a declancher un jeu de damier
 */
 
-void jeu_commence()
+void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
 {
+    if (widget2)
+        gtk_widget_destroy(widget2);
 
     Initialiser_Damier(&lematch.damier);
     Initialiser_Tab_Pion(lespions);
@@ -1144,7 +1168,7 @@ void Mode_page()
 
     Fixed* fixed = Allouer_fixed("fixed");
     frame* frame1;
-    Box* B1;
+    Box *B1, *B2, *B3;
 
     // Afficher_dialogue(mondialog);
     frame1 = Init_frame("MODE", "frameMode", 20, 180, 270, 450, 470);
@@ -1173,10 +1197,23 @@ void Mode_page()
     g_signal_connect(color1->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color2->Mabouton->button);
     g_signal_connect(color2->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color1->Mabouton->button);
 
-    // Bouton* btn3 = Initialiser_boutton("Quitter", "btn_mode_quitter", "", "", 380, 106, 1, 1500, 400, "vide", 80);
-    // btn3 = Creer_SimpleBoutton(btn3);
-    // CSS(btn3->Mabouton->button);
-    // g_signal_connect(btn3->Mabouton->button, "clicked", G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
+    B2 = Allouer_Box(0, 20);
+    Creer_Box(B2, NULL);
+    Ajouter_Box(B2, color2->Mabouton->button, 0, FALSE, FALSE, 0);
+    Ajouter_Box(B2, color1->Mabouton->button, 0, FALSE, FALSE, 0);
+
+    B3 = Allouer_Box(0, 20);
+    Creer_Box(B3, NULL);
+    Bouton* Commencer = Initialiser_boutton("Commencer", "btn_mode_commencer", "", "", 190, 106, 1, 1500, 600, "vide", 80);
+    Commencer = Creer_SimpleBoutton(Commencer);
+    CSS(Commencer->Mabouton->button);
+    g_signal_connect(Commencer->Mabouton->button, "clicked", G_CALLBACK(jeu_commence), fenetre_mode->ma_fenetre);
+    Bouton* Quitter = Initialiser_boutton("Quitter", "btn_mode_quitter", "", "", 190, 106, 1, 1500, 400, "vide", 80);
+    Quitter = Creer_SimpleBoutton(Quitter);
+    CSS(Quitter->Mabouton->button);
+    g_signal_connect(Quitter->Mabouton->button, "clicked", G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
+    Ajouter_Box(B3, Commencer->Mabouton->button, 0, FALSE, FALSE, 0);
+    Ajouter_Box(B3, Quitter->Mabouton->button, 0, FALSE, FALSE, 0);
 
     B1 = Allouer_Box(1, 20);
     Creer_Box(B1, NULL);
@@ -1189,8 +1226,8 @@ void Mode_page()
     Ajouter_Box(B1, title_mode->leLabel, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn1->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn2->Mabouton->button, 0, FALSE, FALSE, 0);
-    Ajouter_Box(B1, color1->Mabouton->button, 0, FALSE, FALSE, 0);
-    Ajouter_Box(B1, color2->Mabouton->button, 0, FALSE, FALSE, 0);
+    Ajouter_Box(B1, B2->mon_box, 0, FALSE, FALSE, 0);
+    Ajouter_Box(B1, B3->mon_box, 0, FALSE, FALSE, 0);
     // Ajouter_Box(B1, btn3->Mabouton->button, 0, FALSE, FALSE, 0);
 
     Ajouter_Fixed(B1->mon_box, 400, 200, fixed);
