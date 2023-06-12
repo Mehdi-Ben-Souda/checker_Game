@@ -388,8 +388,6 @@ void show_mouve(GtkWidget* widget, int id)
                             {
                                 if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
                                 {
-                                    printf("\n");
-                                    afficher_damier(lematch.damier);
 
                                     printf("\n");
                                     Afficher_Arbre_horizotalement(ptr, 3);
@@ -442,11 +440,6 @@ void show_mouve(GtkWidget* widget, int id)
                     while (ptr)
                     {
                         printf("\n");
-<<<<<<< HEAD
-
-=======
-                        afficher_damier(lematch.damier);
->>>>>>> 3a7517a3bf1c483c01a0db20e8424506a39f9fbd
                         printf("\n");
                         Afficher_Arbre_horizotalement(ptr, 3);
                         printf("\n");
@@ -516,11 +509,6 @@ void show_mouve(GtkWidget* widget, int id)
                                     if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
                                     {
                                         printf("\n");
-<<<<<<< HEAD
-
-=======
-                                        afficher_damier(lematch.damier);
->>>>>>> 3a7517a3bf1c483c01a0db20e8424506a39f9fbd
                                         printf("\n");
                                         Afficher_Arbre_horizotalement(ptr, 3);
                                         printf("\n");
@@ -572,11 +560,7 @@ void show_mouve(GtkWidget* widget, int id)
                         while (ptr)
                         {
                             printf("\n");
-<<<<<<< HEAD
 
-=======
-                            afficher_damier(lematch.damier);
->>>>>>> 3a7517a3bf1c483c01a0db20e8424506a39f9fbd
                             printf("\n");
                             Afficher_Arbre_horizotalement(ptr, 3);
                             printf("\n");
@@ -639,12 +623,6 @@ void show_mouve(GtkWidget* widget, int id)
                                     if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
                                     {
                                         printf("\n");
-<<<<<<< HEAD
-
-=======
-                                        afficher_damier(lematch.damier);
->>>>>>> 3a7517a3bf1c483c01a0db20e8424506a39f9fbd
-                                        printf("\n");
                                         Afficher_Arbre_horizotalement(ptr, 3);
                                         printf("\n");
                                         printf("\n id adv %d", ptr->IDa);
@@ -695,8 +673,6 @@ void show_mouve(GtkWidget* widget, int id)
                         while (ptr)
                         {
                             printf("\n");
-
-                            afficher_damier(lematch.damier);
 
                             printf("\n");
                             Afficher_Arbre_horizotalement(ptr, 3);
@@ -1151,15 +1127,15 @@ void page_damier()
 
 void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
 {
-    //Si widget2 existe il est détruit à l'aide de la fonction gtk_widget_destroy
+    // Si widget2 existe il est détruit à l'aide de la fonction gtk_widget_destroy
     if (widget2)
         gtk_widget_destroy(widget2);
-// initialiser le damier et les pions du jeu respectivement.
+    // initialiser le damier et les pions du jeu respectivement.
     Initialiser_Damier(&lematch.damier);
     Initialiser_Tab_Pion(lespions);
-// appelée pour créer et afficher la page du damier dans l'interface utilisateur
+    // appelée pour créer et afficher la page du damier dans l'interface utilisateur
     page_damier();
-    for (int i = 0; i < 8; i++)// parcourent le damier.
+    for (int i = 0; i < 8; i++) // parcourent le damier.
     {
         for (int j = 0; j < 8; j++)
         {
@@ -1169,7 +1145,7 @@ void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
             {
                 // connecter le signal "clicked" du bouton à la fonction show_mouve en utilisant G_CALLBACK()
                 g_signal_connect(damier[i][j]->Mabouton->button, "clicked", G_CALLBACK(show_mouve), lematch.damier[i][j]);
-                //appliquer des styles CSS au bouton.
+                // appliquer des styles CSS au bouton.
                 CSS(damier[i][j]->Mabouton->button);
                 /*Selon la valeur de mode, le nom du widget
                  (bouton) est défini en tant que "joueur1"
@@ -1190,8 +1166,8 @@ void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
             }
         }
     }
-    //Si le mode est égal à 1 et colorJeton est égal à -1,
-    //cela signifie qu'il s'agit du tour de la machine
+    // Si le mode est égal à 1 et colorJeton est égal à -1,
+    // cela signifie qu'il s'agit du tour de la machine
     if (mode == 1 && colorJeton == -1)
         tour_de_machine();
 }
@@ -1214,7 +1190,7 @@ void what_btn_mode(GtkWidget* widget, GtkWidget* widget2)
     // vérifie si le nom du widget widget est égal à "btn_mode1_Off" ou "btn_mode1_On".
     if (!strcmp(label, "btn_mode1_Off") || !strcmp(label, "btn_mode1_On"))
     {
-        //le mode actuel est le mode 2, et le bouton a été cliqué pour passer au mode 1.
+        // le mode actuel est le mode 2, et le bouton a été cliqué pour passer au mode 1.
         gtk_widget_set_name(widget, "btn_mode1_On");
         gtk_widget_set_name(widget2, "btn_mode2_Off");
         CSS(widget);
@@ -1222,7 +1198,7 @@ void what_btn_mode(GtkWidget* widget, GtkWidget* widget2)
         mode = 1;
     }
     else
-    //le mode actuel est le mode 1,et le bouton a été cliqué pour passer au mode 2.
+    // le mode actuel est le mode 1,et le bouton a été cliqué pour passer au mode 2.
     {
         gtk_widget_set_name(widget, "btn_mode2_On");
         gtk_widget_set_name(widget2, "btn_mode1_Off");
@@ -1242,33 +1218,33 @@ void what_btn_mode(GtkWidget* widget, GtkWidget* widget2)
 */
 void what_btn_Color(GtkWidget* widget, GtkWidget* widget2)
 {
-    //obtenir le nom du widget widget sous forme de chaîne
-    // de caractères et le stocker dans la variable label
+    // obtenir le nom du widget widget sous forme de chaîne
+    //  de caractères et le stocker dans la variable label
     char* label = gtk_widget_get_name(GTK_BUTTON(widget));
     /* vérifie si le nom du widget widget est égal
     à "black_color_Off" ou "black_color_On" */
     if (!strcmp(label, "black_color_Off") || !strcmp(label, "black_color_On"))
     {
-        //widget est défini comme "black_color_On".
+        // widget est défini comme "black_color_On".
         gtk_widget_set_name(widget, "black_color_On");
-        //widget2 est défini comme "white_color_Off".
+        // widget2 est défini comme "white_color_Off".
         gtk_widget_set_name(widget2, "white_color_Off");
         CSS(widget);
         CSS(widget2);
-        //définie à -1 pour représenter la couleur blanche du jeton.
+        // définie à -1 pour représenter la couleur blanche du jeton.
         colorJeton = -1;
-        //définie à -1 pour représenter le tour du joueur blanc.
+        // définie à -1 pour représenter le tour du joueur blanc.
         tour = -1;
     }
-    //la couleur du jeton actuelle est le blanc, et le bouton a été cliqué pour changer la couleur en noir
+    // la couleur du jeton actuelle est le blanc, et le bouton a été cliqué pour changer la couleur en noir
     else
     {
         gtk_widget_set_name(widget, "white_color_On");
         gtk_widget_set_name(widget2, "black_color_Off");
         CSS(widget);
         CSS(widget2);
-        colorJeton = 1;//définie à 1 pour représenter la couleur noire du jeton.
-        tour = 1;//définie à 1 pour représenter le tour du joueur noir.
+        colorJeton = 1; // définie à 1 pour représenter la couleur noire du jeton.
+        tour = 1;       // définie à 1 pour représenter le tour du joueur noir.
     }
 }
 
@@ -1284,31 +1260,31 @@ void what_btn_Color(GtkWidget* widget, GtkWidget* widget2)
 
 void Mode_page()
 {
-    //Déclaration des variables
+    // Déclaration des variables
     Fenetre* fenetre_mode;
     // déclarée et initialisée en tant que pointeur vers une structure Fenetre
     fenetre_mode = Allouer_Fenetre(0, 1300, 900, "Jeu damier", NULL, 300, 0, NULL, "fenetre_mode", 0);
     fenetre_mode = Creer_Fenetre(fenetre_mode);
     CSS(fenetre_mode->ma_fenetre);
-//Un objet Fixed est créé pour gérer le positionnement des éléments dans la fenêtre
+    // Un objet Fixed est créé pour gérer le positionnement des éléments dans la fenêtre
     Fixed* fixed = Allouer_fixed("fixed");
-    //Les variables frame1, B1, B2 et B3 sont déclarées pour stocker des structures de type frame et Box
+    // Les variables frame1, B1, B2 et B3 sont déclarées pour stocker des structures de type frame et Box
     frame* frame1;
     Box *B1, *B2, *B3;
-    //initialisé avec le titre "MODE" et les coordonnées de position et de taille spécifiées.
+    // initialisé avec le titre "MODE" et les coordonnées de position et de taille spécifiées.
     frame1 = Init_frame("MODE", "frameMode", 20, 180, 270, 450, 470);
-    //Le cadre est créé à l'aide de la fonction Creation_frame()
+    // Le cadre est créé à l'aide de la fonction Creation_frame()
     Creation_frame(frame1);
     CSS(frame1->monframe);
-       // initialisé avec le label "Joueur VS Machine" et d'autres paramètres.
-       //Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
+    // initialisé avec le label "Joueur VS Machine" et d'autres paramètres.
+    // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
     Bouton* btn1 = Initialiser_boutton("Joueur   VS   Machine", "btn_mode1_On", "", "", 380, 106, 1, 1500, 400, "vide", 80);
     btn1 = Creer_SimpleBoutton(btn1);
-       //Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
+    // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(btn1->Mabouton->button);
 
-      // initialisé avec le label "Joueur VS Joueur" et d'autres paramètres.
-      //Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
+    // initialisé avec le label "Joueur VS Joueur" et d'autres paramètres.
+    // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
     Bouton* btn2 = Initialiser_boutton("Joueur   VS   Joueur", "btn_mode2_Off", "", "", 380, 106, 1, 1500, 400, "vide", 80);
     btn2 = Creer_SimpleBoutton(btn2);
     CSS(btn2->Mabouton->button);
@@ -1317,43 +1293,43 @@ void Mode_page()
     g_signal_connect(btn2->Mabouton->button, "clicked", G_CALLBACK(what_btn_mode), btn1->Mabouton->button);
     g_signal_connect(btn1->Mabouton->button, "clicked", G_CALLBACK(what_btn_mode), btn2->Mabouton->button);
 
-    //initialisé avec le label "blanc" et d'autres paramètres.
-    //Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
+    // initialisé avec le label "blanc" et d'autres paramètres.
+    // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
     Bouton* color1 = Initialiser_boutton("blanc", "white_color_On", "", "", 190, 106, 1, 1500, 600, "vide", 80);
     color1 = Creer_SimpleBoutton(color1);
-    //Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
+    // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(color1->Mabouton->button);
 
     // initialisé avec le label "Noir" et d'autres paramètres.
-    //Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
+    // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
     Bouton* color2 = Initialiser_boutton("Noir", "black_color_Off", "", "", 190, 106, 1, 1500, 600, "vide", 80);
     color2 = Creer_SimpleBoutton(color2);
-    //Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
+    // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(color2->Mabouton->button);
 
-    //signaux sont connectés aux boutons color1 et color2 pour appeler
-    // la fonction what_btn_Color lorsqu'ils sont cliqués.
+    // signaux sont connectés aux boutons color1 et color2 pour appeler
+    //  la fonction what_btn_Color lorsqu'ils sont cliqués.
     g_signal_connect(color1->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color2->Mabouton->button);
     g_signal_connect(color2->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color1->Mabouton->button);
 
     B2 = Allouer_Box(0, 20);
     Creer_Box(B2, NULL);
-    //Les boutons color2 et color1 sont ajoutés à la boîte à l'aide de la fonction Ajouter_Box().
+    // Les boutons color2 et color1 sont ajoutés à la boîte à l'aide de la fonction Ajouter_Box().
     Ajouter_Box(B2, color2->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B2, color1->Mabouton->button, 0, FALSE, FALSE, 0);
 
-    //B3 est créée pour contenir les boutons "Commencer" et "Quitter".
+    // B3 est créée pour contenir les boutons "Commencer" et "Quitter".
     B3 = Allouer_Box(0, 20);
     Creer_Box(B3, NULL);
-    //initialiser et creer un boutton simple
+    // initialiser et creer un boutton simple
     Bouton* Commencer = Initialiser_boutton("Commencer", "btn_mode_commencer", "", "", 190, 106, 1, 1500, 600, "vide", 80);
     Commencer = Creer_SimpleBoutton(Commencer);
-    //Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
+    // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(Commencer->Mabouton->button);
     // signal est connectés aux boutons pour appeler des fonctions lorsque les boutons sont cliqués.
     g_signal_connect(Commencer->Mabouton->button, "clicked", G_CALLBACK(jeu_commence), fenetre_mode->ma_fenetre);
 
-    //initialiser et creer un boutton simple
+    // initialiser et creer un boutton simple
     Bouton* Quitter = Initialiser_boutton("Quitter", "btn_mode_quitter", "", "", 190, 106, 1, 1500, 400, "vide", 80);
     Quitter = Creer_SimpleBoutton(Quitter);
     CSS(Quitter->Mabouton->button);
@@ -1361,26 +1337,26 @@ void Mode_page()
     g_signal_connect(Quitter->Mabouton->button, "clicked", G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
     Ajouter_Box(B3, Commencer->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B3, Quitter->Mabouton->button, 0, FALSE, FALSE, 0);
-//B1 est créée pour contenir les éléments principaux de la page de sélection du mode de jeu.
+    // B1 est créée pour contenir les éléments principaux de la page de sélection du mode de jeu.
     B1 = Allouer_Box(1, 20);
     Creer_Box(B1, NULL);
     gtk_widget_set_name(B1->mon_box, "BoxMode");
-    //Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
+    // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(B1->mon_box);
 
     Label* title_mode;
-    //Un label title_mode est initialisé avec le texte "MODE" et les coordonnées de position spécifiées.
+    // Un label title_mode est initialisé avec le texte "MODE" et les coordonnées de position spécifiées.
     title_mode = Init_label("MODE ", "title_mode", 400, 50);
     CSS(title_mode->leLabel);
-    //Le label et les boutons btn1 et btn2 sont ajoutés à la boîte B1 à l'aide de la fonction Ajouter_Box().
+    // Le label et les boutons btn1 et btn2 sont ajoutés à la boîte B1 à l'aide de la fonction Ajouter_Box().
     Ajouter_Box(B1, title_mode->leLabel, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn1->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn2->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, B2->mon_box, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, B3->mon_box, 0, FALSE, FALSE, 0);
-   //B1 est ajoutée au conteneur fixed à des coordonnées spécifiées.
+    // B1 est ajoutée au conteneur fixed à des coordonnées spécifiées.
     Ajouter_Fixed(B1->mon_box, 400, 200, fixed);
-    //Le conteneur fixed est ajouté à la fenêtre principale fenetre_mode.
+    // Le conteneur fixed est ajouté à la fenêtre principale fenetre_mode.
     Ajouter_fenetre(fenetre_mode, fixed->mon_fixed);
     afficher_fenetre(fenetre_mode->ma_fenetre);
 }
