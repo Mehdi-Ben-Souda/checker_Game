@@ -43,6 +43,18 @@ typedef enum typeMouv
     SIMPLE,//aucun pion d'adversaire capturé
     COMPLEXE //il y a un pion d'adversaire capturé
 } typeMouvement;
+
+void Afficher_Damier(int damier[8][8])
+{
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            printf("%d\t", damier[i][j]);
+        }
+        printf("\n");
+    }
+}
 void Afficher_Arbre_horizotalement(mouvement* Arbre, int Niv)
 {
     int esp;   // Pour l'affichage des espaces
@@ -806,14 +818,14 @@ noeud *calculer_cout(noeud *N)
             nbJettonsJ1++;
             //pour un dame on ajoute 2
         else if (N->copy_pions[ind].etat == 2)
-            nbJettonsJ1 += 2;
+            nbJettonsJ1 += 4;
     }
-    /*
+    
     //si le pion qui bouge est celle du machine
     if (0 <= N->lejeu->IDj && N->lejeu->IDj < 12)
         score += nbJettonsJ2 - nbJettonsJ1;
     else //si le pion qui bouge est celle du joueur
-        score += nbJettonsJ1 - nbJettonsJ2;*/
+        score += nbJettonsJ1 - nbJettonsJ2;
     N->score=score;
     return ((noeud*) N);
 }

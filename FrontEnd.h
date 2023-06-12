@@ -59,7 +59,9 @@ void is_game_over(int id)
                 gtk_widget_destroy(damier[i][j]->Mabouton->button);
             }
         }
-
+        if (j==1)
+            
+            
         // Changer le nom de la fenêtre pour indiquer la fin de la partie
         gtk_widget_set_name(wind->ma_fenetre, "window_game_over");
 
@@ -238,21 +240,27 @@ void tour_de_machine()
     int damierCpy[NB_CASES][NB_CASES];
     // Déclaration d'un tableau pionCpy de taille NB_PIONS.
     pion pionCpy[NB_PIONS];
-    if (ptr) // Si ptr n'est pas NULL, cela signifie que l'arbre contient des mouvements valides
+    if (ptr) // Si ptr n'est pas NULL, cela signifie que l'arbre contient
+        //des mouvements valides
     {
-        // Sauvegarde de l'état actuel du damier et des pions dans les tableaux de copie damierCpy et pionCpy.
+        // Sauvegarde de l'état actuel du damier et des pions dans les 
+            //tableaux de copie damierCpy et pionCpy.
         copierDamier(damierCpy, lematch.damier);
         copierLesJetons(pionCpy, lespions);
         /* Parcours du damier avec une boucle for imbriquée pour
-           réinitialiser les noms et les styles des boutons des cases du damier */
+           réinitialiser les noms et les styles des boutons des cases 
+           du damier */
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
                 name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                if (!strcmp(name, "mvt_possible") || !strcmp(name,
+                    "autre_mvt_possible") || 
+                    !strcmp(name, "my-button_black_nfikh"))
                 {
-                    gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                    gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                        "my-button_black");
                     CSS(damier[i][j]->Mabouton->button);
                 }
             }
@@ -262,36 +270,63 @@ void tour_de_machine()
         while (ptr)
         {
             // Mise en évidence des mouvements possibles pour le joueur actuel
-            gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
+            gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button,
+                "mvt_possible");
             CSS(damier[ptr->y][ptr->x]->Mabouton->button);
 
-            gtk_widget_set_name(damier[lespions[ptr->IDj].y][lespions[ptr->IDj].x]->Mabouton->button, "mvt_possible");
-            CSS(damier[lespions[ptr->IDj].y][lespions[ptr->IDj].x]->Mabouton->button);
+            gtk_widget_set_name(damier[lespions[ptr->IDj].y]
+                [lespions[ptr->IDj].x]->Mabouton->button, "mvt_possible");
+
+            CSS(damier[lespions[ptr->IDj].y]
+                [lespions[ptr->IDj].x]->Mabouton->button);
 
             if (lespions[nd->lejeu->IDj].etat == 1)
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(0), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(0),
+                    50, 50, NULL);
             else
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3),
+                    50, 50, NULL);
             img = gtk_image_new_from_pixbuf(pixt);
-            gtk_button_set_image(GTK_BUTTON(damier[lespions[ptr->IDj].y][lespions[ptr->IDj].x]->Mabouton->button), NULL);
-            g_signal_handlers_block_matched(damier[lespions[ptr->IDj].y][lespions[ptr->IDj].x]->Mabouton->button,
-                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-            g_signal_handlers_block_matched(damier[lespions[ptr->IDj].y][lespions[ptr->IDj].x]->Mabouton->button,
-                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
-            gtk_button_set_image(damier[ptr->y][ptr->x]->Mabouton->button, img);
-            gtk_button_set_always_show_image(damier[ptr->y][ptr->x]->Mabouton->button, TRUE);
+            gtk_button_set_image(GTK_BUTTON(damier[lespions[ptr->IDj].y]
+                [lespions[ptr->IDj].x]->Mabouton->button), NULL);
+
+            g_signal_handlers_block_matched(damier[lespions[ptr->IDj].y]
+                [lespions[ptr->IDj].x]->Mabouton->button,
+                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
+
+            g_signal_handlers_block_matched(damier[lespions[ptr->IDj].y]
+                [lespions[ptr->IDj].x]->Mabouton->button, G_SIGNAL_MATCH_FUNC,
+                0, 0, NULL, (gpointer)show_mouve, NULL);
+
+            gtk_button_set_image(damier[ptr->y][ptr->x]->Mabouton->button,
+                img);
+            gtk_button_set_always_show_image(damier[ptr->y]
+                [ptr->x]->Mabouton->button, TRUE);
 
             if (ptr->IDa >= 0)
             {
                 nfikh++;
-                // Mise en évidence du mouvement de prise pour le joueur actuel
-                gtk_button_set_image(damier[lespions[ptr->IDa].y][lespions[ptr->IDa].x]->Mabouton->button, NULL);
-                g_signal_handlers_block_matched(damier[lespions[ptr->IDa].y][lespions[ptr->IDa].x]->Mabouton->button,
-                                                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                g_signal_handlers_block_matched(damier[lespions[ptr->IDa].y][lespions[ptr->IDa].x]->Mabouton->button,
-                                                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
-                gtk_widget_set_name(damier[lespions[ptr->IDa].y][lespions[ptr->IDa].x]->Mabouton->button, "mvt_possible");
-                CSS(damier[lespions[ptr->IDa].y][lespions[ptr->IDa].x]->Mabouton->button);
+                /* Mise en évidence du mouvement de prise pour le joueur
+                     actuel*/
+                gtk_button_set_image(damier[lespions[ptr->IDa].y]
+                    [lespions[ptr->IDa].x]->Mabouton->button, NULL);
+
+                g_signal_handlers_block_matched(damier[lespions[ptr->IDa].y]
+                    [lespions[ptr->IDa].x]->Mabouton->button, 
+                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, 
+                    (gpointer)make_mouve, NULL);
+
+                g_signal_handlers_block_matched(damier[lespions[ptr->IDa].y]
+                    [lespions[ptr->IDa].x]->Mabouton->button,
+                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
+
+                gtk_widget_set_name(damier[lespions[ptr->IDa].y]
+                    [lespions[ptr->IDa].x]->Mabouton->button, "mvt_possible");
+
+                CSS(damier[lespions[ptr->IDa].y]
+                    [lespions[ptr->IDa].x]->Mabouton->button);
+
+
                 if (lespions[nd->lejeu->IDa].etat == 1)
                     MiseAJourScore(nd->lejeu->IDj, 10);
                 else
@@ -300,13 +335,21 @@ void tour_de_machine()
             deplacerJeton(ptr, lematch.damier, lespions);
             ptr = ptr->fils1;
         }
-        if (etatJoueur != lespions[nd->lejeu->IDj].etat && lespions[nd->lejeu->IDj].etat == 2)
+        if (etatJoueur != lespions[nd->lejeu->IDj].etat &&
+            lespions[nd->lejeu->IDj].etat == 2)
         {
-            // Mise à jour de l'apparence du pion si celui-ci est devenu une dame
-            pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3), 50, 50, NULL);
+            /* Mise à jour de l'apparence du pion si celui-ci est devenu
+                une dame*/
+            pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3), 50,
+                50, NULL);
             img = gtk_image_new_from_pixbuf(pixt);
-            gtk_button_set_image(GTK_BUTTON(damier[lespions[nd->lejeu->IDj].y][lespions[nd->lejeu->IDj].x]->Mabouton->button), img);
-            gtk_button_set_always_show_image(damier[lespions[nd->lejeu->IDj].y][lespions[nd->lejeu->IDj].x]->Mabouton->button, TRUE);
+            gtk_button_set_image(GTK_BUTTON(
+                damier[lespions[nd->lejeu->IDj].y]
+                [lespions[nd->lejeu->IDj].x]->Mabouton->button), img);
+
+            gtk_button_set_always_show_image(damier[lespions[nd->lejeu->IDj].y]
+                [lespions[nd->lejeu->IDj].x]->Mabouton->button, TRUE);
+
             MiseAJourScore(nd->lejeu->IDj, 20);
         }
         if (!nfikh)
@@ -314,12 +357,22 @@ void tour_de_machine()
             id_nfikh = fct_nfikh(nd->lejeu->IDj, damierCpy, pionCpy);
             if (id_nfikh != -1)
             {
-                // Mise en évidence du pion qui peut être capturé par le joueur actuel
-                gtk_button_set_image(GTK_BUTTON(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button), NULL);
-                gtk_widget_set_name(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button, "my-button_black_nfikh");
-                CSS(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button);
-                g_signal_handlers_block_matched(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button,
-                                                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
+                /* Mise en évidence du pion qui peut être capturé par le 
+                    joueur actuel*/
+                gtk_button_set_image(GTK_BUTTON(damier[lespions[id_nfikh].y]
+                    [lespions[id_nfikh].x]->Mabouton->button), NULL);
+
+                gtk_widget_set_name(damier[lespions[id_nfikh].y]
+                    [lespions[id_nfikh].x]->Mabouton->button,
+                    "my-button_black_nfikh");
+
+                CSS(damier[lespions[id_nfikh].y]
+                    [lespions[id_nfikh].x]->Mabouton->button);
+
+                g_signal_handlers_block_matched(damier[lespions[id_nfikh].y]
+                    [lespions[id_nfikh].x]->Mabouton->button,
+                    G_SIGNAL_MATCH_FUNC, 0,0, NULL, (gpointer)show_mouve, NULL);
+
                 lematch.damier[lespions[id_nfikh].y][lespions[id_nfikh].x] = -1;
                 lespions[id_nfikh].etat = 0;
                 MiseAJourScore(nd->lejeu->IDj, -10);
@@ -331,6 +384,16 @@ void tour_de_machine()
     // Changement de joueur
     tour = tour * (-1);
 }
+
+/*
+    Nom Fonction : direction_Interdit
+
+    Entree : _ des entiers
+
+    Sortie : _un entier
+
+    Description : verifie la dirrection d'un mouvelent donné 
+*/
 
 int direction_Interdit(int X_myPos, int Y_myPos, int X_dest, int Y_dest)
 {
@@ -347,7 +410,8 @@ int direction_Interdit(int X_myPos, int Y_myPos, int X_dest, int Y_dest)
             DesPos = 0;
             X = X_myPos;
             Y = Y_myPos;
-            // Vérifie chaque position le long de la direction jusqu'à atteindre les limites
+            /* Vérifie chaque position le long de la direction jusqu'à
+                atteindre les limites*/
             while ((0 <= X && X <= 7) && (0 <= Y && Y <= 7))
             {
                 X = X + h;
@@ -356,15 +420,19 @@ int direction_Interdit(int X_myPos, int Y_myPos, int X_dest, int Y_dest)
                     DesPos = 1;
                 if ((X == dernierePosX) && (Y == dernierePosY))
                     lastPos = 1;
-                // Vérifie si la dernière position et la position de destination sont rencontrées dans la même direction
+                // Vérifie si la dernière position et la position de 
+                    //destination sont rencontrées dans la même direction
                 if ((lastPos == 1) && (DesPos == 1))
                 {
-                    return ((int)0); // Renvoie 0 si la direction est interdite
+                    // Renvoie 0 si la direction est interdite
+                    return ((int)0); 
                 }
             }
-            h = h * (-1); // Inverse la direction horizontale pour la prochaine itération
+            // Inverse la direction horizontale pour la prochaine itération
+            h = h * (-1); 
         }
-        v = v * (-1); // Inverse la direction verticale pour la prochaine itération
+        // Inverse la direction verticale pour la prochaine itération
+        v = v * (-1); 
     }
     return ((int)1); // Renvoie 1 si la direction est autorisée
 }
@@ -402,8 +470,8 @@ void CSS(GtkWidget* wdgt)
 
     Sortie : _Rien
 
-    Description : L'utilite de cette fct c'est qu'elle montre les chemin possible
-                    d'un pion
+    Description : L'utilite de cette fct c'est qu'elle montre les chemin
+                    possible d'un pion
 */
 void show_mouve(GtkWidget* widget, int id)
 {
@@ -427,15 +495,21 @@ void show_mouve(GtkWidget* widget, int id)
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                            if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                            name = gtk_widget_get_name(damier[i]
+                                [j]->Mabouton->button);
+
+                            if (!strcmp(name, "mvt_possible") ||
+                                !strcmp(name, "autre_mvt_possible") ||
+                                !strcmp(name, "my-button_black_nfikh"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                                gtk_widget_set_name(damier[i]
+                                    [j]->Mabouton->button,"my-button_black");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                             if (!strcmp(name, "pion_selected"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                                gtk_widget_set_name(damier[i]
+                                    [j]->Mabouton->button, "joueur1");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                         }
@@ -448,14 +522,24 @@ void show_mouve(GtkWidget* widget, int id)
 
                             if (ptr->IDa >= 0)
                             {
-                                if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
+                                if (direction_Interdit(lespions[id].x,
+                                    lespions[id].y, ptr->x, ptr->y))
                                 {
 
-                                    gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
-                                    CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                                    g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                                    g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                                    gtk_widget_set_name(damier[ptr->y]
+                                        [ptr->x]->Mabouton->button,
+                                        "mvt_possible");
+                                    CSS(damier[ptr->y]
+                                        [ptr->x]->Mabouton->button);
+                                    g_signal_handlers_block_matched(
+                                        damier[ptr->y][ptr->x]->
+                                        Mabouton->button,G_SIGNAL_MATCH_FUNC,
+                                        0, 0, NULL, (gpointer)make_mouve,
+                                        NULL);
+
+                                    g_signal_connect(damier[ptr->y]
+                                        [ptr->x]->Mabouton->button, "clicked",
+                                        G_CALLBACK(make_mouve), ptr);
                                     set_name_autre_mvt_possible(ptr->fils1);
                                     set_name_autre_mvt_possible(ptr->fils2);
                                 }
@@ -479,15 +563,20 @@ void show_mouve(GtkWidget* widget, int id)
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                        if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                        name = gtk_widget_get_name(damier[i]
+                            [j]->Mabouton->button);
+                        if (!strcmp(name, "mvt_possible") || !strcmp(name,
+                            "autre_mvt_possible") || !strcmp(name, 
+                                "my-button_black_nfikh"))
                         {
-                            gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                            gtk_widget_set_name(damier[i][j]->Mabouton->button, 
+                                "my-button_black");
                             CSS(damier[i][j]->Mabouton->button);
                         }
                         if (!strcmp(name, "pion_selected"))
                         {
-                            gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                            gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                                "joueur1");
                             CSS(damier[i][j]->Mabouton->button);
                         }
                     }
@@ -498,11 +587,14 @@ void show_mouve(GtkWidget* widget, int id)
                     while (ptr)
                     {
 
-                        gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
+                        gtk_widget_set_name(damier[ptr->y][ptr->x]->
+                            Mabouton->button, "mvt_possible");
                         CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                        g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                        G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                        g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                        g_signal_handlers_block_matched(damier[ptr->y]
+                            [ptr->x]->Mabouton->button,G_SIGNAL_MATCH_FUNC, 
+                            0, 0, NULL, (gpointer)make_mouve, NULL);
+                        g_signal_connect(damier[ptr->y][ptr->x]->Mabouton
+                            ->button, "clicked", G_CALLBACK(make_mouve), ptr);
                         set_name_autre_mvt_possible(ptr->fils1);
                         set_name_autre_mvt_possible(ptr->fils2);
                         ptr = ptr->fils3;
@@ -540,15 +632,20 @@ void show_mouve(GtkWidget* widget, int id)
                             for (int j = 0; j < 8; j++)
                             {
 
-                                name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                                if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                                name = gtk_widget_get_name(damier[i]
+                                    [j]->Mabouton->button);
+                                if (!strcmp(name, "mvt_possible") ||
+                                    !strcmp(name, "autre_mvt_possible") ||
+                                    !strcmp(name, "my-button_black_nfikh"))
                                 {
-                                    gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                                    gtk_widget_set_name(damier[i][j]->
+                                        Mabouton->button, "my-button_black");
                                     CSS(damier[i][j]->Mabouton->button);
                                 }
                                 if (!strcmp(name, "pion_selected"))
                                 {
-                                    gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur2");
+                                    gtk_widget_set_name(damier[i][j]->Mabouton
+                                        ->button, "joueur2");
                                     CSS(damier[i][j]->Mabouton->button);
                                 }
                             }
@@ -561,14 +658,25 @@ void show_mouve(GtkWidget* widget, int id)
 
                                 if (ptr->IDa >= 0)
                                 {
-                                    if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
+                                    if (direction_Interdit(lespions[id].x,
+                                        lespions[id].y, ptr->x, ptr->y))
                                     {
 
-                                        gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
-                                        CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                                        g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                                        G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                                        g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                                        gtk_widget_set_name(damier[ptr->y]
+                                            [ptr->x]->Mabouton->button, 
+                                            "mvt_possible");
+
+                                        CSS(damier[ptr->y][ptr->x]->
+                                            Mabouton->button);
+                                        g_signal_handlers_block_matched(
+                                            damier[ptr->y][ptr->x]->
+                                            Mabouton->button,
+                                            G_SIGNAL_MATCH_FUNC, 0, 0,
+                                            NULL, (gpointer)make_mouve, NULL);
+
+                                        g_signal_connect(damier[ptr->y][ptr->x]
+                                            ->Mabouton->button, "clicked", 
+                                            G_CALLBACK(make_mouve), ptr);
                                         set_name_autre_mvt_possible(ptr->fils1);
                                         set_name_autre_mvt_possible(ptr->fils2);
                                     }
@@ -592,15 +700,20 @@ void show_mouve(GtkWidget* widget, int id)
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                            if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                            name = gtk_widget_get_name(damier[i][j]->Mabouton
+                                ->button);
+                            if (!strcmp(name, "mvt_possible") || 
+                                !strcmp(name, "autre_mvt_possible") || 
+                                !strcmp(name, "my-button_black_nfikh"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                                gtk_widget_set_name(damier[i][j]->Mabouton
+                                    ->button, "my-button_black");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                             if (!strcmp(name, "pion_selected"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur2");
+                                gtk_widget_set_name(damier[i][j]->Mabouton
+                                    ->button, "joueur2");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                         }
@@ -611,11 +724,16 @@ void show_mouve(GtkWidget* widget, int id)
                         while (ptr)
                         {
 
-                            gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
+                            gtk_widget_set_name(damier[ptr->y][ptr->x]->
+                                Mabouton->button, "mvt_possible");
                             CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                            g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                            g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                            g_signal_handlers_block_matched(damier[ptr->y]
+                                [ptr->x]->Mabouton->button,
+                                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, 
+                                (gpointer)make_mouve, NULL);
+                            g_signal_connect(damier[ptr->y][ptr->x]->
+                                Mabouton->button, "clicked", 
+                                G_CALLBACK(make_mouve), ptr);
                             set_name_autre_mvt_possible(ptr->fils1);
                             set_name_autre_mvt_possible(ptr->fils2);
                             ptr = ptr->fils3;
@@ -646,15 +764,20 @@ void show_mouve(GtkWidget* widget, int id)
                         {
                             for (int j = 0; j < 8; j++)
                             {
-                                name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                                if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                                name = gtk_widget_get_name(damier[i][j]->
+                                    Mabouton->button);
+                                if (!strcmp(name, "mvt_possible") || 
+                                    !strcmp(name, "autre_mvt_possible") ||
+                                    !strcmp(name, "my-button_black_nfikh"))
                                 {
-                                    gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                                    gtk_widget_set_name(damier[i][j]->Mabouton
+                                        ->button, "my-button_black");
                                     CSS(damier[i][j]->Mabouton->button);
                                 }
                                 if (!strcmp(name, "pion_selected"))
                                 {
-                                    gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                                    gtk_widget_set_name(damier[i][j]->Mabouton
+                                        ->button, "joueur1");
                                     CSS(damier[i][j]->Mabouton->button);
                                 }
                             }
@@ -667,14 +790,22 @@ void show_mouve(GtkWidget* widget, int id)
 
                                 if (ptr->IDa >= 0)
                                 {
-                                    if (direction_Interdit(lespions[id].x, lespions[id].y, ptr->x, ptr->y))
+                                    if (direction_Interdit(lespions[id].x, 
+                                        lespions[id].y, ptr->x, ptr->y))
                                     {
 
-                                        gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
-                                        CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                                        g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                                        G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                                        g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                                        gtk_widget_set_name(damier[ptr->y]
+                                            [ptr->x]->Mabouton->button, 
+                                            "mvt_possible");
+                                        CSS(damier[ptr->y][ptr->x]->
+                                            Mabouton->button);
+                                        g_signal_handlers_block_matched(
+                                            damier[ptr->y][ptr->x]->Mabouton
+                                            ->button,G_SIGNAL_MATCH_FUNC, 0, 0,
+                                            NULL, (gpointer)make_mouve, NULL);
+                                        g_signal_connect(damier[ptr->y][ptr->x]
+                                            ->Mabouton->button, "clicked",
+                                            G_CALLBACK(make_mouve), ptr);
                                         set_name_autre_mvt_possible(ptr->fils1);
                                         set_name_autre_mvt_possible(ptr->fils2);
                                     }
@@ -698,15 +829,20 @@ void show_mouve(GtkWidget* widget, int id)
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                            if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible") || !strcmp(name, "my-button_black_nfikh"))
+                            name = gtk_widget_get_name(damier[i][j]->
+                                Mabouton->button);
+                            if (!strcmp(name, "mvt_possible") || 
+                                !strcmp(name, "autre_mvt_possible") || 
+                                !strcmp(name, "my-button_black_nfikh"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                                gtk_widget_set_name(damier[i][j]->Mabouton
+                                    ->button, "my-button_black");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                             if (!strcmp(name, "pion_selected"))
                             {
-                                gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                                gtk_widget_set_name(damier[i][j]->Mabouton
+                                    ->button, "joueur1");
                                 CSS(damier[i][j]->Mabouton->button);
                             }
                         }
@@ -717,11 +853,16 @@ void show_mouve(GtkWidget* widget, int id)
                         while (ptr)
                         {
 
-                            gtk_widget_set_name(damier[ptr->y][ptr->x]->Mabouton->button, "mvt_possible");
+                            gtk_widget_set_name(damier[ptr->y][ptr->x]->
+                                Mabouton->button, "mvt_possible");
                             CSS(damier[ptr->y][ptr->x]->Mabouton->button);
-                            g_signal_handlers_block_matched(damier[ptr->y][ptr->x]->Mabouton->button,
-                                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
-                            g_signal_connect(damier[ptr->y][ptr->x]->Mabouton->button, "clicked", G_CALLBACK(make_mouve), ptr);
+                            g_signal_handlers_block_matched(damier[ptr->y]
+                                [ptr->x]->Mabouton->button,
+                                G_SIGNAL_MATCH_FUNC, 0, 0, NULL, 
+                                (gpointer)make_mouve, NULL);
+                            g_signal_connect(damier[ptr->y][ptr->x]->
+                                Mabouton->button, "clicked", 
+                                G_CALLBACK(make_mouve), ptr);
                             set_name_autre_mvt_possible(ptr->fils1);
                             set_name_autre_mvt_possible(ptr->fils2);
                             ptr = ptr->fils3;
@@ -781,11 +922,13 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
         {
             if (lespions[mvt->IDj].etat == 2)
             {
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(2), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(2),
+                    50, 50, NULL);
             }
             else
             {
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(1), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(1),
+                    50, 50, NULL);
             }
         }
 
@@ -793,40 +936,50 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
         {
             if (lespions[mvt->IDj].etat == 2)
             {
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3),
+                    50, 50, NULL);
             }
             else
             {
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(0), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(0),
+                    50, 50, NULL);
             }
         }
 
         img = gtk_image_new_from_pixbuf(pixt);
         gtk_button_set_image(GTK_BUTTON(widget), img);
-        gtk_button_set_image(GTK_BUTTON(damier[lespions[mvt->IDj].y][lespions[mvt->IDj].x]->Mabouton->button), NULL);
+        gtk_button_set_image(GTK_BUTTON(damier[lespions[mvt->IDj].y]
+            [lespions[mvt->IDj].x]->Mabouton->button), NULL);
         gtk_button_set_always_show_image(widget, TRUE);
         g_signal_handlers_block_matched(widget,
-                                        G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
+            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)make_mouve, NULL);
 
         if (mvt->IDa >= 0)
         {
             nfikh++;
 
-            gtk_button_set_image(GTK_BUTTON(damier[lespions[mvt->IDa].y][lespions[mvt->IDa].x]->Mabouton->button), NULL);
-            gtk_widget_set_name(damier[lespions[mvt->IDa].y][lespions[mvt->IDa].x]->Mabouton->button, "my-button_black");
-            CSS(damier[lespions[mvt->IDa].y][lespions[mvt->IDa].x]->Mabouton->button);
-            g_signal_handlers_block_matched(damier[lespions[mvt->IDa].y][lespions[mvt->IDa].x]->Mabouton->button,
-                                            G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
+            gtk_button_set_image(GTK_BUTTON(damier[lespions[mvt->IDa].y]
+                [lespions[mvt->IDa].x]->Mabouton->button), NULL);
+            gtk_widget_set_name(damier[lespions[mvt->IDa].y]
+                [lespions[mvt->IDa].x]->Mabouton->button, "my-button_black");
+            CSS(damier[lespions[mvt->IDa].y]
+                [lespions[mvt->IDa].x]->Mabouton->button);
+            g_signal_handlers_block_matched(damier[lespions[mvt->IDa].y]
+                [lespions[mvt->IDa].x]->Mabouton->button,G_SIGNAL_MATCH_FUNC,
+                0, 0, NULL, (gpointer)show_mouve, NULL);
             if (lespions[mvt->IDa].etat == 1)
                 MiseAJourScore(mvt->IDj, 10);
             else
                 MiseAJourScore(mvt->IDj, 40);
         }
 
-        gtk_widget_set_name(damier[lespions[mvt->IDj].y][lespions[mvt->IDj].x]->Mabouton->button, "my-button_black");
-        CSS(damier[lespions[mvt->IDj].y][lespions[mvt->IDj].x]->Mabouton->button);
-        g_signal_handlers_block_matched(damier[lespions[mvt->IDj].y][lespions[mvt->IDj].x]->Mabouton->button,
-                                        G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
+        gtk_widget_set_name(damier[lespions[mvt->IDj].y]
+            [lespions[mvt->IDj].x]->Mabouton->button, "my-button_black");
+        CSS(damier[lespions[mvt->IDj].y][lespions[mvt->IDj].x]->
+            Mabouton->button);
+        g_signal_handlers_block_matched(damier[lespions[mvt->IDj].y]
+            [lespions[mvt->IDj].x]->Mabouton->button,G_SIGNAL_MATCH_FUNC,
+            0, 0, NULL, (gpointer)show_mouve, NULL);
 
         if (mvt->IDj > 11)
             gtk_widget_set_name(widget, "joueur1");
@@ -847,9 +1000,11 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
         if (lespions[mvt->IDj].etat == 2)
         {
             if (mvt->IDj > 11)
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(2), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(2),
+                    50, 50, NULL);
             else
-                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3), 50, 50, NULL);
+                pixt = gdk_pixbuf_new_from_file_at_size(clr_choisis(3),
+                    50, 50, NULL);
             img = gtk_image_new_from_pixbuf(pixt);
             gtk_button_set_image(GTK_BUTTON(widget), img);
         }
@@ -863,9 +1018,11 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
                 {
                     char* name = (char*)malloc(sizeof(char));
                     name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                    if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
+                    if (!strcmp(name, "mvt_possible") || !strcmp(name,
+                        "autre_mvt_possible"))
                     {
-                        gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                        gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                            "my-button_black");
                         CSS(damier[i][j]->Mabouton->button);
                     }
                 }
@@ -889,21 +1046,25 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
                 {
                     char* name = (char*)malloc(sizeof(char));
                     name = gtk_widget_get_name(damier[i][j]->Mabouton->button);
-                    if (!strcmp(name, "mvt_possible") || !strcmp(name, "autre_mvt_possible"))
+                    if (!strcmp(name, "mvt_possible") || !strcmp(name, 
+                        "autre_mvt_possible"))
                     {
-                        gtk_widget_set_name(damier[i][j]->Mabouton->button, "my-button_black");
+                        gtk_widget_set_name(damier[i][j]->Mabouton->button, 
+                            "my-button_black");
                         CSS(damier[i][j]->Mabouton->button);
                     }
                 }
             }
-            g_signal_connect(widget, "clicked", G_CALLBACK(show_mouve), mvt->IDj);
+            g_signal_connect(widget, "clicked", G_CALLBACK(show_mouve),
+                mvt->IDj);
             id_pion_selectioner = -1;
             jeu_complexe_idJ = -1;
             tour = tour * (-1);
             dernierePosY = -1;
             dernierePosX = -1;
 
-            if (etatJoueur != lespions[mvt->IDj].etat && lespions[mvt->IDj].etat == 2)
+            if (etatJoueur != lespions[mvt->IDj].etat && 
+                lespions[mvt->IDj].etat == 2)
                 MiseAJourScore(mvt->IDj, 20);
 
             if (!nfikh)
@@ -911,12 +1072,19 @@ void make_mouve(GtkWidget* widget, mouvement* mvt)
                 id_nfikh = fct_nfikh(mvt->IDj, damierCpy, pionCpy);
                 if (id_nfikh != -1)
                 {
-                    gtk_button_set_image(GTK_BUTTON(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button), NULL);
-                    gtk_widget_set_name(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button, "my-button_black_nfikh");
-                    CSS(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button);
-                    g_signal_handlers_block_matched(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]->Mabouton->button,
-                                                    G_SIGNAL_MATCH_FUNC, 0, 0, NULL, (gpointer)show_mouve, NULL);
-                    lematch.damier[lespions[id_nfikh].y][lespions[id_nfikh].x] = -1;
+                    gtk_button_set_image(GTK_BUTTON(damier[lespions[id_nfikh].y]
+                        [lespions[id_nfikh].x]->Mabouton->button), NULL);
+                    gtk_widget_set_name(damier[lespions[id_nfikh].y]
+                        [lespions[id_nfikh].x]->Mabouton->button, 
+                        "my-button_black_nfikh");
+                    CSS(damier[lespions[id_nfikh].y][lespions[id_nfikh].x]
+                        ->Mabouton->button);
+                    g_signal_handlers_block_matched(
+                        damier[lespions[id_nfikh].y][lespions[id_nfikh].x]
+                        ->Mabouton->button,G_SIGNAL_MATCH_FUNC, 0, 0, NULL, 
+                        (gpointer)show_mouve, NULL);
+                    lematch.damier[lespions[id_nfikh].y]
+                        [lespions[id_nfikh].x] = -1;
                     lespions[id_nfikh].etat = 0;
                     MiseAJourScore(mvt->IDj, -10);
                 }
@@ -953,7 +1121,8 @@ void set_name_autre_mvt_possible(mouvement* mvt)
         name = gtk_widget_get_name(damier[mvt->y][mvt->x]->Mabouton->button);
         if (strcmp(name, "mvt_possible"))
         {
-            gtk_widget_set_name(damier[mvt->y][mvt->x]->Mabouton->button, "autre_mvt_possible");
+            gtk_widget_set_name(damier[mvt->y][mvt->x]->Mabouton->button, 
+                "autre_mvt_possible");
             CSS(damier[mvt->y][mvt->x]->Mabouton->button);
         }
         if (mvt->fils1)
@@ -973,7 +1142,8 @@ void on_bouton_clicked(GtkWidget* widget, Dialog* MonDialogue)
 }
 void dialogue_action(GtkWidget* widget, Dialog* MonDialogue)
 {
-    g_signal_connect(widget, "clicked", G_CALLBACK(on_bouton_clicked), MonDialogue);
+    g_signal_connect(widget, "clicked", G_CALLBACK(on_bouton_clicked), 
+        MonDialogue);
 }
 
 /*
@@ -993,37 +1163,53 @@ void page_damier()
     /* Allocation de mémoire pour la structure Fenetre et assignation
      à wind en utilisant la fonction Allouer_Fenetre().Création de la fenêtre
      en appelant la fonction Creer_Fenetre() avec wind comme argument.*/
-    wind = Allouer_Fenetre(0, 1600, 900, "Jeu Damier", NULL, 200, 0, "#FF5733", "window", 1);
+    wind = Allouer_Fenetre(0, 1600, 900, "Jeu Damier", NULL, 200, 0, "#FF5733",
+        "window", 1);
     wind = Creer_Fenetre(wind);
     // Application d'une feuille de style CSS à la fenêtre
     CSS(wind->ma_fenetre);
     /* Déclaration d'un pointeur vers une structure Fixed et allocation
     de mémoire pour cette structure en utilisant la fonction Allouer_fixed().*/
     Fixed* fixed = Allouer_fixed("fixed");
-    // Déclaration de plusieurs pointeurs vers les structures frame,Box,Label et Bouton
+    // Déclaration de plusieurs pointeurs vers les structures frame,Box,Label 
+        //et Bouton
     Label* mylabel;
     Label *score1, *score2;
     // Initialisation d'un Boutton simple
-    Bouton* rejouer = Initialiser_boutton("Rejouer", NULL, "Voulez vous r�p�ter?", "", 350, 40, 1, 1300, 350, "vide", 0);
+    Bouton* rejouer = Initialiser_boutton("Rejouer", NULL, 
+        "Voulez vous r�p�ter?", "", 350, 40, 1, 1300, 350, "vide", 0);
     // creation d'un boutton simple
     rejouer = Creer_SimpleBoutton(rejouer);
-    // Connexion du signal "clicked" du bouton "Rejouer" à la fonction on_rejouer_clicked()
-    g_signal_connect(rejouer->Mabouton->button, "clicked", G_CALLBACK(on_rejouer_clicked), wind->ma_fenetre);
-    // Ajout du bouton "Rejouer" au conteneur fixed en appelant la fonction Ajouter_Fixed()
-    Ajouter_Fixed(rejouer->Mabouton->button, rejouer->pos.X, rejouer->pos.Y, fixed);
+    // Connexion du signal "clicked" du bouton "Rejouer" à la 
+        //fonction on_rejouer_clicked()
+    g_signal_connect(rejouer->Mabouton->button, "clicked", 
+        G_CALLBACK(on_rejouer_clicked), wind->ma_fenetre);
+    // Ajout du bouton "Rejouer" au conteneur fixed en appelant 
+        //la fonction Ajouter_Fixed()
+    Ajouter_Fixed(rejouer->Mabouton->button, rejouer->pos.X, 
+        rejouer->pos.Y, fixed);
 
     // Initialisation d'un Boutton simple
-    Bouton* regle_jeu = Initialiser_boutton("Regles de jeu", NULL, "d�couvrir les r�gles de jeu ", "", 350, 40, 1, 1300, 450, "vide", 0);
+    Bouton* regle_jeu = Initialiser_boutton("Regles de jeu", NULL, 
+        "d�couvrir les r�gles de jeu ", "", 350, 40, 1, 1300, 450, "vide", 0);
     // creation d'un boutton simple
     regle_jeu = Creer_SimpleBoutton(regle_jeu);
-    // Ajout du bouton "regle_jeu" au conteneur fixed en appelant la fonction Ajouter_Fixed()
-    Ajouter_Fixed(regle_jeu->Mabouton->button, regle_jeu->pos.X, regle_jeu->pos.Y, fixed);
-    // Connexion du signal "clicked" du bouton "regle_jeu" à la fonction on_regle_jeu_clicked()
-    //    g_signal_connect(regle_jeu->Mabouton->button, "clicked", G_CALLBACK(on_regle_jeu_clicked), wind->ma_fenetre);
+    // Ajout du bouton "regle_jeu" au conteneur fixed en appelant 
+        // la fonction Ajouter_Fixed()
+    Ajouter_Fixed(regle_jeu->Mabouton->button, regle_jeu->pos.X, 
+        regle_jeu->pos.Y, fixed);
+    // Connexion du signal "clicked" du bouton "regle_jeu" à la fonction 
+    //on_regle_jeu_clicked() 
 
     // Initialisation et création d'un dialogue avec des boutons et des actions associées.
-    Dialog* mondialog = Init_Dialog("dialog", "Do you want to leave this match ? ", "E:\\chabab_GTK\\icons\\accepter.png");
-    Bouton* re = Initialiser_boutton("", NULL, "", "C:\\Users\\HP FOLIO 9470m\\OneDrive\\Bureau\\trash\\chabab_GTK\\chabab_GTK\\icons\\qutter_exporter.png", 80, 20, 1, 1500, 400, "vide", 30);
+    Dialog* mondialog = Init_Dialog("dialog", 
+        "Do you want to leave this match ? ", 
+        "E:\\chabab_GTK\\icons\\accepter.png");
+    Bouton* re = Initialiser_boutton("", NULL, "",
+
+ "C:\\Users\\HP FOLIO 9470m\\OneDrive\\Bureau\\trash\\chabab_GTK\\chabab_GTK\\icons\\qutter_exporter.png",
+        
+        80, 20, 1, 1500, 400, "vide", 30);
     re = Creer_SimpleBoutton(re);
     Creer_Dialog(mondialog);
     dialogue_action(re->Mabouton->button, mondialog);
@@ -1111,17 +1297,21 @@ void page_damier()
             }
             /*crée un nouveau bouton avec les paramètres spécifiés,
             y compris la couleur icon_pion. Le bouton est ensuite assigné
-             à l'élément correspondant dans le tableau damier à l'indice [i][j]*/
-            damier[i][j] = Initialiser_boutton("", name, "", icon_pion, sizeBTN, sizeBTN, 0, ligne, colonne, NULL, size_icon);
+             à l'élément correspondant dans le tableau damier 
+             à l'indice [i][j]*/
+            damier[i][j] = Initialiser_boutton("", name, "", icon_pion,
+                sizeBTN, sizeBTN, 0, ligne, colonne, NULL, size_icon);
             damier[i][j] = Creer_SimpleBoutton(damier[i][j]);
             // On applique la fonction CSS
             CSS(damier[i][j]->Mabouton->button);
             // ajoute le bouton au conteneur fixed à la position spécifiée
-            Ajouter_Fixed(damier[i][j]->Mabouton->button, damier[i][j]->pos.X, damier[i][j]->pos.Y, fixed);
+            Ajouter_Fixed(damier[i][j]->Mabouton->button, damier[i][j]->pos.X,
+                damier[i][j]->pos.Y, fixed);
             // ajuster la position verticale des boutons dans le damier.
             ligne = ligne + sizeBTN;
         }
-        // colonne est mise à jour pour la prochaine itération de la boucle extérieure.
+        // colonne est mise à jour pour la prochaine itération de la boucle 
+            //extérieure.
         colonne = colonne + sizeBTN;
     }
     // Initialisation de la structure Label
@@ -1130,11 +1320,14 @@ void page_damier()
     scoreJoueur1 = Init_label(" 0000 ", "score", 550, 50);
     scoreJoueur2 = Init_label(" 0000 ", "score", 550, 800);
     // ajoute le bouton au conteneur fixed à la position spécifiée
-    Ajouter_Fixed(scoreJoueur1->leLabel, scoreJoueur1->X_Y.X, scoreJoueur1->X_Y.Y, fixed);
-    Ajouter_Fixed(scoreJoueur2->leLabel, scoreJoueur2->X_Y.X, scoreJoueur2->X_Y.Y, fixed);
+    Ajouter_Fixed(scoreJoueur1->leLabel, scoreJoueur1->X_Y.X, 
+        scoreJoueur1->X_Y.Y, fixed);
+    Ajouter_Fixed(scoreJoueur2->leLabel, scoreJoueur2->X_Y.X, 
+        scoreJoueur2->X_Y.Y, fixed);
     Ajouter_Fixed(score1->leLabel, score1->X_Y.X, score1->X_Y.Y, fixed);
     Ajouter_Fixed(score2->leLabel, score2->X_Y.X, score2->X_Y.Y, fixed);
-    // On applique une feuille de style CSS au bouton en utilisant la fonction CSS().
+    // On applique une feuille de style CSS au bouton en utilisant 
+        //la fonction CSS().
     CSS(score1->leLabel);
     CSS(score2->leLabel);
     CSS(scoreJoueur1->leLabel);
@@ -1157,24 +1350,29 @@ void page_damier()
 
 void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
 {
-    // Si widget2 existe il est détruit à l'aide de la fonction gtk_widget_destroy
+    // Si widget2 existe il est détruit à l'aide de la fonction 
+        //gtk_widget_destroy
     if (widget2)
         gtk_widget_destroy(widget2);
     // initialiser le damier et les pions du jeu respectivement.
     Initialiser_Damier(&lematch.damier);
     Initialiser_Tab_Pion(lespions);
-    // appelée pour créer et afficher la page du damier dans l'interface utilisateur
+    // appelée pour créer et afficher la page du damier dans 
+    //l'interface utilisateur
     page_damier();
     for (int i = 0; i < 8; i++) // parcourent le damier.
     {
         for (int j = 0; j < 8; j++)
         {
             /*Si la valeur dans lematch.damier[i][j] est supérieure
-            ou égale à zéro, cela signifie qu'il y a un bouton à cette position dans le damier.*/
+            ou égale à zéro, cela signifie qu'il y a un bouton à cette
+            position dans le damier.*/
             if (lematch.damier[i][j] >= 0)
             {
-                // connecter le signal "clicked" du bouton à la fonction show_mouve en utilisant G_CALLBACK()
-                g_signal_connect(damier[i][j]->Mabouton->button, "clicked", G_CALLBACK(show_mouve), lematch.damier[i][j]);
+                // connecter le signal "clicked" du bouton à la fonction
+                    //show_mouve en utilisant G_CALLBACK()
+                g_signal_connect(damier[i][j]->Mabouton->button, "clicked",
+                    G_CALLBACK(show_mouve), lematch.damier[i][j]);
                 // appliquer des styles CSS au bouton.
                 CSS(damier[i][j]->Mabouton->button);
                 /*Selon la valeur de mode, le nom du widget
@@ -1184,14 +1382,17 @@ void jeu_commence(GtkWidget* widget, GtkWidget* widget2)
                 if (mode == 2)
                 {
                     if (lematch.damier[i][j] > 11)
-                        gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                        gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                            "joueur1");
                     else
-                        gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur2");
+                        gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                            "joueur2");
                 }
                 else
                 {
                     if (lematch.damier[i][j] > 11)
-                        gtk_widget_set_name(damier[i][j]->Mabouton->button, "joueur1");
+                        gtk_widget_set_name(damier[i][j]->Mabouton->button,
+                            "joueur1");
                 }
             }
         }
@@ -1217,10 +1418,12 @@ void what_btn_mode(GtkWidget* widget, GtkWidget* widget2)
     // utilisée pour obtenir le nom du widget sous forme
     // de chaîne de caractères et le stocker dans la variable label.
     char* label = gtk_widget_get_name(GTK_BUTTON(widget));
-    // vérifie si le nom du widget widget est égal à "btn_mode1_Off" ou "btn_mode1_On".
+    // vérifie si le nom du widget widget est égal à "btn_mode1_Off" 
+        //ou "btn_mode1_On".
     if (!strcmp(label, "btn_mode1_Off") || !strcmp(label, "btn_mode1_On"))
     {
-        // le mode actuel est le mode 2, et le bouton a été cliqué pour passer au mode 1.
+        // le mode actuel est le mode 2, et le bouton a été cliqué pour 
+            //passer au mode 1.
         gtk_widget_set_name(widget, "btn_mode1_On");
         gtk_widget_set_name(widget2, "btn_mode2_Off");
         CSS(widget);
@@ -1228,7 +1431,8 @@ void what_btn_mode(GtkWidget* widget, GtkWidget* widget2)
         mode = 1;
     }
     else
-    // le mode actuel est le mode 1,et le bouton a été cliqué pour passer au mode 2.
+    // le mode actuel est le mode 1,et le bouton a été cliqué pour passer
+        //au mode 2.
     {
         gtk_widget_set_name(widget, "btn_mode2_On");
         gtk_widget_set_name(widget2, "btn_mode1_Off");
@@ -1266,15 +1470,18 @@ void what_btn_Color(GtkWidget* widget, GtkWidget* widget2)
         // définie à -1 pour représenter le tour du joueur blanc.
         tour = -1;
     }
-    // la couleur du jeton actuelle est le blanc, et le bouton a été cliqué pour changer la couleur en noir
+    // la couleur du jeton actuelle est le blanc, et le bouton a été 
+        //cliqué pour changer la couleur en noir
     else
     {
         gtk_widget_set_name(widget, "white_color_On");
         gtk_widget_set_name(widget2, "black_color_Off");
         CSS(widget);
         CSS(widget2);
-        colorJeton = 1; // définie à 1 pour représenter la couleur noire du jeton.
-        tour = 1;       // définie à 1 pour représenter le tour du joueur noir.
+        // définie à 1 pour représenter la couleur noire du jeton.
+        colorJeton = 1;
+        // définie à 1 pour représenter le tour du joueur noir.
+        tour = 1;       
     }
 }
 
@@ -1293,58 +1500,72 @@ void Mode_page()
     // Déclaration des variables
     Fenetre* fenetre_mode;
     // déclarée et initialisée en tant que pointeur vers une structure Fenetre
-    fenetre_mode = Allouer_Fenetre(0, 1300, 900, "Jeu damier", NULL, 300, 0, NULL, "fenetre_mode", 0);
+    fenetre_mode = Allouer_Fenetre(0, 1300, 900, "Jeu damier", NULL, 300, 
+        0, NULL, "fenetre_mode", 0);
     fenetre_mode = Creer_Fenetre(fenetre_mode);
     CSS(fenetre_mode->ma_fenetre);
-    // Un objet Fixed est créé pour gérer le positionnement des éléments dans la fenêtre
+    // Un objet Fixed est créé pour gérer le positionnement des éléments 
+        //dans la fenêtre
     Fixed* fixed = Allouer_fixed("fixed");
-    // Les variables frame1, B1, B2 et B3 sont déclarées pour stocker des structures de type frame et Box
+    // Les variables frame1, B1, B2 et B3 sont déclarées pour stocker 
+        //des structures de type frame et Box
     frame* frame1;
     Box *B1, *B2, *B3;
-    // initialisé avec le titre "MODE" et les coordonnées de position et de taille spécifiées.
+    // initialisé avec le titre "MODE" et les coordonnées de position 
+        //et de taille spécifiées.
     frame1 = Init_frame("MODE", "frameMode", 20, 180, 270, 450, 470);
     // Le cadre est créé à l'aide de la fonction Creation_frame()
     Creation_frame(frame1);
     CSS(frame1->monframe);
     // initialisé avec le label "Joueur VS Machine" et d'autres paramètres.
     // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
-    Bouton* btn1 = Initialiser_boutton("Joueur   VS   Machine", "btn_mode1_On", "", "", 380, 106, 1, 1500, 400, "vide", 80);
+    Bouton* btn1 = Initialiser_boutton("Joueur   VS   Machine", 
+        "btn_mode1_On", "", "", 380, 106, 1, 1500, 400, "vide", 80);
     btn1 = Creer_SimpleBoutton(btn1);
     // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(btn1->Mabouton->button);
 
     // initialisé avec le label "Joueur VS Joueur" et d'autres paramètres.
     // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
-    Bouton* btn2 = Initialiser_boutton("Joueur   VS   Joueur", "btn_mode2_Off", "", "", 380, 106, 1, 1500, 400, "vide", 80);
+    Bouton* btn2 = Initialiser_boutton("Joueur   VS   Joueur", "btn_mode2_Off",
+        "", "", 380, 106, 1, 1500, 400, "vide", 80);
     btn2 = Creer_SimpleBoutton(btn2);
     CSS(btn2->Mabouton->button);
 
-    // signaux sont connectés aux boutons btn1 et btn2 pour appeler la fonction what_btn_mode lorsqu'ils sont cliqués
-    g_signal_connect(btn2->Mabouton->button, "clicked", G_CALLBACK(what_btn_mode), btn1->Mabouton->button);
-    g_signal_connect(btn1->Mabouton->button, "clicked", G_CALLBACK(what_btn_mode), btn2->Mabouton->button);
+    // signaux sont connectés aux boutons btn1 et btn2 pour appeler 
+        //la fonction what_btn_mode lorsqu'ils sont cliqués
+    g_signal_connect(btn2->Mabouton->button, "clicked", 
+        G_CALLBACK(what_btn_mode), btn1->Mabouton->button);
+    g_signal_connect(btn1->Mabouton->button, "clicked", 
+        G_CALLBACK(what_btn_mode), btn2->Mabouton->button);
 
     // initialisé avec le label "blanc" et d'autres paramètres.
     // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
-    Bouton* color1 = Initialiser_boutton("blanc", "white_color_On", "", "", 190, 106, 1, 1500, 600, "vide", 80);
+    Bouton* color1 = Initialiser_boutton("blanc", "white_color_On", "",
+        "", 190, 106, 1, 1500, 600, "vide", 80);
     color1 = Creer_SimpleBoutton(color1);
     // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(color1->Mabouton->button);
 
     // initialisé avec le label "Noir" et d'autres paramètres.
     // Le bouton est créé à l'aide de la fonction Creer_SimpleBoutton().
-    Bouton* color2 = Initialiser_boutton("Noir", "black_color_Off", "", "", 190, 106, 1, 1500, 600, "vide", 80);
+    Bouton* color2 = Initialiser_boutton("Noir", "black_color_Off", "", "", 
+        190, 106, 1, 1500, 600, "vide", 80);
     color2 = Creer_SimpleBoutton(color2);
     // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(color2->Mabouton->button);
 
     // signaux sont connectés aux boutons color1 et color2 pour appeler
     //  la fonction what_btn_Color lorsqu'ils sont cliqués.
-    g_signal_connect(color1->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color2->Mabouton->button);
-    g_signal_connect(color2->Mabouton->button, "clicked", G_CALLBACK(what_btn_Color), color1->Mabouton->button);
+    g_signal_connect(color1->Mabouton->button, "clicked", 
+        G_CALLBACK(what_btn_Color), color2->Mabouton->button);
+    g_signal_connect(color2->Mabouton->button, "clicked", 
+        G_CALLBACK(what_btn_Color), color1->Mabouton->button);
 
     B2 = Allouer_Box(0, 20);
     Creer_Box(B2, NULL);
-    // Les boutons color2 et color1 sont ajoutés à la boîte à l'aide de la fonction Ajouter_Box().
+    // Les boutons color2 et color1 sont ajoutés à la boîte à 
+        //l'aide de la fonction Ajouter_Box().
     Ajouter_Box(B2, color2->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B2, color1->Mabouton->button, 0, FALSE, FALSE, 0);
 
@@ -1352,22 +1573,29 @@ void Mode_page()
     B3 = Allouer_Box(0, 20);
     Creer_Box(B3, NULL);
     // initialiser et creer un boutton simple
-    Bouton* Commencer = Initialiser_boutton("Commencer", "btn_mode_commencer", "", "", 190, 106, 1, 1500, 600, "vide", 80);
+    Bouton* Commencer = Initialiser_boutton("Commencer", 
+        "btn_mode_commencer", "", "", 190, 106, 1, 1500, 600, "vide", 80);
     Commencer = Creer_SimpleBoutton(Commencer);
     // Les styles CSS du bouton sont appliqués à l'aide de la fonction CSS().
     CSS(Commencer->Mabouton->button);
-    // signal est connectés aux boutons pour appeler des fonctions lorsque les boutons sont cliqués.
-    g_signal_connect(Commencer->Mabouton->button, "clicked", G_CALLBACK(jeu_commence), fenetre_mode->ma_fenetre);
+    // signal est connectés aux boutons pour appeler des fonctions 
+        //lorsque les boutons sont cliqués.
+    g_signal_connect(Commencer->Mabouton->button, "clicked", 
+        G_CALLBACK(jeu_commence), fenetre_mode->ma_fenetre);
 
     // initialiser et creer un boutton simple
-    Bouton* Quitter = Initialiser_boutton("Quitter", "btn_mode_quitter", "", "", 190, 106, 1, 1500, 400, "vide", 80);
+    Bouton* Quitter = Initialiser_boutton("Quitter", "btn_mode_quitter", 
+        "", "", 190, 106, 1, 1500, 400, "vide", 80);
     Quitter = Creer_SimpleBoutton(Quitter);
     CSS(Quitter->Mabouton->button);
-    // signal est connectés aux boutons pour appeler des fonctions lorsque les boutons sont cliqués.
-    g_signal_connect(Quitter->Mabouton->button, "clicked", G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
+    // signal est connectés aux boutons pour appeler des fonctions lorsque
+        //les boutons sont cliqués.
+    g_signal_connect(Quitter->Mabouton->button, "clicked", 
+        G_CALLBACK(signal_fenetre_destroy), fenetre_mode->ma_fenetre);
     Ajouter_Box(B3, Commencer->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B3, Quitter->Mabouton->button, 0, FALSE, FALSE, 0);
-    // B1 est créée pour contenir les éléments principaux de la page de sélection du mode de jeu.
+    // B1 est créée pour contenir les éléments principaux de la page de 
+        //sélection du mode de jeu.
     B1 = Allouer_Box(1, 20);
     Creer_Box(B1, NULL);
     gtk_widget_set_name(B1->mon_box, "BoxMode");
@@ -1375,10 +1603,12 @@ void Mode_page()
     CSS(B1->mon_box);
 
     Label* title_mode;
-    // Un label title_mode est initialisé avec le texte "MODE" et les coordonnées de position spécifiées.
+    // Un label title_mode est initialisé avec le texte "MODE" et les 
+        //coordonnées de position spécifiées.
     title_mode = Init_label("MODE ", "title_mode", 400, 50);
     CSS(title_mode->leLabel);
-    // Le label et les boutons btn1 et btn2 sont ajoutés à la boîte B1 à l'aide de la fonction Ajouter_Box().
+    // Le label et les boutons btn1 et btn2 sont ajoutés à la boîte B1 
+        //à l'aide de la fonction Ajouter_Box().
     Ajouter_Box(B1, title_mode->leLabel, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn1->Mabouton->button, 0, FALSE, FALSE, 0);
     Ajouter_Box(B1, btn2->Mabouton->button, 0, FALSE, FALSE, 0);
