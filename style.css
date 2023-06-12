@@ -50,6 +50,12 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#window_game_over{
+  background-image:url('funny-celebrate-9.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 #login_wind{
   background-image:url('background.jpg');
   background-repeat: no-repeat;
